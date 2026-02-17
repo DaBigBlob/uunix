@@ -1,0 +1,18 @@
+Diagnostics:
+  ClangTidy:
+    Add: []
+    Remove: ['*']
+
+CompileFlags:
+  Add: [
+    -x, c,
+    -std=c11,
+    --target=riscv64-unknown-elf,
+    -Wall,
+    -Wextra,
+    -ffreestanding,
+    -nostdinc,
+    -nobuiltininc,
+    -nostdlibinc
+  ]
+  Remove: [-x, c++]
