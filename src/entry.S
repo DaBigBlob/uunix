@@ -12,8 +12,7 @@ __entry:
 
     csrr t0, mhartid
     la   sp, __stack_base
-    li   t1, 4096
-    mul  t0, t0, t1
+    slli t0, t0, 12
     sub  sp, sp, t0
 
     /* send non0 harts to waiting */
