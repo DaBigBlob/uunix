@@ -12,7 +12,7 @@ typedef unsigned int            u32;
     typedef unsigned long       u64;
 #elif __riscv_xlen == 32
     /* we dont really support 32bit */
-    typedef long long           s64;
+    typedef long long           i64;
     typedef unsigned long long  u64;
 #endif
 typedef unsigned long           usize;
