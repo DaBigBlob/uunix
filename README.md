@@ -48,4 +48,4 @@ Check for C17 is hardcoded in `src/pre.h` to mitigate a decent amount of behavio
 This file serves as the contract between the source code and teh compiler.
 
 As per C17 clause 4 part 6, it assumes `<float.h>,
-<iso646.h>, <limits.h>, <stdalign.h>, <stdarg.h>, <stdbool.h>, <stddef.h>, <stdint.h>` (see `var/C17_final_proposal_official.pdf`).
+<iso646.h>, <limits.h>, <stdalign.h>, <stdarg.h>, <stdbool.h>, <stddef.h>, <stdint.h>, <stdnoreturn.h>` (see `var/C17_final_proposal_official.pdf`).
