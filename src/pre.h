@@ -2,7 +2,7 @@
 #define UUNIX_PRE
 
 #if !defined(__STDC_VERSION__)
-    #error "Fatal: __STDC_VERSION__ not defined."
+    #error "__STDC_VERSION__ not defined. Unacceptable."
 #endif
 #if __STDC_VERSION__ != 201710L
     /* I choose C17 because it is decently old, stable,
@@ -10,6 +10,16 @@
     and numerous defect fixes over C11. */
     #error "This is a C17-ONLY project."
 #endif
+
+/* provided as per c17 clause 4 part 6 */
+#include <float.h>
+#include <iso646.h>
+#include <limits.h>
+#include <stdalign.h>
+#include <stdarg.h>
+#include <stdbool.h>
+#include <stddef.h>
+#include <stdint.h>
 
 #define MAX(a, b)               ((a) > (b) ? (a) : (b))
 #define MIN(a, b)               ((a) < (b) ? (a) : (b))
@@ -23,7 +33,6 @@
 
 #define ARR_SIZE(x)             (sizeof(x) / sizeof((x)[0]))
 
-#include <stdint.h> /* provided as per c17 clause 4 part 6 */
 #define DEF_SIZE_ALIAS(n)\
     typedef int##n##_t i##n;\
     typedef uint##n##_t u##n;
@@ -32,30 +41,16 @@ DEF_SIZE_ALIAS(16)
 DEF_SIZE_ALIAS(32)
 DEF_SIZE_ALIAS(64)
 #undef DEF_SIZE_ALIAS
+
 typedef float                   f32;
 typedef double                  f64;
 
-#include <stddef.h> /* provided as per c17 clause 4 part 6 */
 typedef size_t                  usize;
 typedef ptrdiff_t               isize;
-typedef unsigned long           addr; /* virt & phy */
+typedef size_t                  addr; /* virt & phy */
 
-#include <stdbool.h> /* provided as per c17 clause 4 part 6 */
-#define true                    1
-#define false                   0
-
-#define NORETURN                _Noreturn
-#define ALIGNED(x)              _Alignas(n)
-
-#define OFFSETOF(TYPE, MEMBER)  ((size_t) &((TYPE *)0)->MEMBER)
-#define CONTNROF(ptr, type, member) (\
-    (type *)((char *)(ptr) - OFFSETOF(type, member))\
+#define containerof(ptr, type, member) (\
+    (type *)((char *)(ptr) - offsetof(type, member))\
 )
-
-/* these are some non C17-isms we are keeping */
-#define PACKED                  __attribute__((packed))
-#define ALWAYS_INLINE           inline __attribute__((always_inline))
-#define LIKELY(x)               __builtin_expect((x), true)
-#define UNLIKELY(x)             __builtin_expect((x), false)
 
 #endif // UUNIX_PRE
