@@ -23,24 +23,26 @@
 
 #define ARR_SIZE(x)             (sizeof(x) / sizeof((x)[0]))
 
-typedef signed char             i8;
-typedef unsigned char           u8;
-typedef signed short                   i16;
-typedef unsigned short          u16;
-typedef int                     i32;
-typedef unsigned int            u32;
-typedef long                    i64;
-typedef unsigned long           u64;
+#include <stdint.h> /* provided as per c17 clause 4 part 6 */
+#define DEF_SIZE_ALIAS(n)\
+    typedef int##n##_t i##n;\
+    typedef uint##n##_t u##n;
+DEF_SIZE_ALIAS(8)
+DEF_SIZE_ALIAS(16)
+DEF_SIZE_ALIAS(32)
+DEF_SIZE_ALIAS(64)
+#undef DEF_SIZE_ALIAS
+typedef float                   f32;
+typedef double                  f64;
 
-typedef unsigned long           usize;
-typedef long                    isize;
+#include <stddef.h> /* provided as per c17 clause 4 part 6 */
+typedef size_t                  usize;
+typedef ptrdiff_t               isize;
 typedef unsigned long           addr; /* virt & phy */
 
-typedef char                    bool;
+#include <stdbool.h> /* provided as per c17 clause 4 part 6 */
 #define true                    1
 #define false                   0
-
-#define NULL                    ((void *)0)
 
 #define NORETURN                _Noreturn
 #define ALIGNED(x)              _Alignas(n)

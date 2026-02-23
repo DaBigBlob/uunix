@@ -47,4 +47,7 @@ Note, as of date, C23 is the latest std.
 Check for C17 is hardcoded in `src/pre.h` to mitigate a decent amount of behavioural ambiguity.
 
 ## `src/pre.h`
-This file serves as the contract between the source code and teh compiler. Though, including and using `<stdint.h>`, `<stddef.h>`, etc is technically the right decision, instead we do this for discoverability (see the Priorities section).
+This file serves as the contract between the source code and teh compiler.
+
+As per C17 clause 4 part 6, it assumes `<float.h>,
+<iso646.h>, <limits.h>, <stdalign.h>, <stdarg.h>, <stdbool.h>, <stddef.h>, <stdint.h>` (see `var/C17_final_proposal_official.pdf`).
