@@ -24,7 +24,7 @@ Just add the needed debug flags to `FCR` for C compiler and `FLDR` for linker.
 
 For example,
 ```bash
-make qc FCR="-gdwarf-5"
+make cq FCR="-gdwarf-5"
 ```
 # Priorities
 This project is mainly supposed to serve as educational material for OS development.
