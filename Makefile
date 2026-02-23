@@ -8,7 +8,7 @@ FC = -std=c11 -Wall -Wextra -pedantic
 FCR = -O3 -g0
 # we shall try to be independent of the "niceties" that the compiler provides to be as compiler agnostic as possible
 # we shall tolerate unused args to support more compilers
-FCX = -fno-stack-protector -ffreestanding -nostdlib -nostdlibinc -nostdinc -fno-builtin -mcmodel=medany -fno-pie -fno-pic
+FCX = -fno-stack-protector -ffreestanding -nostdlib -nostdinc -fno-builtin -mcmodel=medany -fno-pie -fno-pic
 FCM = -target riscv64-freestanding-none
 
 out/%.o: src/%.c
