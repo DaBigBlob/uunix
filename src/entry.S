@@ -1,32 +1,36 @@
 .extern main
 
+.section .bss
+    .space 128 * 1024 /* 100KiB */
+stack_base:
+
 .section .text
 .globl _start
 _start:
-    csrr t0, mhartid
+    csrr a0, mhartid
     la   sp, stack_base
-    slli t1, t0, 12 /* 2^12 = 4096 bytes for each hart */
+    slli t1, a0, 12 /* 2^12 = 4096 bytes for each hart */
     sub  sp, sp, t1
     /* send non0 harts to waiting */
-    bnez t0, hart_wait
+    bnez a0, hart_wait
 
     /* for hart0 */
     call main             /* may return */
     j dead_spin
 
-hart_wait:
-    la  t0, ready
-    ld  t0, 0(t0)
-    jr  t0
-
 dead_spin:
     j   dead_spin
 
-.section .bss
-    .space 128 * 1024 /* 100KiB */
-stack_base:
+
+
 
 .section .data
 .globl ready
 ready:
     .quad hart_wait
+
+.section .text
+hart_wait:
+    la  t0, ready
+    ld  t0, 0(t0)
+    jr  t0
