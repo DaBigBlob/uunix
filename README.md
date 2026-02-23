@@ -40,7 +40,8 @@ Note, this also means losing out on compiler optimized implementation and compil
 This section is to serve as record keeping for architectural decisions. (not necessarily in order)
 
 ## C17 (ISO/IEC 9899:2018)
-We choose C17 for this project because it is decently old (as of date), stable, and tested with no new language features over C11 and numerous defect fixes over C11.
+We choose C17 (see `var/C17_final_proposal_official.pdf`) for this project because it is decently old (as of date), stable, and tested with no new language features over C11 and numerous defect fixes over C11. C11-C17 supports for decent multiprocessing rpimitives useful for SMP. C23 is too new for my taste and introduces newer language features ans keywords.
+
 Note, as of date, C23 is the latest std.
 
 Check for C17 is hardcoded in `src/pre.h` to mitigate a decent amount of behavioural ambiguity.
