@@ -9,7 +9,7 @@ CC = clang -std=c17 -Wall -Wextra -Weverything -pedantic -Wc11-extensions -fno-g
 FC =
 FCR = -O3 -g0
 FCX = -fno-stack-protector -ffreestanding -mcmodel=medany -fno-pie -fno-pic
-FCM = -target riscv64-freestanding-none
+FCM = --target=riscv64-freestanding-none
 
 out/%.o: src/%.c
 	${CC} ${FC} ${FCR} ${FCX} ${FCM} -c -o $@ $<

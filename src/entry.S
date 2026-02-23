@@ -1,32 +1,33 @@
-.extern __stack_base
-.extern __ready
-.extern __main
+.extern main
 
 .section .text
-.globl __entry
-__entry:
-    /* set up spinlock */
-    la t0, __ready
-    la t1, hart_wait
-    sd t1, 0(t0)
-
+.globl _start
+_start:
     csrr t0, mhartid
-    la   sp, __stack_base
-    slli t0, t0, 12
-    sub  sp, sp, t0
-
+    la   sp, stack_base
+    slli t1, t0, 12 /* 2^12 = 4096 bytes for each hart */
+    sub  sp, sp, t1
     /* send non0 harts to waiting */
-    csrr t0, mhartid
     bnez t0, hart_wait
 
     /* for hart0 */
-    call __main             /* may return */
+    call main             /* may return */
     j dead_spin
 
 hart_wait:
-    la  t0, __ready
+    la  t0, ready
     ld  t0, 0(t0)
     jr  t0
 
 dead_spin:
     j   dead_spin
+
+.section .bss
+    /* our board has 5 harts -->  */
+    .space 10 * 1024 * 1024 /* 10MiB */
+stack_base:
+
+.section .data
+.globl ready
+ready:
+    .quad hart_wait

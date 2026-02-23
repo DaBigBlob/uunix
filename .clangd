@@ -6,7 +6,7 @@ Diagnostics:
 CompileFlags:
   Add: [
     -x, c,
-    --target=riscv64-unknown-elf,
+    --target=riscv64-freestanding-none,
     -std=c17,
     -Wall,
     -Wextra,
@@ -14,6 +14,11 @@ CompileFlags:
     -pedantic,
     -Wc11-extensions,
     -fno-gnu89-inline,
-    -Wc11-extensions
+    -Wc11-extensions,
+    -fno-stack-protector,
+    -ffreestanding,
+    -mcmodel=medany,
+    -fno-pie,
+    -fno-pic
   ]
   Remove: [-x, c++]

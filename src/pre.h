@@ -25,8 +25,8 @@
 #define MIN(a, b)               ((a) < (b) ? (a) : (b))
 #define CLAMP(a, lo, hi)        MIN(MAX(a, lo), hi)
 
-#define STR(x) ___STR(x)
-#define ___STR(x) #x
+#define STR(x) STR_impl(x)
+#define STR_impl(x) #x
 
 #define ROUNDUP(a, b)           ((((a)-1) / (b) + 1) * (b))
 #define ROUNDDOWN(a, b)         ((a) / (b) * (b))
