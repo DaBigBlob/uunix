@@ -4,7 +4,7 @@ all: out/kern.elf
 
 # --- compiler/assembler
 CC = clang
-FC = -std=c11 -Wall -Wextra -pedantic
+FC = -std=c17 -Wall -Wextra -pedantic
 FCR = -O3 -g0
 # we shall try to be independent of the "niceties" that the compiler provides to be as compiler agnostic as possible
 # we shall tolerate unused args to support more compilers
@@ -12,7 +12,7 @@ FCX = -fno-stack-protector -ffreestanding -nostdlib -nostdinc -fno-builtin -mcmo
 FCM = -target riscv64-freestanding-none
 
 out/%.o: src/%.c
-	${CC} ${FC} ${FCR} ${FCX} ${FCM} -c -o $@ $^
+	${CC} ${FC} ${FCR} ${FCX} ${FCM} -c -o $@ $<
 
 out/%.o: src/%.S
 	${CC} ${FCX} ${FCM} -c -o $@ $<

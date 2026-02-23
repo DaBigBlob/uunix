@@ -6,7 +6,7 @@ Diagnostics:
 CompileFlags:
   Add: [
     -x, c,
-    -std=c11,
+    -std=c17,
     --target=riscv64-unknown-elf,
     -Wall,
     -Wextra,

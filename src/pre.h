@@ -1,7 +1,17 @@
 #ifndef UUNIX_TYPE
 #define UUNIX_TYPE
 
-typedef signed char             s8;
+#if !defined(__STDC_VERSION__)
+    #error "Fatal: __STDC_VERSION__ not defined."
+#endif
+#if __STDC_VERSION__ != 201710L
+    /* I choose C17 because it is decently old, stable,
+    and testedwith not new language features over C11
+    and numerous defect fixes over C11. */
+    #error "This is a C17-ONLY project."
+#endif
+
+typedef signed char             i8;
 typedef unsigned char           u8;
 typedef short                   i16;
 typedef unsigned short          u16;
@@ -19,12 +29,9 @@ typedef unsigned long           usize;
 typedef long                    isize;
 typedef unsigned long           addr; /* virt & phy */
 
-#if __STDC_VERSION__ < 202000L
-    /* those mfs added bool in c2x */
-    typedef _Bool               bool;
-    #define true                1
-    #define false               0
-#endif
+typedef char               bool;
+#define true                1
+#define false               0
 
 #define NULL                    ((void *)0)
 
