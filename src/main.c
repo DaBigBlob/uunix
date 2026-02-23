@@ -3,7 +3,7 @@
 #include "linker.h"
 #include "entry.h"
 
-extern void other(void) {
+static void other(void) {
     for (char* say = "hi!\n"; *say; ++say)
         uart_putc(uart0, *say);
 }

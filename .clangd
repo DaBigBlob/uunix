@@ -11,6 +11,7 @@ CompileFlags:
     -Wall,
     -Wextra,
     -Weverything,
+    -Wno-unsafe-buffer-usage,
     -pedantic,
     -Wc11-extensions,
     -fno-gnu89-inline,

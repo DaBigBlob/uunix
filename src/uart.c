@@ -8,7 +8,7 @@ only naturally aligned 32-bit memory accesses." - fu540 manual */
 #define UART_REG_TXCTRL         2
 #define UART_REG_RXCTRL         3
 #define UART_REG_IE             4
-#define UART_REG_IP             5
+// #define UART_REG_IP             5
 #define UART_REG_DIV            6
 
 #define UART_TXFIFO_FULL        0x80000000
