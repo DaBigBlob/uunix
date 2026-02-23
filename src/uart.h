@@ -7,14 +7,22 @@
 only naturally aligned 32-bit memory accesses." - fu540 manual */
 
 typedef struct {
-    alignas(alignof(u32)) u32 txdata;
-    alignas(alignof(u32)) u32 rxdata;
-    alignas(alignof(u32)) u32 txctrl;
-    alignas(alignof(u32)) u32 rxctrl;
-    alignas(alignof(u32)) u32 ie;
-    alignas(alignof(u32)) u32 ip;
-    alignas(alignof(u32)) u32 div;
+    u32 txdata;
+    u32 rxdata;
+    u32 txctrl;
+    u32 rxctrl;
+    u32 ie;
+    u32 ip;
+    u32 div;
 } uart_t;
+
+_Static_assert(offsetof(uart_t, txdata) == 0x00, "bad txdata offset");
+_Static_assert(offsetof(uart_t, rxdata) == 0x04, "bad rxdata offset");
+_Static_assert(offsetof(uart_t, txctrl) == 0x08, "bad txctrl offset");
+_Static_assert(offsetof(uart_t, rxctrl) == 0x0C, "bad rxctrl offset");
+_Static_assert(offsetof(uart_t, ie)     == 0x10, "bad ie offset");
+_Static_assert(offsetof(uart_t, ip)     == 0x14, "bad ip offset");
+_Static_assert(offsetof(uart_t, div)    == 0x18, "bad div offset");
 
 #define UART_TXFIFO_ISFULL      0x80000000
 #define UART_RXDATA_ISEMPTY     0x80000000
