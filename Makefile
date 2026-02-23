@@ -4,11 +4,10 @@ all: out/kern.elf
 
 # --- compiler/assembler
 CC = clang
-FC = -std=c17 -Wall -Wextra -pedantic
+# try to make clang as ISO C17 as possible
+FC = -std=c17 -Wall -Wextra -pedantic-errors -Wc11-extensions -Werror=c11-extensions -fno-gnu89-inline -Wc11-extensions
 FCR = -O3 -g0
-# we shall try to be independent of the "niceties" that the compiler provides to be as compiler agnostic as possible
-# we shall tolerate unused args to support more compilers
-FCX = -fno-stack-protector -ffreestanding -nostdlib -nostdinc -fno-builtin -mcmodel=medany -fno-pie -fno-pic
+FCX = -fno-stack-protector -ffreestanding -mcmodel=medany -fno-pie -fno-pic
 FCM = -target riscv64-freestanding-none
 
 out/%.o: src/%.c
@@ -22,7 +21,6 @@ OBJS := $(patsubst src/%.c,out/%.o,$(wildcard src/*.c)) \
 
 # --- linker
 LD = ld.lld
-# we shall tolerate unused args to support more linkers
 FLD = --no-pie
 FLDR = --lto=full --strip-all
 FLDM = -m elf64lriscv

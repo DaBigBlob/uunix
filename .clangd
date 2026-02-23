@@ -6,13 +6,13 @@ Diagnostics:
 CompileFlags:
   Add: [
     -x, c,
-    -std=c17,
     --target=riscv64-unknown-elf,
+    -std=c17,
     -Wall,
     -Wextra,
-    -ffreestanding,
-    -nostdlib,
-    -nostdinc,
-    -fno-builtin
+    -pedantic,
+    -Wc11-extensions,
+    -fno-gnu89-inline,
+    -Wc11-extensions
   ]
   Remove: [-x, c++]
