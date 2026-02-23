@@ -4,12 +4,12 @@
 #include "linker.h"
 #include "entry.h"
 
-static void other(void) {
+static noreturn void other(void) {
     uart_puts(uart0, "hi!\n")
+    dead_spin();
 }
 
-void main(void);
-void main(void) {
+noreturn void main(void) {
     mem_set(bss_begin, bss_end, volatile addr, 0)
     uart_init(uart0)
 
@@ -17,4 +17,6 @@ void main(void) {
 
     uart_puts(uart0, "\ncalling other harts:\n")
     ready = other;
+
+    dead_spin();
 }

@@ -6,6 +6,7 @@ stack_base:
 
 .section .text
 .globl _start
+.globl dead_spin
 _start:
     csrr a0, mhartid
     la   sp, stack_base
@@ -15,8 +16,8 @@ _start:
     bnez a0, hart_wait
 
     /* for hart0 */
-    call main             /* may return */
-    j dead_spin
+    j main             /* may return */
+    /* fall through if returned */
 
 dead_spin:
     j   dead_spin
