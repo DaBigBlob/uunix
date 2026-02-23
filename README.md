@@ -30,9 +30,7 @@ make qc FCR="-gdwarf-5"
 This project is mainly supposed to serve as educational material for OS development.
 
 ## Discoverability
-The reader should be grep through the source and read the cource of all identifiers.
-
-Note, this also means losing out on compiler optimized implementation and compiler definitions for known-bit-width types.
+The reader should be grep through the source and read the cource of all identifiers (other than those defined in includes mentioned in clause 4 part 6 of `var/C17_final_proposal_official.pdf`).
 
 ## TBD
 
