@@ -1,22 +1,20 @@
+#include "pre.h"
 #include "std.h"
 #include "uart.h"
 #include "linker.h"
 #include "entry.h"
 
 static void other(void) {
-    for (char* say = "hi!\n"; *say; ++say)
-        uart_putc(uart0, *say);
+    uart_puts(uart0, "hi!\n")
 }
 
-extern void main(void) {
-    memset(volatile u8*, bss_begin, bss_end, 0)
-    uart_init(uart0);
+void main(void);
+void main(void) {
+    mem_set(bss_begin, bss_end, volatile addr, 0)
+    uart_init(uart0)
 
-    for (char* say = "\nhello metal!\n"; *say; ++say)
-        uart_putc(uart0, *say);
+    uart_puts(uart0, "\nhello metal!\n")
 
-    for (char* say = "\ncalling others:\n"; *say; ++say)
-        uart_putc(uart0, *say);
-
+    uart_puts(uart0, "\ncalling other harts:\n")
     ready = other;
 }

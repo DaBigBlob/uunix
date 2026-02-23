@@ -1,15 +1,12 @@
 #ifndef UUNIX_LINKER
 #define UUNIX_LINKER
 #include "pre.h"
+#include "uart.h"
 
-/* manual says 32bit aligned */
-extern volatile u32
-    uart0[],
-    uart1[]
-;
+extern volatile uart_t uart0, uart1;
 
 /* 64bit machine */
-extern volatile u8
+extern volatile addr
     bss_begin[],
     bss_end[]
 ;

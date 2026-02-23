@@ -5,7 +5,7 @@ all: out/kern.elf
 ########################## compiler/assembler
 # this must be a ISO C17 compiler
 # this may be replaced with any other ISO C17 compiler
-CC = clang -std=c17 -Wall -Wextra -Weverything -Wno-unsafe-buffer-usage -pedantic -Wc11-extensions -fno-gnu89-inline -Wc11-extensions
+CC = clang -std=c17 -Wall -Wextra -Weverything -Wno-unsafe-buffer-usage -Wno-pre-c11-compat -pedantic -Wc11-extensions -fno-gnu89-inline -Wc11-extensions
 FC =
 FCR = -O3 -g0
 FCX = -fno-stack-protector -ffreestanding -mcmodel=medany -fno-pie -fno-pic

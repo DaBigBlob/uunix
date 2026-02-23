@@ -1,6 +1,6 @@
 #ifndef UUNIX_ENTRY
 #define UUNIX_ENTRY
 
-extern void (*ready)(void);
+extern void (*volatile ready)(void);
 
 #endif // UUNIX_ENTRY

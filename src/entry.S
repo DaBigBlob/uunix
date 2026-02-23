@@ -23,8 +23,7 @@ dead_spin:
     j   dead_spin
 
 .section .bss
-    /* our board has 5 harts -->  */
-    .space 10 * 1024 * 1024 /* 10MiB */
+    .space 128 * 1024 /* 100KiB */
 stack_base:
 
 .section .data
