@@ -50,6 +50,10 @@ typedef size_t                  usize;
 typedef ptrdiff_t               isize;
 typedef size_t                  addr; /* virt & phy */
 
+#define UINTsize_MAX            SIZE_MAX
+#define INTsize_MAX             PTRDIFF_MAX
+
+
 #define containerof(ptr, type, member) (\
     (type *)((char *)(ptr) - offsetof(type, member))\
 )

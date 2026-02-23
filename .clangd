@@ -14,6 +14,7 @@ CompileFlags:
     -Wno-unsafe-buffer-usage,
     -Wno-unused-macros,
     -Wno-pre-c11-compat,
+    -Wno-declaration-after-statement,
     -pedantic,
     -Wc11-extensions,
     -fno-gnu89-inline,

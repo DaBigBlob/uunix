@@ -1,7 +1,8 @@
 .extern main
 
 .section .bss
-    .space 128 * 1024 /* 100KiB */
+heap_top:
+    .space 1024 * 1024 /* 1MiB */
 stack_base:
 
 .section .text
@@ -10,7 +11,7 @@ stack_base:
 _start:
     csrr a0, mhartid
     la   sp, stack_base
-    slli t1, a0, 12 /* 2^12 = 4096 bytes for each hart */
+    slli t1, a0, 12 /* 2^12 = 4096 bytes = 4KiB for each hart */
     sub  sp, sp, t1
     /* send non0 harts to waiting */
     bnez a0, hart_wait

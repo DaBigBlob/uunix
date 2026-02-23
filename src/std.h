@@ -30,4 +30,17 @@ for each b, *b = *d of type t */
 
 #define uart_puts(urt, str) cstr_foreach(str, _c, uart_putc(urt, *_c))
 
+
+#define uint2cstr(size, _num, id) \
+char id[] = STR(UINT##size##_MAX);\
+{\
+    char *cur = id;\
+    u##size num = _num;\
+    for (; *cur; ++cur) *cur = '0';\
+    for (++cur; num && cur >= id; --cur) {\
+        *cur = (num%10)+48;\
+        num /= 10;\
+    }\
+}\
+
 #endif // UUNIX_STD
