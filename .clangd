@@ -11,8 +11,8 @@ CompileFlags:
     -Wall,
     -Wextra,
     -ffreestanding,
+    -nostdlib,
     -nostdinc,
-    -nobuiltininc,
-    -nostdlibinc
+    -fno-builtin
   ]
   Remove: [-x, c++]
