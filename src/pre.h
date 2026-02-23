@@ -17,14 +17,9 @@ typedef short                   i16;
 typedef unsigned short          u16;
 typedef int                     i32;
 typedef unsigned int            u32;
-#if __riscv_xlen == 64
-    typedef long                i64;
-    typedef unsigned long       u64;
-#elif __riscv_xlen == 32
-    /* we dont really support 32bit */
-    typedef long long           i64;
-    typedef unsigned long long  u64;
-#endif
+typedef long                    i64;
+typedef unsigned long           u64;
+
 typedef unsigned long           usize;
 typedef long                    isize;
 typedef unsigned long           addr; /* virt & phy */
