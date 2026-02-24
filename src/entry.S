@@ -17,7 +17,7 @@ _start:
     bnez a0, hart_wait
 
     /* for hart0 */
-    j main             /* may return */
+    j   main
     /* fall through if returned */
 
 dead_spin:

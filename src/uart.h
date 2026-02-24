@@ -1,7 +1,6 @@
 #ifndef UUNIX_UART
 #define UUNIX_UART
 #include "pre.h"
-#include <stdalign.h>
 
 /* "The UART memory map has been designed to require
 only naturally aligned 32-bit memory accesses." - fu540 manual */
@@ -24,14 +23,12 @@ _Static_assert(offsetof(uart_t, ie)     == 0x10, "bad ie offset");
 _Static_assert(offsetof(uart_t, ip)     == 0x14, "bad ip offset");
 _Static_assert(offsetof(uart_t, div)    == 0x18, "bad div offset");
 
-#define UART_TXFIFO_ISFULL      0x80000000
+#define UART_TXDATA_ISFULL      0x80000000
 #define UART_RXDATA_ISEMPTY     0x80000000
 #define UART_RXDATA_DATA        0x000000ff
-#define UART_TXCTRL_TXEN        0x1
-#define UART_RXCTRL_RXEN        0x1
 
 #define uart_putc(urt, ch) {\
-    while (urt.txdata & UART_TXFIFO_ISFULL);\
+    while (urt.txdata & UART_TXDATA_ISFULL);\
     urt.txdata = ch;\
 }
 
@@ -45,8 +42,8 @@ _Static_assert(offsetof(uart_t, div)    == 0x18, "bad div offset");
     /* FIXME: urt.div hard calclated from device tree clock (33MHz) for 115200 */\
     urt.div = 289; /* configure baudrate */\
     urt.ie = 0; /* disable interrupts */\
-    urt.txctrl = UART_TXCTRL_TXEN; /* enable TX */\
-    urt.rxctrl = UART_RXCTRL_RXEN; /* enable Rx */\
+    urt.txctrl = 1; /* enable TX */\
+    urt.rxctrl = 1; /* enable Rx */\
 }
 
 #endif // UUNIX_UART
