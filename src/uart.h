@@ -23,18 +23,18 @@ _Static_assert(offsetof(uart_t, ie)     == 0x10, "bad ie offset");
 _Static_assert(offsetof(uart_t, ip)     == 0x14, "bad ip offset");
 _Static_assert(offsetof(uart_t, div)    == 0x18, "bad div offset");
 
-#define UART_TXDATA_ISFULL      0x80000000
-#define UART_RXDATA_ISEMPTY     0x80000000
-#define UART_RXDATA_DATA        0x000000ff
+#define MASK_UART_TX_ISFULL      0x80000000
+#define MASK_UART_RX_ISEMPTY     0x80000000
+#define MASK_UART_RX_DATA        0x000000ff
 
 #define uart_putc(urt, ch) {\
-    while (urt.txdata & UART_TXDATA_ISFULL);\
+    while (urt.txdata & MASK_UART_TX_ISFULL);\
     urt.txdata = ch;\
 }
 
 #define uart_getc(urt) (i32)(\
-    (urt.rxdata & UART_RXDATA_ISEMPTY) ?\
-    (urt.rxdata & UART_RXDATA_DATA) :\
+    (urt.rxdata & MASK_UART_RX_ISEMPTY) ?\
+    (urt.rxdata & MASK_UART_RX_DATA) :\
     -1\
 )
 
