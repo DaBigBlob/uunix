@@ -5,7 +5,7 @@
 #include "entry.h"
 
 static noreturn void other(void) {
-    uart_puts(uart0, "hi!\n")
+    uart_puts(uart0, "hi!\r\n")
     dead_spin();
 }
 
@@ -13,9 +13,9 @@ noreturn void main(void) {
     mem_set(bss_begin, bss_end, volatile addr, 0)
     uart_init(uart0)
 
-    uart_puts(uart0, "\nhello metal!\n")
+    uart_puts(uart0, "\r\nhello metal!\r\n")
 
-    uart_puts(uart0, "\ncalling other harts:\n")
+    uart_puts(uart0, "\r\ncalling other harts:\r\n")
     ready = other;
 
     dead_spin();
