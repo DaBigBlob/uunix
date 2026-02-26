@@ -14,7 +14,10 @@ noreturn void main(void) {
     clckctrl.coreclksel = 1; /* bypass PPL; use hardware clock @ 33MHz*/
     uart_init(uart0)
 
-    uart_puts(uart0, "\r\nhello metal!\r\n")
+    uart_puts(uart0, "\r\nhello metal!\r\ncorepllcfg0: ")
+
+    uint2cstr(32, clckctrl.corepllcfg0, lig)
+    uart_puts(uart0, lig)
 
     uart_puts(uart0, "\r\ncalling other harts:\r\n")
     ready = other;
