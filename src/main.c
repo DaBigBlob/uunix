@@ -11,12 +11,10 @@ static noreturn void other(void) {
 
 noreturn void main(void) {
     mem_set(bss_begin, bss_end, volatile addr, 0)
+    clckctrl.coreclksel = 1; /* bypass PPL; use hardware clock @ 33MHz*/
     uart_init(uart0)
 
     uart_puts(uart0, "\r\nhello metal!\r\n")
-
-    // uint2cstr(8, 69, lig)
-    // uart_puts(uart0, lig)
 
     uart_puts(uart0, "\r\ncalling other harts:\r\n")
     ready = other;
