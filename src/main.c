@@ -15,6 +15,9 @@ noreturn void main(void) {
 
     uart_puts(uart0, "\r\nhello metal!\r\n")
 
+    // uint2cstr(8, 69, lig)
+    // uart_puts(uart0, lig)
+
     uart_puts(uart0, "\r\ncalling other harts:\r\n")
     ready = other;
 
