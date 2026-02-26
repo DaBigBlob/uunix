@@ -29,11 +29,16 @@ FLDM = -m elf64lriscv
 out/kern.elf: ${OBJS} src/linker.ld
 	${LD} ${FLD} ${FLDR} ${FLDM} -T src/linker.ld --Map=out/kern.map -o $@ ${OBJS}
 
+OBJCPY = llvm-objcopy
+
+out/kern.bin: out/kern.elf
+	${OBJCPY} -O binary $< $@
+
 ########################## qemu
 QMU = qemu-system-riscv64
 FQMU = -nographic -serial mon:stdio --no-reboot
 
-qemu: out/kern.elf
+qemu: out/kern.bin
 	${QMU} -machine sifive_u -smp 5 -m 8G -bios none ${FQMU} -kernel $^
 
 ########################## alias
