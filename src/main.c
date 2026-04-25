@@ -21,7 +21,6 @@ noreturn void main(void)
     uart_puts(uart0, "\r\n");
 
     uart_puts(uart0, "calling other harts:\r\n");
-    ready = other;
 
     dead_spin();
 }
