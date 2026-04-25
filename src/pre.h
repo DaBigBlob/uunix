@@ -2,13 +2,13 @@
 #define UUNIX_PRE
 
 #if !defined(__STDC_VERSION__)
-    #error "__STDC_VERSION__ not defined. Unacceptable."
+#error "__STDC_VERSION__ not defined. Unacceptable."
 #endif
 #if __STDC_VERSION__ != 201710L
-    /* I choose C17 because it is decently old, stable,
+/* I choose C17 because it is decently old, stable,
     and testedwith not new language features over C11
     and numerous defect fixes over C11. */
-    #error "This is a C17-ONLY project."
+#error "This is a C17-ONLY project."
 #endif
 
 /* provided as per c17 clause 4 part 6 */
@@ -22,20 +22,20 @@
 #include <stdint.h>
 #include <stdnoreturn.h>
 
-#define MAX(a, b)               ((a) > (b) ? (a) : (b))
-#define MIN(a, b)               ((a) < (b) ? (a) : (b))
-#define CLAMP(a, lo, hi)        MIN(MAX(a, lo), hi)
+#define MAX(a, b)        ((a) > (b) ? (a) : (b))
+#define MIN(a, b)        ((a) < (b) ? (a) : (b))
+#define CLAMP(a, lo, hi) MIN(MAX(a, lo), hi)
 
-#define STR(x) STR_impl(x)
+#define STR(x)      STR_impl(x)
 #define STR_impl(x) #x
 
-#define ROUNDUP(a, b)           ((((a)-1) / (b) + 1) * (b))
-#define ROUNDDOWN(a, b)         ((a) / (b) * (b))
+#define ROUNDUP(a, b)   ((((a) - 1) / (b) + 1) * (b))
+#define ROUNDDOWN(a, b) ((a) / (b) * (b))
 
-#define ARR_SIZE(x)             (sizeof(x) / sizeof((x)[0]))
+#define ARR_SIZE(x) (sizeof(x) / sizeof((x)[0]))
 
-#define DEF_SIZE_ALIAS(n)\
-    typedef int##n##_t i##n;\
+#define DEF_SIZE_ALIAS(n)                                                 \
+    typedef int##n##_t  i##n;                                             \
     typedef uint##n##_t u##n;
 DEF_SIZE_ALIAS(8)
 DEF_SIZE_ALIAS(16)
@@ -43,19 +43,17 @@ DEF_SIZE_ALIAS(32)
 DEF_SIZE_ALIAS(64)
 #undef DEF_SIZE_ALIAS
 
-typedef float                   f32;
-typedef double                  f64;
+typedef float  f32;
+typedef double f64;
 
-typedef size_t                  usize;
-typedef ptrdiff_t               isize;
-typedef size_t                  addr; /* virt & phy */
+typedef size_t    usize;
+typedef ptrdiff_t isize;
+typedef size_t    addr; /* virt & phy */
 
-#define UINTsize_MAX            SIZE_MAX
-#define INTsize_MAX             PTRDIFF_MAX
+#define UINTsize_MAX SIZE_MAX
+#define INTsize_MAX  PTRDIFF_MAX
 
-
-#define containerof(ptr, type, member) (\
-    (type *)((char *)(ptr) - offsetof(type, member))\
-)
+#define containerof(ptr, type, member)                                    \
+    ((type *)((char *)(ptr) - offsetof(type, member)))
 
 #endif // UUNIX_PRE

@@ -6,9 +6,6 @@
 
 extern volatile clck_t clckctrl;
 extern volatile uart_t uart0, uart1;
-extern volatile addr
-    bss_begin[],
-    bss_end[]
-;
+extern volatile addr   bss_begin[], bss_end[];
 
 #endif // UUNIX_LINKER

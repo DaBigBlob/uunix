@@ -4,15 +4,21 @@
 /*
     we would like to minimize stack use
     (we dont have too much of it)
- */
+*/
 
-#define cstr_foreach(b, id, body) {\
-    for (char *id=(b); *id; ++id) {body}\
-}
+#define cstr_foreach(b, id, body)                                         \
+    {                                                                     \
+        for (char *id = (b); *id; ++id) {                                 \
+            body                                                          \
+        }                                                                 \
+    }
 
-#define mem_foreach(b, e, t, id, body) {\
-    for (t *id=(b); id < (e); ++id) {body}\
-}
+#define mem_foreach(b, e, t, id, body)                                    \
+    {                                                                     \
+        for (t *id = (b); id < (e); ++id) {                               \
+            body                                                          \
+        }                                                                 \
+    }
 
 /** inrements pointer b by t till b = e,
 for each b, *b = c of type t */
@@ -20,27 +26,28 @@ for each b, *b = c of type t */
 
 /** inrements pointer b and d by u8 till b = e,
 for each b, *b = *d of type t */
-#define mem_cpy(b, e, t, d) {\
-    t *_d = (d);\
-    mem_foreach(b, e, t, _b, {\
-        *_b = *_d;\
-        ++_d;\
-    })\
-}
+#define mem_cpy(b, e, t, d)                                               \
+    {                                                                     \
+        t *_d = (d);                                                      \
+        mem_foreach(b, e, t, _b, {                                        \
+            *_b = *_d;                                                    \
+            ++_d;                                                         \
+        })                                                                \
+    }
 
 #define uart_puts(urt, str) cstr_foreach(str, _c, uart_putc(urt, *_c))
 
-
-#define uint2cstr(size, _num, id) \
-char id[] = STR(UINT##size##_MAX);\
-{\
-    char *cur = id;\
-    u##size num = _num;\
-    for (; *cur; ++cur) *cur = '0';\
-    for (++cur; num && cur >= id; --cur) {\
-        *cur = (num%10)+48;\
-        num /= 10;\
-    }\
-}\
+#define uint2cstr(size, _num, id)                                         \
+    char id[] = STR(UINT##size##_MAX);                                    \
+    {                                                                     \
+        char   *cur = id;                                                 \
+        u##size num = _num;                                               \
+        for (; *cur; ++cur)                                               \
+            *cur = '0';                                                   \
+        for (++cur; num && cur >= id; --cur) {                            \
+            *cur = (num % 10) + 48;                                       \
+            num /= 10;                                                    \
+        }                                                                 \
+    }
 
 #endif // UUNIX_STD
