@@ -1,50 +1,52 @@
-all: out/kern.elf
+all: out/kern.bin
 
-.PHONY: qemu q clean c
+.PHONY: qemu q clean c cq
 
-########################## compiler/assembler
-# this must be a ISO C17 compiler
-# this may be replaced with any other ISO C17 compiler
-CC = clang -std=c17 -Wall -Wextra -Weverything -Wno-unsafe-buffer-usage -Wno-pre-c11-compat -Wno-declaration-after-statement -pedantic -Wc11-extensions -fno-gnu89-inline -Wc11-extensions
-FC =
-FCR = -O3 -g0
-FCX = -fno-stack-protector -ffreestanding -mcmodel=medany -fno-pie -fno-pic
-FCM = --target=riscv64-freestanding-none
-
-out/%.o: src/%.c
-	${CC} ${FC} ${FCR} ${FCX} ${FCM} -c -o $@ $<
-
-out/%.o: src/%.S
-	${CC} ${FCX} ${FCM} -c -o $@ $<
-
-OBJS := $(patsubst src/%.c,out/%.o,$(wildcard src/*.c)) \
-        $(patsubst src/%.S,out/%.o,$(wildcard src/*.S))
-
-########################## linker
-LD = ld.lld
-FLD = --no-pie
-FLDR = --lto=full --strip-all
-FLDM = -m elf64lriscv
-
-out/kern.elf: ${OBJS} src/linker.ld
-	${LD} ${FLD} ${FLDR} ${FLDM} -T src/linker.ld --Map=out/kern.map -o $@ ${OBJS}
-
+CC = clang
 OBJCPY = llvm-objcopy
 
+F_CCONFORM = -std=c17 -pedantic -fno-gnu89-inline
+F_WARNINGS = -Wall -Wextra -Weverything -Wno-unsafe-buffer-usage -Wno-pre-c11-compat -Wno-declaration-after-statement -Wc11-extensions
+F_TARGET = --target=riscv64-freestanding-none -mcmodel=medany -mabi=lp64 -march=rv64imc_zaamo -mstrict-align -mtune=rocket
+F_CODEGEN = -fno-stack-protector -ffreestanding -fno-pic -fno-pie
+F_OPTIMIZE = -O3
+F_EXTRA = # -gdwarf-5
+
+LDFLAGS = --Map=out/kern.map
+F_LINKER = -nostdlib -fuse-ld=lld -Wl,$(LDFLAGS)
+
+########################## codegen
+out/%.o: src/%.c
+	$(CC) $(F_CCONFORM) $(F_WARNINGS) $(F_TARGET) $(F_CODEGEN) $(F_OPTIMIZE) $(F_EXTRA) -c -o $@ $<
+
+out/base.o: src/base.S
+	$(CC) $(F_TARGET) $(F_CODEGEN) $(F_OPTIMIZE) $(F_EXTRA) -c -o $@ $<
+
+OBJS := $(patsubst src/%.c,out/%.o,$(wildcard src/*.c)) out/base.o
+
+########################## linking
+out/kern.elf: src/linker.ld $(OBJS)
+	$(CC) $(F_TARGET) $(F_CODEGEN) $(F_OPTIMIZE) $(F_LINKER) $(F_EXTRA) -T $^ -o $@
+
 out/kern.bin: out/kern.elf
-	${OBJCPY} -O binary $< $@
+	$(OBJCPY) -O binary $< $@
 
 ########################## qemu
-QMU = qemu-system-riscv64 -machine sifive_u -smp 5 -m 8G -bios none
-FQMU = -nographic -serial mon:stdio --no-reboot
+QMU = qemu-system-riscv64
+
+F_QMU = -nographic -serial mon:stdio -no-reboot
+F_SIFIVE = -machine sifive_u -smp 5 -m 8G -bios none
 
 qemu: out/kern.bin
-	${QMU} ${FQMU} -kernel $^
+	$(QMU) $(F_SIFIVE) $(F_QMU) -kernel $^
 
 ########################## alias
 clean:
 	rm -r out || true
 	mkdir -p out
+
+elf: out/kern.elf
+bin: out/kern.bin
 
 c: clean
 q: qemu
