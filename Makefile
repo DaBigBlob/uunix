@@ -35,11 +35,11 @@ out/kern.bin: out/kern.elf
 	${OBJCPY} -O binary $< $@
 
 ########################## qemu
-QMU = qemu-system-riscv64
+QMU = qemu-system-riscv64 -machine sifive_u -smp 5 -m 8G -bios none
 FQMU = -nographic -serial mon:stdio --no-reboot
 
 qemu: out/kern.bin
-	${QMU} -machine sifive_u -smp 5 -m 8G -bios none ${FQMU} -kernel $^
+	${QMU} ${FQMU} -kernel $^
 
 ########################## alias
 clean:
