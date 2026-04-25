@@ -1,9 +1,11 @@
 .extern main
 
 .section .bss
-heap_top:
+.globl kheap_top
+.globl kstack_base
+kheap_top:
     .space 1024 * 1024 /* 1MiB */
-stack_base:
+kstack_base:
 
 .section .text
 .globl _start
@@ -11,7 +13,7 @@ stack_base:
 _start:
     csrr a0, mhartid
     la   sp, stack_base
-    slli t1, a0, 12 /* 2^12 = 4096 bytes = 4KiB for each hart */
+    slli t1, a0, 12 /* 2^12 = 4096 bytes = 4KiB for each hart (max 256 harts)*/
     sub  sp, sp, t1
     /* send non0 harts to waiting */
     bnez a0, hart_wait
