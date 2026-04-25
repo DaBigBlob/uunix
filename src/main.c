@@ -1,8 +1,7 @@
 #include "pre.h"
 #include "std.h"
 #include "uart.h"
-#include "linker.h"
-#include "entry.h"
+#include "base.h"
 
 static noreturn void other(void)
 {

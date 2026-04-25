@@ -7,7 +7,7 @@ SECTIONS {
 
     . = 0x80000000;
     .text :{
-        out/entry.o(.text);
+        out/base.o(.text);
         *(.text .text.*);
     }
 
