@@ -15,21 +15,40 @@ typedef struct {
     u32 devicesresetreg;
 } clck_t;
 
-_Static_assert(offsetof(clck_t, hfxosccfg) == 0x00,
-               "bad hfxosccfg offset");
-_Static_assert(offsetof(clck_t, corepllcfg0) == 0x04,
-               "bad corepllcfg0 offset");
-_Static_assert(offsetof(clck_t, ddrpllcfg0) == 0x0C,
-               "bad ddrpllcfg0 offset");
-_Static_assert(offsetof(clck_t, ddrpllcfg1) == 0x10,
-               "bad ddrpllcfg1 offset");
-_Static_assert(offsetof(clck_t, gemgxlpllcfg0) == 0x1C,
-               "bad gemgxlpllcfg0 offset");
-_Static_assert(offsetof(clck_t, gemgxlpllcfg1) == 0x20,
-               "bad gemgxlpllcfg1 offset");
-_Static_assert(offsetof(clck_t, coreclksel) == 0x24,
-               "bad coreclksel offset");
-_Static_assert(offsetof(clck_t, devicesresetreg) == 0x28,
-               "bad devicesresetreg offset");
+#define check_offset(o, n)                                                \
+    _Static_assert(offsetof(clck_t, n) == o, "bad " #n " offset")
+
+check_offset(0x00, hfxosccfg);
+check_offset(0x04, corepllcfg0);
+check_offset(0x0C, ddrpllcfg0);
+check_offset(0x10, ddrpllcfg1);
+check_offset(0x1C, gemgxlpllcfg0);
+check_offset(0x20, gemgxlpllcfg1);
+check_offset(0x24, coreclksel);
+check_offset(0x28, devicesresetreg);
+
+#undef check_offset
+
+extern volatile clck_t clckctrl;
+
+/*
+"FU540-C000 generates all internal clocks from 33.33MHz hfclk driven
+from an external oscillator (HFCLKIN) or crystal (HFOSCIN) input,
+selected by inputHFXSEL" - SiFive manual
+*/
+#define HFCLK_HZ 33330000
+
+#define CORECLK_DIVR() ((clckctrl.corepllcfg0 & BIT_MASK(6, 0, 32)) >> 0)
+#define CORECLK_DIVF() ((clckctrl.corepllcfg0 & BIT_MASK(15, 6, 32)) >> 6)
+#define CORECLK_DIVQ()                                                    \
+    ((clckctrl.corepllcfg0 & BIT_MASK(18, 15, 32)) >> 15)
+
+#define CORECLK_HZ()                                                      \
+    (HFCLK_HZ * ((clckctrl.coreclksel & 0x1) ?                            \
+                     1 :                                                  \
+                     ((2 * (CORECLK_DIVF() + 1)) /                        \
+                      ((CORECLK_DIVR() + 1) * (1U << CORECLK_DIVQ())))))
+
+#define TLCLK_HZ() (CORECLK_HZ() / 2)
 
 #endif // UUNIX_CLOCK

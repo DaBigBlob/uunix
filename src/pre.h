@@ -26,6 +26,9 @@
 #define MIN(a, b)        ((a) < (b) ? (a) : (b))
 #define CLAMP(a, lo, hi) MIN(MAX(a, lo), hi)
 
+/** mathematical: a mod m */
+#define MOD(a, m) ((((a) % (m)) + (m)) % (m))
+
 #define STR(x)      STR_impl(x)
 #define STR_impl(x) #x
 
@@ -52,6 +55,18 @@ typedef size_t    addr; /* virt & phy */
 
 #define UINTsize_MAX SIZE_MAX
 #define INTsize_MAX  PTRDIFF_MAX
+
+/** sz must be one of: 8, 16, 32, 64 */
+#define UTYPE(sz)     u##sz
+#define ONES_MASK(sz) ((UTYPE(sz))(-1))
+
+/** safe logical left shift of ONES_MASK */
+#define SHIFTL_MASK(bits, sz)                                             \
+    ((UTYPE(sz))((bits < sz) ? (ONES_MASK(sz) << bits) : 0))
+
+/** bit mask for (end:bgn] of bits of size sz */
+#define BIT_MASK(end, bgn, sz)                                            \
+    (UTYPE(sz))(SHIFTL_MASK(end, sz) ^ SHIFTL_MASK(bgn, sz))
 
 #define containerof(ptr, type, member)                                    \
     ((type *)((char *)(ptr) - offsetof(type, member)))
