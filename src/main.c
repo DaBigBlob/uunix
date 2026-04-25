@@ -14,12 +14,14 @@ noreturn void main(void)
 {
     mem_set(bss_begin, bss_end, volatile addr, 0);
     uart_init(uart0);
-    uart_puts(uart0, "\r\nhello metal!\r\ncorepllcfg0: ");
+    uart_puts(uart0, "\r\nhello metal!\r\n");
 
+    uart_puts(uart0, "corepllcfg0: ");
     uint2cstr(32, clckctrl.corepllcfg0, lig);
     uart_puts(uart0, lig);
+    uart_puts(uart0, "\r\n");
 
-    uart_puts(uart0, "\r\ncalling other harts:\r\n");
+    uart_puts(uart0, "calling other harts:\r\n");
     ready = other;
 
     dead_spin();
