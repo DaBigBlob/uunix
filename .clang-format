@@ -64,6 +64,10 @@ DisableFormat: false
 ExperimentalAutoDetectBinPacking: false
 FixNamespaceComments: false
 
+ForEachMacros:
+  - null_sentinel_foreach
+  - range_foreach
+
 IncludeBlocks: Preserve
 IncludeCategories:
   - Regex: '.*'
