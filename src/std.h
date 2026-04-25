@@ -50,12 +50,12 @@ for each b, *b = c of type t */
 /** inrements pointer b and d by u8 till b = e,
 for each b, *b = *d of type t */
 #define mem_cpy(b, e, t, d)                                               \
-    {                                                                     \
+    do {                                                                  \
         t *_d = (d);                                                      \
         range_foreach(b, e, t, _b, {                                      \
             *_b = *_d;                                                    \
             ++_d;                                                         \
         })                                                                \
-    }
+    } while (0)
 
 #endif // UUNIX_STD
