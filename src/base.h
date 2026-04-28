@@ -37,14 +37,14 @@ For each hart:
 
 /* 64 bytes, alignment 8 */
 typedef struct {
-    u64   a0;
-    u64   a1;
-    u64   a2;
-    u64   a3;
-    u64   a4;
-    u64   a5;
-    u64   a6;
-    void *jump_addr;
+    u64  a0;
+    u64  a1;
+    u64  a2;
+    u64  a3;
+    u64  a4;
+    u64  a5;
+    u64  a6;
+    addr jump_addr;
 } HCB;
 
 #define check_offset(n, o)                                                \
