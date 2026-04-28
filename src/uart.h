@@ -18,7 +18,6 @@ typedef struct {
 
 #define check_offset(n, o)                                                \
     _Static_assert(offsetof(uart_t, n) == o, "bad " #n " offset")
-
 check_offset(txdata, 0x00);
 check_offset(rxdata, 0x04);
 check_offset(txctrl, 0x08);
@@ -26,7 +25,6 @@ check_offset(rxctrl, 0x0C);
 check_offset(ie, 0x10);
 check_offset(ip, 0x14);
 check_offset(div, 0x18);
-
 #undef check_offset
 
 extern volatile uart_t uart0, uart1;

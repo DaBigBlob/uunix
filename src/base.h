@@ -18,6 +18,14 @@ In main:
     Hart 0:
         - setup stuff
         - set other's HCB
+For each hart:
+    - sp naturally sits 64bits above assigned hart stack base
+    - atomic spin on HCB.jump_addr till its non empty
+    - when non-empty, load a5-a0 from stack and jump to *HCB.jump_addr
+    - reusing the space for initial a5-a0 on stack
+    - after job:
+        - clear HCB.jump_addr
+    - repeat
 */
 
 /* 64 bytes, alignment 8 */
@@ -28,11 +36,32 @@ typedef struct {
     u64   a3;
     u64   a4;
     u64   a5;
-    u64   hartid;
+    u64   a6;
     void *jump_addr;
 } HCB;
 
-extern noreturn void hart_done(void); /* clear HCB & atomic spin on HCB */
+#define check_offset(n, o)                                                \
+    _Static_assert(offsetof(HCB, n) == o, "bad " #n " offset")
+check_offset(a0, 0x00);
+check_offset(a1, 0x08);
+check_offset(a2, 0x10);
+check_offset(a3, 0x18);
+check_offset(a4, 0x20);
+check_offset(a5, 0x28);
+check_offset(a6, 0x30);
+check_offset(jump_addr, 0x38);
+#undef check_offset
+
+/*
+    - clear HCB.jump_addr
+    - set sp 64bits above assigned hart stack base
+    - atomic spin on HCB.jump_addr till its non empty
+    - when non-empty, load a5-a0 from stack and jump to *HCB.jump_addr
+    - reusing the space for initial a5-a0 on stack
+    - after job:
+        - repeat
+*/
+extern noreturn void hart_done(void);
 extern void hart_task(u64 a0, u64 a1, u64 a2, u64 a3, u64 a4, u64 a5,
                       u64   hartid,
                       void *jump_addr); /* atomically set HCB */

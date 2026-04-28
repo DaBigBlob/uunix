@@ -17,7 +17,6 @@ typedef struct {
 
 #define check_offset(o, n)                                                \
     _Static_assert(offsetof(clck_t, n) == o, "bad " #n " offset")
-
 check_offset(0x00, hfxosccfg);
 check_offset(0x04, corepllcfg0);
 check_offset(0x0C, ddrpllcfg0);
@@ -26,7 +25,6 @@ check_offset(0x1C, gemgxlpllcfg0);
 check_offset(0x20, gemgxlpllcfg1);
 check_offset(0x24, coreclksel);
 check_offset(0x28, devicesresetreg);
-
 #undef check_offset
 
 extern volatile clck_t clckctrl;

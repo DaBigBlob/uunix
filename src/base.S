@@ -4,7 +4,7 @@
 .globl kheap_top
 .globl kstack_base
 kheap_top:
-    .space 1024 * 1024 /* 1MiB */
+    .space 256 * 4096 /* 1MiB */
 kstack_base:
 
 .section .text
