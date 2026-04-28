@@ -51,7 +51,7 @@ typedef double f64;
 
 typedef size_t    usize;
 typedef ptrdiff_t isize;
-typedef size_t    addr; /* virt & phy */
+typedef void     *addr; /* virt & phy */
 
 #define UINTsize_MAX SIZE_MAX
 #define INTsize_MAX  PTRDIFF_MAX
