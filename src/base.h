@@ -10,7 +10,7 @@ extern const addr    kheap_top, kstack_base;
 
 extern noreturn void dead_spin(void);
 extern usize         get_hartid(void);
-// extern addr          get_reg_sp(void);
+extern u64           strict_swap(volatile u64 *at, u64 with);
 
 #define HART_STACK_SIZE 4096
 
@@ -71,6 +71,11 @@ check_offset(jump_addr, 0x38);
 addr get_HCB_addr(void);
 void reset_HCB(void);
 
+#define spin2unlock(lock) strict_swap((lock), 0)
+#define spin2lock(lock)                                                   \
+    while (strict_swap((lock), 0x77777777) != 0)                          \
+        ;
+
 /** hart_done
     - acquire lock
     - reset HCB
@@ -84,7 +89,7 @@ void reset_HCB(void);
 */
 extern noreturn void hart_done(void);
 
-/** hart_done
+/** hart_task
     - acquire lock
     - set HCB
     - release lock

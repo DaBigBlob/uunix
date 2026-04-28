@@ -53,6 +53,8 @@ typedef size_t    usize;
 typedef ptrdiff_t isize;
 typedef uintptr_t addr; /* virt & phy */
 
+typedef void *any;
+
 #define UINTsize_MAX SIZE_MAX
 #define INTsize_MAX  PTRDIFF_MAX
 

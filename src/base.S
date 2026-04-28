@@ -49,10 +49,12 @@ get_hartid:
     csrr a0, mhartid
     ret
 
-/*
 .section .text
-.globl get_reg_sp
-get_reg_sp:
-    mv a0, sp
+.globl strict_swap
+strict_swap:
+/* trying to be a little defensive */
+    fence iorw, iorw
+    amoswap.d.aqrl  t0, a1, 0(a0)
+    fence iorw, iorw
+    mv              a0, t0
     ret
-*/
