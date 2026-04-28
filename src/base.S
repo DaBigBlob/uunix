@@ -35,3 +35,9 @@ dead_spin:
 get_hartid:
     csrr a0, mhartid
     ret
+
+.section .text
+.globl get_reg_sp
+get_reg_sp:
+    mv a0, sp
+    ret
