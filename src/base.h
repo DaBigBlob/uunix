@@ -4,6 +4,12 @@
 
 // What must exist at the bottom of the world?
 
+extern volatile addr bss_begin[], bss_end[];
+extern volatile addr kheap_top[], kstack_base[];
+
+extern noreturn void dead_spin(void);
+extern u64           get_hartid(void);
+
 /**  Design
 For each hart:
     - have a stack and a hart control block (HCB).
@@ -21,8 +27,8 @@ In main:
 For each hart:
     - sp naturally sits 64bits above assigned hart stack base
     - atomic spin on HCB.jump_addr till its non empty
-    - when non-empty, load a5-a0 from stack and jump to *HCB.jump_addr
-    - reusing the space for initial a5-a0 on stack
+    - when non-empty, load a6-a0 from stack and jump to *HCB.jump_addr
+    - reusing the space for initial a6-a0 on stack
     - after job:
         - clear HCB.jump_addr
     - repeat
@@ -52,31 +58,30 @@ check_offset(a6, 0x30);
 check_offset(jump_addr, 0x38);
 #undef check_offset
 
-/*
+/** spin_lockhart
+    - compare and swap:
+        - compare with: 0 i.e. unlocked
+        - swap with self.hartid
+*/
+
+/** hart_done
     - clear HCB.jump_addr
-    - set sp 64bits above assigned hart stack base
+    - set sp 64bytes above assigned hart stack base
     - atomic spin on HCB.jump_addr till its non empty
-    - when non-empty, load a5-a0 from stack and jump to *HCB.jump_addr
-    - reusing the space for initial a5-a0 on stack
+    - when non-empty:
+        - load a6-a0 from HCB and jump to *HCB.jump_addr
     - after job:
         - repeat
 */
 extern noreturn void hart_done(void);
 extern void hart_task(u64 a0, u64 a1, u64 a2, u64 a3, u64 a4, u64 a5,
-                      u64   hartid,
-                      void *jump_addr); /* atomically set HCB */
+                      u64 a6, void *jump_addr); /* atomically set HCB */
 
 /** Logistics
-    We manage no more than 256 harts.
+    We manage no more than 256 harts (ids: 0 to 255).
     256 * 4096 = 256 * 2^12 = 1,048,576 = 1MiB
 
     Of that 4096 = 4KiB stack, 64bytes are reserved for HCB.
 */
-
-extern volatile addr bss_begin[], bss_end[];
-extern volatile addr kheap_top[], kstack_base[];
-
-extern noreturn void dead_spin(void);
-extern u64           get_hartid(void);
 
 #endif // UUNIX_BASE
