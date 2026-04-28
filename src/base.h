@@ -4,7 +4,7 @@
 
 // What must exist at the bottom of the world?
 
-/* Receive */
+/********* Receive */
 extern volatile addr bss_begin[], bss_end[];
 extern volatile addr kheap_top[], kstack_base[];
 
@@ -12,7 +12,7 @@ extern noreturn void dead_spin(void);
 extern usize         get_hartid(void);
 extern addr          get_reg_sp(void);
 
-/* Provide */
+/********* Provide */
 
 /**  Design
 For each hart:
