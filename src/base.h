@@ -33,8 +33,8 @@ In main:
 For each hart:
     - sp naturally sits 64bits above assigned hart stack base
     - atomic spin on HCB.jump_addr till its non empty
-    - when non-empty, load a6-a0 from stack and jump to *HCB.jump_addr
-    - reusing the space for initial a6-a0 on stack
+    - when non-empty, load a5-a0 from stack and jump to *HCB.jump_addr
+    - reusing the space for initial a5-a0 on stack
     - after job:
         - clear HCB.jump_addr
     - repeat
@@ -48,7 +48,7 @@ typedef struct {
     usize a3;
     usize a4;
     usize a5;
-    usize a6;
+    usize lock;
     addr  jump_addr;
 } HCB;
 
@@ -60,33 +60,37 @@ check_offset(a2, 0x10);
 check_offset(a3, 0x18);
 check_offset(a4, 0x20);
 check_offset(a5, 0x28);
-check_offset(a6, 0x30);
+check_offset(lock, 0x30);
 check_offset(jump_addr, 0x38);
 #undef check_offset
 
 #define M_get_HCB_addr()                                                  \
     ((addr)((u8 *)kstack_base - (HART_STACK_SIZE * get_hartid()) -        \
             sizeof(HCB)))
+
 addr get_HCB_addr(void);
-/** spin_lockhart
-    - compare and swap:
-        - compare with: 0 i.e. unlocked
-        - swap with self.hartid
-*/
+void reset_HCB(void);
 
 /** hart_done
-    - clear HCB.jump_addr
+    - acquire lock
+    - reset HCB
+    - release lock
     - set sp 64bytes above assigned hart stack base
-    - atomic spin on HCB.jump_addr till its non empty
+    - lock spin on HCB.jump_addr till its non empty
     - when non-empty:
-        - load a6-a0 from HCB and jump to *HCB.jump_addr
+        - load a5-a0 from HCB and jump to *HCB.jump_addr
     - after job:
         - repeat
 */
 extern noreturn void hart_done(void);
+
+/** hart_done
+    - acquire lock
+    - set HCB
+    - release lock
+*/
 extern void hart_task(usize a0, usize a1, usize a2, usize a3, usize a4,
-                      usize a5, usize a6,
-                      void *jump_addr); /* atomically set HCB */
+                      usize a5, void *jump_addr); /* atomically set HCB */
 
 /** Logistics
     We manage no more than 256 harts (ids: 0 to 255).

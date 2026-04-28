@@ -25,6 +25,15 @@ _start:
     j   main
     j   dead_spin
 
+.section .text
+.globl hart_done
+hart_done:
+    /*todo*/
+
+.section .text
+.globl hart_task
+hart_task:
+    /*todo*/
 
 .section .text
 .globl dead_spin
