@@ -20,10 +20,29 @@ In main:
         - set other's HCB
 */
 
+/* 64 bytes, alignment 8 */
 typedef struct {
-    u64   a[7];
+    u64   a0;
+    u64   a1;
+    u64   a2;
+    u64   a3;
+    u64   a4;
+    u64   a5;
+    u64   hartid;
     void *jump_addr;
 } HCB;
+
+extern noreturn void hart_done(void); /* clear HCB & atomic spin on HCB */
+extern void hart_task(u64 a0, u64 a1, u64 a2, u64 a3, u64 a4, u64 a5,
+                      u64   hartid,
+                      void *jump_addr); /* atomically set HCB */
+
+/** Logistics
+    We manage no more than 256 harts.
+    256 * 4096 = 256 * 2^12 = 1,048,576 = 1MiB
+
+    Of that 4096 = 4KiB stack, 64bytes are reserved for HCB.
+*/
 
 extern volatile addr bss_begin[], bss_end[];
 extern volatile addr kheap_top[], kstack_base[];
