@@ -87,7 +87,13 @@ void reset_HCB(void);
     - after job:
         - repeat
 */
-extern noreturn void hart_done(void);
+void hart_done(void);
+void hart_done(void)
+{
+    HCB *hcb = (HCB *)M_get_HCB_addr();
+    spin2lock(&hcb->lock)
+    // ...
+}
 
 /** hart_task
     - acquire lock
