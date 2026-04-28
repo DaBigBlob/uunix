@@ -33,10 +33,8 @@ In main:
         - setup stuff
         - set other's HCB
 For each hart:
-    - sp naturally sits 64bits above assigned hart stack base
     - atomic spin on HCB.jump_addr till its non empty
     - when non-empty, load a5-a0 from stack and jump to *HCB.jump_addr
-    - reusing the space for initial a5-a0 on stack
     - after job:
         - clear HCB.jump_addr
     - repeat
