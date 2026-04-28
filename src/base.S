@@ -48,3 +48,9 @@ strict_swap:
     fence iorw, iorw
     mv              a0, t0
     ret
+
+.section .text
+.globl hart_HCB_begin
+hart_HCB_begin:
+    ld  t0, 0(a6)
+    jr  t0

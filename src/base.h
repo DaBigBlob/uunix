@@ -11,6 +11,8 @@ extern const addr    kheap_top, kstack_base;
 extern noreturn void dead_spin(void);
 extern usize         get_hartid(void);
 extern u64           strict_swap(volatile u64 *at, u64 with);
+noreturn extern void hart_HCB_begin(usize a0, usize a1, usize a2, usize a3,
+                                    usize a4, usize a5, addr jump_addr);
 
 #define HART_STACK_SIZE 4096
 
@@ -65,15 +67,15 @@ check_offset(jump_addr, 0x38);
 #undef check_offset
 
 #define M_get_HCB_addr()                                                  \
-    ((addr)((u8 *)kstack_base - (HART_STACK_SIZE * get_hartid()) -        \
-            sizeof(HCB)))
+    ((volatile addr)((u8 *)kstack_base -                                  \
+                     (HART_STACK_SIZE * get_hartid()) - sizeof(HCB)))
 
 addr get_HCB_addr(void);
 void reset_HCB(void);
 
-#define spin2unlock(lock) strict_swap((lock), 0)
+#define spin2unlock(lock) strict_swap((lock), 0);
 #define spin2lock(lock)                                                   \
-    while (strict_swap((lock), 0x77777777) != 0)                          \
+    while (strict_swap((lock), 077777777) != 0)                           \
         ;
 
 /** hart_done
@@ -87,12 +89,18 @@ void reset_HCB(void);
     - after job:
         - repeat
 */
-void hart_done(void);
-void hart_done(void)
+noreturn void hart_done(void);
+noreturn void hart_done(void)
 {
-    HCB *hcb = (HCB *)M_get_HCB_addr();
-    spin2lock(&hcb->lock)
-    // ...
+    volatile HCB *hcb = (volatile HCB *)M_get_HCB_addr();
+    hcb->jump_addr    = 0;
+    spin2unlock(&hcb->lock);
+
+    while (hcb->jump_addr == 0)
+        ;
+    spin2lock(&hcb->lock);
+    hart_HCB_begin(hcb->a0, hcb->a1, hcb->a2, hcb->a3, hcb->a4, hcb->a5,
+                   hcb->jump_addr);
 }
 
 /** hart_task
@@ -101,7 +109,7 @@ void hart_done(void)
     - release lock
 */
 extern void hart_task(usize a0, usize a1, usize a2, usize a3, usize a4,
-                      usize a5, void *jump_addr); /* atomically set HCB */
+                      usize a5, addr jump_addr); /* atomically set HCB */
 
 /** Logistics
     We manage no more than 256 harts (ids: 0 to 255).

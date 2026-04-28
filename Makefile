@@ -6,7 +6,7 @@ CC = clang
 OBJCPY = llvm-objcopy
 
 F_CCONFORM = -std=c17 -pedantic -fno-gnu89-inline
-F_WARNINGS = -Wall -Wextra -Weverything -Wno-unsafe-buffer-usage -Wno-pre-c11-compat -Wno-declaration-after-statement -Wc11-extensions
+F_WARNINGS = -Wall -Wextra -Weverything -Wno-unsafe-buffer-usage -Wno-pre-c11-compat -Wno-declaration-after-statement -Wc11-extensions -Wno-extra-semi-stmt
 F_TARGET = --target=riscv64-freestanding-none -mcmodel=medany -mabi=lp64 -march=rv64imc_zaamo -mstrict-align -mtune=rocket
 F_CODEGEN = -fno-stack-protector -ffreestanding -fno-pic -fno-pie
 F_OPTIMIZE = -O3
