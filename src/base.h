@@ -4,12 +4,15 @@
 
 // What must exist at the bottom of the world?
 
+/* Receive */
 extern volatile addr bss_begin[], bss_end[];
 extern volatile addr kheap_top[], kstack_base[];
 
 extern noreturn void dead_spin(void);
-extern u64           get_hartid(void);
+extern usize         get_hartid(void);
 extern addr          get_reg_sp(void);
+
+/* Provide */
 
 /**  Design
 For each hart:
@@ -37,14 +40,14 @@ For each hart:
 
 /* 64 bytes, alignment 8 */
 typedef struct {
-    u64  a0;
-    u64  a1;
-    u64  a2;
-    u64  a3;
-    u64  a4;
-    u64  a5;
-    u64  a6;
-    addr jump_addr;
+    usize a0;
+    usize a1;
+    usize a2;
+    usize a3;
+    usize a4;
+    usize a5;
+    usize a6;
+    addr  jump_addr;
 } HCB;
 
 #define check_offset(n, o)                                                \
@@ -59,6 +62,7 @@ check_offset(a6, 0x30);
 check_offset(jump_addr, 0x38);
 #undef check_offset
 
+addr get_HCB_addr(void);
 /** spin_lockhart
     - compare and swap:
         - compare with: 0 i.e. unlocked
@@ -75,8 +79,9 @@ check_offset(jump_addr, 0x38);
         - repeat
 */
 extern noreturn void hart_done(void);
-extern void hart_task(u64 a0, u64 a1, u64 a2, u64 a3, u64 a4, u64 a5,
-                      u64 a6, void *jump_addr); /* atomically set HCB */
+extern void hart_task(usize a0, usize a1, usize a2, usize a3, usize a4,
+                      usize a5, usize a6,
+                      void *jump_addr); /* atomically set HCB */
 
 /** Logistics
     We manage no more than 256 harts (ids: 0 to 255).
