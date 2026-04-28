@@ -10,7 +10,7 @@ extern const addr    kheap_top, kstack_base;
 
 extern noreturn void dead_spin(void);
 extern usize         get_hartid(void);
-extern addr          get_reg_sp(void);
+// extern addr          get_reg_sp(void);
 
 #define HART_STACK_SIZE 4096
 
