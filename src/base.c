@@ -2,5 +2,5 @@
 
 addr get_HCB_addr(void)
 {
-    return (addr)((char *)get_reg_sp() - sizeof(HCB));
+    return (addr)((u8 *)get_reg_sp() - sizeof(HCB));
 }
