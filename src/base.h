@@ -79,37 +79,21 @@ void reset_HCB(void);
         ;
 
 /** hart_done
-    - acquire lock
     - reset HCB
     - release lock
-    - set sp 64bytes above assigned hart stack base
-    - lock spin on HCB.jump_addr till its non empty
-    - when non-empty:
-        - load a5-a0 from HCB and jump to *HCB.jump_addr
-    - after job:
-        - repeat
+    - spin on HCB.jump_addr till its non empty
+    - acquire lock
+    - load a5-a0 from HCB and jump to *HCB.jump_addr
 */
 noreturn void hart_done(void);
-noreturn void hart_done(void)
-{
-    volatile HCB *hcb = (volatile HCB *)M_get_HCB_addr();
-    hcb->jump_addr    = 0;
-    spin2unlock(&hcb->lock);
-
-    while (hcb->jump_addr == 0)
-        ;
-    spin2lock(&hcb->lock);
-    hart_HCB_begin(hcb->a0, hcb->a1, hcb->a2, hcb->a3, hcb->a4, hcb->a5,
-                   hcb->jump_addr);
-}
 
 /** hart_task
     - acquire lock
     - set HCB
     - release lock
 */
-extern void hart_task(usize a0, usize a1, usize a2, usize a3, usize a4,
-                      usize a5, addr jump_addr); /* atomically set HCB */
+void hart_task(usize a0, usize a1, usize a2, usize a3, usize a4, usize a5,
+               addr jump_addr);
 
 /** Logistics
     We manage no more than 256 harts (ids: 0 to 255).
