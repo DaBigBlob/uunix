@@ -1,4 +1,5 @@
 .extern main
+.extern get_HCB_addr
 
 .section .bss
 .globl kheap_top
@@ -10,18 +11,19 @@ kstack_base:
 .section .text
 .globl _start
 _start:
-    /* set sp for each hart */
-    la   sp, stack_base
+    /* pre c-call begin:  unsafe to call c functions */
+    la   sp, kstack_base
     csrr a0, mhartid
     slli t1, a0, 12 /* 2^12 = 4096 bytes = 4KiB for each hart */
     sub  sp, sp, t1
+    /* pre c-call end */
 
-    /* reserve HCB space */
-    addi sp, sp, -64
-
+    /* set final sp */
+    call get_HCB_addr
+    mv sp, a0
 
     j   main
-    /* fall through if returned */
+    j   dead_spin
 
 
 .section .text

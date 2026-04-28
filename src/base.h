@@ -6,11 +6,13 @@
 
 /********* Receive */
 extern volatile addr bss_begin[], bss_end[];
-extern volatile addr kheap_top[], kstack_base[];
+extern const addr    kheap_top, kstack_base;
 
 extern noreturn void dead_spin(void);
 extern usize         get_hartid(void);
 extern addr          get_reg_sp(void);
+
+#define HART_STACK_SIZE 4096
 
 /********* Provide */
 
@@ -62,6 +64,9 @@ check_offset(a6, 0x30);
 check_offset(jump_addr, 0x38);
 #undef check_offset
 
+#define M_get_HCB_addr()                                                  \
+    ((addr)((u8 *)kstack_base - (HART_STACK_SIZE * get_hartid()) -        \
+            sizeof(HCB)))
 addr get_HCB_addr(void);
 /** spin_lockhart
     - compare and swap:
