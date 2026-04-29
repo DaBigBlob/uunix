@@ -9,7 +9,7 @@ noreturn void main(void)
 {
     /* send non-0 harts to spin-wait */
     if (get_hartid() != 0) {
-        hart_task(get_hartid(), 0, 0, 0, 0, 0, 0, hatwait);
+        ((HCB *)M_get_HCB_addr(get_hartid()))->jump_addr = hatwait;
         hart_done();
     }
 
