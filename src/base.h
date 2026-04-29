@@ -6,7 +6,7 @@
 
 /********* Receive */
 extern volatile addr bss_begin[], bss_end[];
-extern const addr    kheap_top, kstack_base;
+extern const addr    kheap_top[], kstack_base[];
 
 extern noreturn void dead_spin(void);
 extern usize         get_hartid(void);

@@ -52,7 +52,7 @@ check_offset(jump_addr, 0x38);
 #undef check_offset
 
 #define M_get_HCB_addr(hartid)                                            \
-    ((volatile addr)((u8 *)kstack_base - (HART_STACK_SIZE * hartid) -     \
+    ((volatile addr)(kstack_base - (HART_STACK_SIZE * hartid) -           \
                      sizeof(HCB)))
 
 addr get_HCB_addr(void);
