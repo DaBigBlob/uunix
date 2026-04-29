@@ -1,7 +1,7 @@
 #ifndef UUNIX_HART
 #define UUNIX_HART
 #include "pre.h"
-#include "base.h"
+#include "base.S.h"
 
 #define MAX_HARTS       256
 #define HART_STACK_SIZE ((STACK_SIZE) / (MAX_HARTS))

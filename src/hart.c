@@ -1,3 +1,4 @@
+#include "base.h"
 #include "hart.h"
 #include "std.h"
 

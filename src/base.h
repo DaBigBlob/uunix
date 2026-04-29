@@ -14,6 +14,4 @@ noreturn extern void hart_begin(usize a0, usize a1, usize a2, usize a3,
                                 usize a4, usize a5, usize sp,
                                 addr jump_addr);
 
-#define STACK_SIZE 1048576 /* 1MiB */
-
 #endif // UUNIX_BASE

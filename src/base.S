@@ -1,3 +1,4 @@
+#include "base.S.h"
 .extern main
 .extern get_HCB_addr
 
@@ -5,7 +6,7 @@
 .globl kheap_top
 .globl kstack_base
 kheap_top:
-    .space 256 * 4096 /* 1MiB */
+    .space STACK_SIZE
 kstack_base:
 
 .section .text
