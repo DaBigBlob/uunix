@@ -6,6 +6,11 @@
 
 static noreturn void task1(void)
 {
+    uart_puts(uart0, "[hart:");
+    uint2cstr(32, get_hartid(), lig2);
+    uart_puts(uart0, lig2);
+    uart_puts(uart0, "] ");
+
     static u64 lock = new_spinlock();
     spin2lock(&lock);
     uart_puts(uart0, "hi!\r\n");
