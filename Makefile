@@ -40,6 +40,15 @@ F_SIFIVE = -machine sifive_u -smp 5 -m 8G -bios none
 qemu: out/kern.bin
 	$(QMU) $(F_SIFIVE) $(F_QMU) -kernel $^
 
+########################## debugging
+cdebug: F_EXTRA += -gdwarf-5 -O0 -ggdb
+cdebug: F_OPTIMIZE =
+cdebug: c q
+qdebug: F_QMU += -s -S
+qdebug: cdebug qemu
+qgdb: gdbinit.qemu
+	gdb -x gdbinit.qemu
+
 ########################## alias
 clean:
 	rm -r out || true
@@ -51,11 +60,3 @@ bin: out/kern.bin
 c: clean
 q: qemu
 cq: c q
-
-cdebug: F_EXTRA += -gdwarf-5 -O0 -ggdb
-cdebug: F_OPTIMIZE =
-cdebug: c q
-qdebug: F_QMU += -s -S
-qdebug: cdebug qemu
-qgdb: gdbinit.qemu
-	gdb -x gdbinit.qemu
