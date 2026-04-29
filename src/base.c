@@ -1,19 +1,20 @@
 #include "base.h"
+#include "pre.h"
 #include "std.h"
 
 addr get_HCB_addr(void)
 {
-    return M_get_HCB_addr();
+    return M_get_HCB_addr(get_hartid());
 }
 
 void reset_HCB(void)
 {
-    ((HCB *)(M_get_HCB_addr()))->jump_addr = 0;
+    ((HCB *)(M_get_HCB_addr(get_hartid())))->jump_addr = 0;
 }
 
 noreturn void hart_done(void)
 {
-    volatile HCB *hcb = (volatile HCB *)M_get_HCB_addr();
+    volatile HCB *hcb = (volatile HCB *)M_get_HCB_addr(get_hartid());
 
     /* wait till new task is available */
     while (hcb->jump_addr == 0)
@@ -28,10 +29,10 @@ noreturn void hart_done(void)
                dup.jump_addr);
 }
 
-void hart_task(usize a0, usize a1, usize a2, usize a3, usize a4, usize a5,
-               addr jump_addr)
+void hart_task(usize hartid, usize a0, usize a1, usize a2, usize a3,
+               usize a4, usize a5, addr jump_addr)
 {
-    volatile HCB *hcb = (volatile HCB *)M_get_HCB_addr();
+    volatile HCB *hcb = (volatile HCB *)M_get_HCB_addr(hartid);
 
     /* wait till hart is done */
     /* it is guaranteed that hcb.jump_addr = 0 after it has been

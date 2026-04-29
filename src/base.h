@@ -65,9 +65,9 @@ check_offset(lock, 0x30);
 check_offset(jump_addr, 0x38);
 #undef check_offset
 
-#define M_get_HCB_addr()                                                  \
-    ((volatile addr)((u8 *)kstack_base -                                  \
-                     (HART_STACK_SIZE * get_hartid()) - sizeof(HCB)))
+#define M_get_HCB_addr(hartid)                                            \
+    ((volatile addr)((u8 *)kstack_base - (HART_STACK_SIZE * hartid) -     \
+                     sizeof(HCB)))
 
 addr get_HCB_addr(void);
 void reset_HCB(void);
@@ -76,11 +76,12 @@ void reset_HCB(void);
 #define spin2lock(lock)                                                   \
     do {                                                                  \
     } while (strict_swap((lock), 077777777) != 0)
+#define new_spinlock() ((u64)(0))
 
 noreturn void hart_done(void);
 
-void hart_task(usize a0, usize a1, usize a2, usize a3, usize a4, usize a5,
-               addr jump_addr);
+void hart_task(usize hartid, usize a0, usize a1, usize a2, usize a3,
+               usize a4, usize a5, addr jump_addr);
 
 /** Logistics
     We manage no more than 256 harts (ids: 0 to 255).
