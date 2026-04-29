@@ -47,6 +47,8 @@ inferior 2
 attach 2
 file out/kern.elf
 
+thread 1.1
+
 info inferiors
 info threads
 
