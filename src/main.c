@@ -20,7 +20,7 @@ noreturn void main(void)
         hart_done(); // send non-0 harts to spin-wait
 
     /* setup */
-    mem_set(bss_begin, bss_end, volatile addr, 0);
+    // mem_set(bss_begin, bss_end, volatile addr, 0);
     uart_init(uart0);
 
     // hi
@@ -39,5 +39,5 @@ noreturn void main(void)
     uart_puts(uart0, "setting task for other hart 1...\r\n");
     hart_task(1, 0, 0, 0, 0, 0, 0, (addr)task1);
 
-    dead_spin();
+    hart_done();
 }

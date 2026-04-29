@@ -37,10 +37,18 @@ file out/kern.elf
 
 target extended-remote localhost:1234
 
-add-inferior
+# Cluster 1: E51 / hart 0
+inferior 1
+file out/kern.elf
+
+# Cluster 2: U54 / harts 1-4
+add-inferior -exec out/kern.elf
 inferior 2
 attach 2
-thread 1.1
+file out/kern.elf
+
+info inferiors
+info threads
 
 if $_shell_exitcode
     set pagination on
