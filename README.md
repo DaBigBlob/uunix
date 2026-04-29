@@ -16,15 +16,15 @@ make qemu
 
 ## Build-Run
 ```bash
-make qc
+make cq
 ```
 
 ## Debug builds
-Just add the needed debug flags to `FCR` for C compiler and `FLDR` for linker.
+Just add the needed debug flags to `F_EXTRA`.
 
 For example,
 ```bash
-make cq FCR="-gdwarf-5"
+make F_EXTRA += -gdwarf-5 -O0 -ggdb
 ```
 # Priorities
 This project is mainly supposed to serve as educational material for OS development.
