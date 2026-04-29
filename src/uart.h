@@ -45,6 +45,13 @@ extern volatile uart_t uart0, uart1;
               (urt.rxdata & MASK_UART_RX_DATA) :                          \
               -1)
 
+#define uart_puts(urt, str)                                               \
+    do {                                                                  \
+        null_sentinel_foreach(str, char, _c) {                            \
+            uart_putc(urt, *_c);                                          \
+        }                                                                 \
+    } while (0)
+
 #define BAUDRATE 115200
 
 #define uart_init(urt)                                                    \

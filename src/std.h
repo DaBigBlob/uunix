@@ -19,11 +19,6 @@ specified by (begin, exclusive_end) */
 #define range_foreach(begin, end, elem_t, id)                             \
     for (elem_t *id = (elem_t *)(begin); id < (elem_t *)(end); ++id)
 
-#define uart_puts(urt, str)                                               \
-    null_sentinel_foreach(str, char, _c) {                                \
-        uart_putc(urt, *_c);                                              \
-    }
-
 #define uint2cstr(size, _num, id)                                         \
     char id[] = STR(UINT##size##_MAX);                                    \
     do {                                                                  \
@@ -40,9 +35,11 @@ specified by (begin, exclusive_end) */
 /** inrements pointer b by t till b = e,
 for each b, *b = c of type t */
 #define mem_set(b, e, t, c)                                               \
-    range_foreach(b, e, t, _b) {                                          \
-        *_b = c;                                                          \
-    }
+    do {                                                                  \
+        range_foreach(b, e, t, _b) {                                      \
+            *_b = c;                                                      \
+        }                                                                 \
+    } while (0)
 
 /** inrements pointer b and d by u8 till b = e,
 for each b, *b = *d of type t */
