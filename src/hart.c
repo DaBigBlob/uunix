@@ -6,11 +6,6 @@ addr get_HCB_addr(void)
     return M_get_HCB_addr(get_hartid());
 }
 
-void reset_HCB(void)
-{
-    ((HCB *)(M_get_HCB_addr(get_hartid())))->jump_addr = 0;
-}
-
 noreturn void hart_done(void)
 {
     volatile HCB *hcb = (volatile HCB *)M_get_HCB_addr(get_hartid());
