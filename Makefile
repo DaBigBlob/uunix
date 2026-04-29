@@ -1,4 +1,4 @@
-all: out/kern.bin
+all: c bin
 
 .PHONY: qemu q clean c cq
 

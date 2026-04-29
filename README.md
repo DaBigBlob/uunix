@@ -5,16 +5,17 @@ tiny self-contained riscv64 machine mode kernel
 
 ## Build
 ```bash
-make clean # needed for creating some dirs the first time
 make
 ```
 
-## Run
+## Run QEMU
 ```bash
 make qemu
+# or
+make q
 ```
 
-## Build-Run
+## Build & Run
 ```bash
 make cq
 ```
