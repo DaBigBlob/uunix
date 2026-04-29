@@ -22,7 +22,8 @@ noreturn void hart_done(void)
     spin2lock(&hcb->lock);
     HCB dup;
     mem_cpy(hcb, ((volatile u8 *)hcb) + sizeof(HCB), volatile u8,
-            &dup); // 64bit aligned
+            &dup);      // 64bit aligned
+    hcb->jump_addr = 0; /* clear it so it can be reset */
     spin2unlock(&hcb->lock);
 
     hart_begin(dup.a0, dup.a1, dup.a2, dup.a3, dup.a4, dup.a5, (usize)hcb,
