@@ -53,5 +53,4 @@ strict_swap:
 .globl hart_begin
 hart_begin:
     mv  sp, a6
-    ld  t0, 0(a7)
-    jr  t0
+    jr  a7
