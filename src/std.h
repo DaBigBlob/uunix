@@ -23,7 +23,7 @@ specified by (begin, exclusive_end) */
     char id[] = STR(UINT##size##_MAX);                                    \
     do {                                                                  \
         char   *cur = id;                                                 \
-        u##size num = _num;                                               \
+        u##size num = (u##size)(_num);                                    \
         for (; *cur; ++cur)                                               \
             *cur = '0';                                                   \
         for (--cur; num && cur >= id; --cur) {                            \
@@ -47,7 +47,7 @@ for each b, *b = *d of type t */
     do {                                                                  \
         t *_d = (t *)(d);                                                 \
         range_foreach(b, e, t, _b) {                                      \
-            *_b = *_d;                                                    \
+            *_d = *_b;                                                    \
             ++_d;                                                         \
         }                                                                 \
     } while (0)
