@@ -50,7 +50,8 @@ strict_swap:
     ret
 
 .section .text
-.globl hart_HCB_begin
-hart_HCB_begin:
-    ld  t0, 0(a6)
+.globl hart_begin
+hart_begin:
+    mv  sp, a6
+    ld  t0, 0(a7)
     jr  t0

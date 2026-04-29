@@ -11,8 +11,9 @@ extern const addr    kheap_top, kstack_base;
 extern noreturn void dead_spin(void);
 extern usize         get_hartid(void);
 extern u64           strict_swap(volatile u64 *at, u64 with);
-noreturn extern void hart_HCB_begin(usize a0, usize a1, usize a2, usize a3,
-                                    usize a4, usize a5, addr jump_addr);
+noreturn extern void hart_begin(usize a0, usize a1, usize a2, usize a3,
+                                usize a4, usize a5, usize sp,
+                                addr jump_addr);
 
 #define HART_STACK_SIZE 4096
 
@@ -76,20 +77,8 @@ void reset_HCB(void);
     while (strict_swap((lock), 077777777) != 0)                           \
         ;
 
-/** hart_done
-    - reset HCB
-    - release lock
-    - spin on HCB.jump_addr till its non empty
-    - acquire lock
-    - load a5-a0 from HCB and jump to *HCB.jump_addr
-*/
 noreturn void hart_done(void);
 
-/** hart_task
-    - acquire lock
-    - set HCB
-    - release lock
-*/
 void hart_task(usize a0, usize a1, usize a2, usize a3, usize a4, usize a5,
                addr jump_addr);
 

@@ -19,14 +19,22 @@ noreturn void hart_done(void)
     while (hcb->jump_addr == 0)
         ;
     spin2lock(&hcb->lock);
-    hart_HCB_begin(hcb->a0, hcb->a1, hcb->a2, hcb->a3, hcb->a4, hcb->a5,
-                   hcb->jump_addr);
+    hart_begin(hcb->a0, hcb->a1, hcb->a2, hcb->a3, hcb->a4, hcb->a5,
+               (usize)hcb, hcb->jump_addr);
 }
 
 void hart_task(usize a0, usize a1, usize a2, usize a3, usize a4, usize a5,
                addr jump_addr)
 {
     volatile HCB *hcb = (volatile HCB *)M_get_HCB_addr();
+
+    /* wait till hart is done */
+    /* it is guaranteed that hcb.jump_addr = 0 after it has been
+    accepted by hart*/
+    while (hcb->jump_addr != 0)
+        ;
+
+    /* lock: make sure hart does not receive incomplete instruction */
     spin2lock(&hcb->lock);
     hcb->a0        = a0;
     hcb->a1        = a1;
