@@ -30,6 +30,8 @@ specified by (begin, exclusive_end) */
             *cur = (num % 10) + 48;                                       \
             num /= 10;                                                    \
         }                                                                 \
+        for (cur = id; (*cur == '0' && *(cur + 1)); ++cur)                \
+            *cur = '.';                                                   \
     } while (0)
 
 /** inrements pointer b by t till b = e,
