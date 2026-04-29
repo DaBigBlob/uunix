@@ -17,8 +17,8 @@ _start:
     csrr a0, mhartid
     slli t1, a0, 12 /* 2^12 = 4096 bytes = 4KiB for each hart */
     sub  sp, sp, t1
-        /* these hart-specific stack locations are temporary;
-        permanent ones are decided in base.c */
+        /* these hart-specific stack locations (and stack sizes)
+        are temporary; permanent ones are decided in base.S.h */
     /* pre c-call end */
 
     /* set final sp */

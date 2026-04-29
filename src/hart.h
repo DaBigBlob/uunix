@@ -57,7 +57,6 @@ check_offset(jump_addr, 0x38);
                      sizeof(HCB)))
 
 addr get_HCB_addr(void);
-void reset_HCB(void);
 
 #define spin2unlock(lock) strict_swap((lock), 0)
 #define spin2lock(lock)                                                   \
