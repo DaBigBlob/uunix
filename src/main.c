@@ -7,9 +7,10 @@
 
 static noreturn void task1(void)
 {
+    say_hart(uart0);
     static u64 lock = new_spinlock();
     spin2lock(&lock);
-    say_hart(uart0, "hi!\r\n");
+    uart_puts(uart0, "hi!\r\n");
     spin2unlock(&lock);
     hart_done();
 }
@@ -21,23 +22,27 @@ noreturn void main(void)
         hart_done(); // send non-0 harts to spin-wait
 
     /* setup */
-    // mem_set(bss_begin, bss_end, volatile addr, 0);
+    mem_set(bss_begin, bss_end, volatile addr, 0);
     uart_init(uart0);
 
     // hi
-    say_hart(uart0, "\r\nhello metal!\r\n");
+    say_hart(uart0);
+    uart_puts(uart0, "hello metal!\r\n");
 
-    say_hart(uart0, "hart 0 hcb: ");
+    say_hart(uart0);
+    uart_puts(uart0, "hart 0 hcb: ");
     uint2cstr(64, get_HCB_addr(), lig);
-    say_hart(uart0, lig);
-    say_hart(uart0, "\r\n");
+    uart_puts(uart0, lig);
+    uart_puts(uart0, "\r\n");
 
-    say_hart(uart0, "hart 1 hcb: ");
+    say_hart(uart0);
+    uart_puts(uart0, "hart 1 hcb: ");
     uint2cstr(64, M_get_HCB_addr(1), lig2);
-    say_hart(uart0, lig2);
-    say_hart(uart0, "\r\n");
+    uart_puts(uart0, lig2);
+    uart_puts(uart0, "\r\n");
 
-    say_hart(uart0, "setting task for other hart 1...\r\n");
+    say_hart(uart0);
+    uart_puts(uart0, "setting task for other hart 1...\r\n");
 
     hart_task(1, 0, 0, 0, 0, 0, 0, (addr)task1);
 
