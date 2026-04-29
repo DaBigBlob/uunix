@@ -15,12 +15,12 @@ static noreturn void task1(void)
 
 noreturn void main(void)
 {
-    ((HCB *)M_get_HCB_addr(get_hartid()))->jump_addr = 0; // clean a little
+    // ((HCB *)M_get_HCB_addr(get_hartid()))->jump_addr = 0; // clean a little
     if (get_hartid() != 0)
         hart_done(); // send non-0 harts to spin-wait
 
     /* setup */
-    mem_set(bss_begin, bss_end, volatile addr, 0);
+    // mem_set(bss_begin, bss_end, volatile addr, 0);
     uart_init(uart0);
 
     // hi
@@ -45,11 +45,11 @@ noreturn void main(void)
     uart_puts(uart0, lig3);
     uart_puts(uart0, "\r\n");
 
-    // hart_task(1, 0, 0, 0, 0, 0, 0, (addr)task1);
+    hart_task(1, 0, 0, 0, 0, 0, 0, (addr)task1);
 
-    spin2lock(&hcb->lock);
-    hcb->jump_addr = (addr)task1;
-    spin2unlock(&hcb->lock);
+    // spin2lock(&hcb->lock);
+    // hcb->jump_addr = (addr)task1;
+    // spin2unlock(&hcb->lock);
 
     uart_puts(uart0, "adr: ");
     uint2cstr(64, (addr)task1, lig5);
@@ -61,5 +61,11 @@ noreturn void main(void)
     uart_puts(uart0, lig4);
     uart_puts(uart0, "\r\n");
 
-    hart_done();
+    // for (;;) {
+    //     uart_puts(uart0, "post: ");
+    //     uint2cstr(64, hcb->jump_addr, lig6);
+    //     uart_puts(uart0, lig6);
+    //     uart_puts(uart0, "\r\n");
+    // }
+    dead_spin();
 }
