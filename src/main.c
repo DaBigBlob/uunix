@@ -1,3 +1,4 @@
+#include "base.h"
 #include "pre.h"
 #include "std.h"
 #include "uart.h"
@@ -25,12 +26,17 @@ noreturn void main(void)
     // hi
     uart_puts(uart0, "\r\nhello metal!\r\n");
 
-    uart_puts(uart0, "corepllcfg0: ");
-    uint2cstr(32, clckctrl.corepllcfg0, lig);
+    uart_puts(uart0, "hart 0 hcb: ");
+    uint2cstr(64, get_HCB_addr(), lig);
     uart_puts(uart0, lig);
     uart_puts(uart0, "\r\n");
 
-    uart_puts(uart0, "setting task for other harts...\r\n");
+    uart_puts(uart0, "hart 1 hcb: ");
+    uint2cstr(64, M_get_HCB_addr(1), lig2);
+    uart_puts(uart0, lig2);
+    uart_puts(uart0, "\r\n");
+
+    uart_puts(uart0, "setting task for other hart 1...\r\n");
     hart_task(1, 0, 0, 0, 0, 0, 0, (addr)task1);
 
     dead_spin();
