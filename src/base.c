@@ -1,4 +1,5 @@
 #include "base.h"
+#include "std.h"
 
 addr get_HCB_addr(void)
 {
@@ -13,14 +14,18 @@ void reset_HCB(void)
 noreturn void hart_done(void)
 {
     volatile HCB *hcb = (volatile HCB *)M_get_HCB_addr();
-    hcb->jump_addr    = 0;
-    spin2unlock(&hcb->lock);
 
+    /* wait till new task is available */
     while (hcb->jump_addr == 0)
         ;
+
     spin2lock(&hcb->lock);
-    hart_begin(hcb->a0, hcb->a1, hcb->a2, hcb->a3, hcb->a4, hcb->a5,
-               (usize)hcb, hcb->jump_addr);
+    HCB dup;
+    mem_cpy(hcb, hcb + sizeof(HCB), volatile u64, &dup); // 64bit aligned
+    spin2unlock(&hcb->lock);
+
+    hart_begin(dup.a0, dup.a1, dup.a2, dup.a3, dup.a4, dup.a5, (usize)hcb,
+               dup.jump_addr);
 }
 
 void hart_task(usize a0, usize a1, usize a2, usize a3, usize a4, usize a5,
