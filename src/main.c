@@ -7,9 +7,9 @@
 
 static noreturn void task1(void)
 {
-    say_hart(uart0);
     static u64 lock = new_spinlock();
     spin2lock(&lock);
+    say_hart(uart0);
     uart_puts(uart0, "hi!\r\n");
     spin2unlock(&lock);
     hart_done();
@@ -40,11 +40,17 @@ noreturn void main(void)
     uint2cstr(64, M_get_HCB_addr(2), lig2);
     uart_puts(uart0, lig2);
     uart_puts(uart0, "\r\n");
+    say_hart(uart0);
+    uart_puts(uart0, "hart 3 hcb: ");
+    uint2cstr(64, M_get_HCB_addr(3), lig3);
+    uart_puts(uart0, lig3);
+    uart_puts(uart0, "\r\n");
 
     say_hart(uart0);
-    uart_puts(uart0, "setting task for other hart 2...\r\n");
+    uart_puts(uart0, "setting task for other hart 2 and 3...\r\n");
 
     hart_task(2, 0, 0, 0, 0, 0, 0, (addr)task1);
+    hart_task(3, 0, 0, 0, 0, 0, 0, (addr)task1);
 
     dead_spin();
 }
