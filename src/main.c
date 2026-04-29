@@ -37,14 +37,14 @@ noreturn void main(void)
 
     say_hart(uart0);
     uart_puts(uart0, "hart 1 hcb: ");
-    uint2cstr(64, M_get_HCB_addr(1), lig2);
+    uint2cstr(64, M_get_HCB_addr(2), lig2);
     uart_puts(uart0, lig2);
     uart_puts(uart0, "\r\n");
 
     say_hart(uart0);
-    uart_puts(uart0, "setting task for other hart 1...\r\n");
+    uart_puts(uart0, "setting task for other hart 2...\r\n");
 
-    hart_task(1, 0, 0, 0, 0, 0, 0, (addr)task1);
+    hart_task(2, 0, 0, 0, 0, 0, 0, (addr)task1);
 
     dead_spin();
 }
