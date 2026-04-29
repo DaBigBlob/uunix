@@ -52,7 +52,9 @@ c: clean
 q: qemu
 cq: c q
 
+cdebug: F_EXTRA += -gdwarf-5
+cdebug: c q
 qdebug: F_QMU += -s -S
-qdebug: qemu
+qdebug: cdebug qemu
 qgdb: gdbinit.qemu
 	gdb -x gdbinit.qemu
