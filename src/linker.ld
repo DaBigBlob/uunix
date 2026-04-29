@@ -1,3 +1,5 @@
+ENTRY(uunix_entry)
+
 SECTIONS {
 
     clckctrl    = 0x10000000;

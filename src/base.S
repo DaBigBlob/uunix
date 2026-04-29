@@ -10,8 +10,8 @@ kheap_top:
 kstack_base:
 
 .section .text
-.globl _start
-_start:
+.globl uunix_entry
+uunix_entry:
     /* pre c-call begin:  unsafe to call c functions */
     la   sp, kstack_base
     csrr a0, mhartid
