@@ -52,7 +52,8 @@ c: clean
 q: qemu
 cq: c q
 
-cdebug: F_EXTRA += -gdwarf-5
+cdebug: F_EXTRA += -gdwarf-5 -O0 -ggdb
+cdebug: F_OPTIMIZE =
 cdebug: c q
 qdebug: F_QMU += -s -S
 qdebug: cdebug qemu

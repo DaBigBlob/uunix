@@ -1,14 +1,47 @@
-layout src
-pipe show pagination | IFS='s' read a b; test $b = "off."
-if $_shell_exitcode
-set pagination off
+# Show source + assembly in TUI.
+layout split
+set disassemble-next-line on
+set print asm-demangle on
+
+# Always show current instruction.
+display/i $pc
+
+# Print current function/symbol whenever execution stops.
+define hook-stop
+    echo \n--- current location ---\n
+    info symbol $pc
+    x/i $pc
+    echo ------------------------\n
 end
-add-symbol-file out/kern.elf
+
+# Alias: list known functions.
+define funcs
+    info functions
+end
+
+document funcs
+List all functions known to GDB.
+Use: funcs
+Use: info functions REGEX
+Example: info functions task
+end
+
+# Preserve pagination setting.
+pipe show pagination | IFS='s' read a b; test "$b" = "off."
+if $_shell_exitcode
+    set pagination off
+end
+
+# Load symbols.
+file out/kern.elf
+
 target extended-remote localhost:1234
+
 add-inferior
 inferior 2
 attach 2
 thread 1.1
+
 if $_shell_exitcode
-set pagination on
+    set pagination on
 end
