@@ -4,7 +4,6 @@
 
 // What must exist at the bottom of the world?
 
-/********* Receive */
 extern volatile addr bss_begin[], bss_end[];
 extern const addr    kheap_top[], kstack_base[];
 
@@ -15,6 +14,6 @@ noreturn extern void hart_begin(usize a0, usize a1, usize a2, usize a3,
                                 usize a4, usize a5, usize sp,
                                 addr jump_addr);
 
-#define HART_STACK_SIZE 4096
+#define STACK_SIZE 1048576 /* 1MiB */
 
 #endif // UUNIX_BASE

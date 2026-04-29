@@ -3,7 +3,8 @@
 #include "pre.h"
 #include "base.h"
 
-/********* Provide */
+#define MAX_HARTS       256
+#define HART_STACK_SIZE ((STACK_SIZE) / (MAX_HARTS))
 
 /**  Design
 For each hart:

@@ -4,7 +4,6 @@
 /* convenience stuff */
 
 #include "uart.h"
-#include "hart.h"
 
 #define say_hart(urt)                                                     \
     do {                                                                  \
