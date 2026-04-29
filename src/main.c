@@ -1,7 +1,7 @@
 #include "pre.h"
 #include "std.h"
 #include "uart.h"
-#include "base.h"
+#include "hart.h"
 
 static noreturn void task1(void)
 {

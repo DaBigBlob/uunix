@@ -1,5 +1,4 @@
-#include "base.h"
-#include "pre.h"
+#include "hart.h"
 #include "std.h"
 
 addr get_HCB_addr(void)
