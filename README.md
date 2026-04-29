@@ -42,7 +42,7 @@ This section is to serve as record keeping for architectural decisions. (not nec
 - We use large number of function-like macros because stack frames are expensive because we have little stack.
 
 ## C17 (ISO/IEC 9899:2018)
-We choose C17 (see `var/C17_final_proposal_official.pdf`) for this project because it is decently old (as of date), stable, and tested with no new language features over C11 and numerous defect fixes over C11. C11-C17 supports for decent multiprocessing primitives useful for SMP. C23 is too new for my taste and introduces newer language features and keywords.
+We choose C17 (see `var/C17_final_proposal_official.pdf`) for this project because it is decently old (as of date), stable, and tested with no new language features over C11 and numerous defect fixes over C11. C23 is too new for my taste and introduces newer language features and keywords.
 
 Note, as of date, C23 is the latest std.
 
