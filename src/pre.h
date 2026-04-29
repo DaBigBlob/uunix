@@ -6,7 +6,7 @@
 #endif
 #if __STDC_VERSION__ != 201710L
 /* I choose C17 because it is decently old, stable,
-    and testedwith not new language features over C11
+    and tested, with no new language features over C11
     and numerous defect fixes over C11. */
 #error "This is a C17-ONLY project."
 #endif
