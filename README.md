@@ -38,7 +38,7 @@ The reader should be grep through the source and read the cource of all identifi
 # Notes
 This section is to serve as record keeping for architectural decisions. (not necessarily in order)
 - We want to lift from assembly to C as soon as possible and stay there for as long as possible.
-    - Currently, the only assembly lives in `base.S` (41 LOC).
+    - The only assembly lives in `base.S` (currently 36 LOC).
 - We use large number of function-like macros because stack frames are expensive because we have little stack.
 
 ## C17 (ISO/IEC 9899:2018)

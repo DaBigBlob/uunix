@@ -58,5 +58,5 @@ noreturn void main(void)
     hart_task(3, 0, 0, 0, 0, 0, 0, (addr)task1);
     hart_task(2, 0, 0, 0, 0, 0, 0, (addr)task1);
 
-    dead_spin();
+    hart_done();
 }

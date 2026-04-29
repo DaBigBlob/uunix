@@ -26,13 +26,6 @@ _start:
     mv sp, a0
 
     j   main
-    j   dead_spin
-
-.section .text
-.globl dead_spin
-dead_spin:
-    j   dead_spin
-
 
 .section .text
 .globl get_hartid
