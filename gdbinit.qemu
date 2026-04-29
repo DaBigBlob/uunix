@@ -1,0 +1,14 @@
+layout src
+pipe show pagination | IFS='s' read a b; test $b = "off."
+if $_shell_exitcode
+set pagination off
+end
+add-symbol-file out/kern.elf
+target extended-remote localhost:1234
+add-inferior
+inferior 2
+attach 2
+thread 1.1
+if $_shell_exitcode
+set pagination on
+end

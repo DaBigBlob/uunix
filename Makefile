@@ -51,3 +51,8 @@ bin: out/kern.bin
 c: clean
 q: qemu
 cq: c q
+
+qdebug: F_QMU += -s -S
+qdebug: qemu
+qgdb: gdbinit.qemu
+	gdb -x gdbinit.qemu
