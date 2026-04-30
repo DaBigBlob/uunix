@@ -19,7 +19,6 @@ specified by (begin, exclusive_end) */
 #define range_foreach(begin, end, elem_t, id)                             \
     for (elem_t *id = (elem_t *)(begin); id < (elem_t *)(end); ++id)
 
-static const char HEX_CHARS[] = "0123456789abcdef";
 #define uint1cstr(size, _num, id)                                         \
     do {                                                                  \
         char   *cur = id;                                                 \
@@ -27,7 +26,7 @@ static const char HEX_CHARS[] = "0123456789abcdef";
         for (; *cur; ++cur)                                               \
             *cur = '0';                                                   \
         for (--cur; num && cur >= id; --cur) {                            \
-            *cur = HEX_CHARS[num & 0xf];                                  \
+            *cur = "0123456789abcdef"[num & 0xf];                         \
             num >>= 4;                                                    \
         }                                                                 \
         for (; (*(id + 2) == '0' && *(id + 3)); ++id)                     \
