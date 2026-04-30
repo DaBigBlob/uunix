@@ -47,7 +47,7 @@ cdebug: c q
 qdebug: F_QMU += -s -S
 qdebug: cdebug qemu
 qgdb: gdbinit.qemu
-	gdb -x gdbinit.qemu
+	gdb -x $<
 
 ########################## alias
 clean:

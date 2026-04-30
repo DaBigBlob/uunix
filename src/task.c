@@ -58,7 +58,7 @@ noreturn void h0t0(void)
 
     say_hart(uart0);
     uart_puts(uart0, "hart 0 hcb:");
-    uint2cstr(64, get_HCB_addr(), lig);
+    uint2cstr(64, M_get_HCB_addr(0), lig);
     uart_puts(uart0, lig);
     uart_puts(uart0, "\r\n");
 
