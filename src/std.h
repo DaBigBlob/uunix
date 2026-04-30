@@ -30,8 +30,9 @@ static const char HEX_CHARS[] = "0123456789abcdef";
             *cur = HEX_CHARS[num & 0xf];                                  \
             num >>= 4;                                                    \
         }                                                                 \
-        for (; (*id == '0' && *(id + 1)); ++id)                           \
+        for (; (*id == '0' && *(id + 3)); ++id)                           \
             ;                                                             \
+        id[1] = 'x'                                                       \
     } while (0)
 
 #define uint2cstr(size, _num, id)                                         \
