@@ -19,8 +19,7 @@ specified by (begin, exclusive_end) */
 #define range_foreach(begin, end, elem_t, id)                             \
     for (elem_t *id = (elem_t *)(begin); id < (elem_t *)(end); ++id)
 
-extern const char HEX_CHARS[];
-const char        HEX_CHARS[] = "0123456789abcdef";
+static const char HEX_CHARS[] = "0123456789abcdef";
 #define uint1cstr(size, _num, id)                                         \
     do {                                                                  \
         char   *cur = id;                                                 \
