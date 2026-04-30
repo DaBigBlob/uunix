@@ -19,7 +19,8 @@ specified by (begin, exclusive_end) */
 #define range_foreach(begin, end, elem_t, id)                             \
     for (elem_t *id = (elem_t *)(begin); id < (elem_t *)(end); ++id)
 
-static const char HEX_CHARS[] = "0123456789abcdef";
+extern const char HEX_CHARS[];
+const char        HEX_CHARS[] = "0123456789abcdef";
 #define uint1cstr(size, _num, id)                                         \
     do {                                                                  \
         char   *cur = id;                                                 \
@@ -36,7 +37,7 @@ static const char HEX_CHARS[] = "0123456789abcdef";
     } while (0)
 
 #define uint2cstr(size, _num, id)                                         \
-    char  _uunix_priv__uint2cstr##id[] = STR(UINT##size##_MAX);           \
+    char  _uunix_priv__uint2cstr##id[] = "00" STR(UINT##size##_MAX);      \
     char *id                           = _uunix_priv__uint2cstr##id;      \
     uint1cstr(size, _num, id)
 
