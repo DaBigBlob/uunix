@@ -19,20 +19,25 @@ specified by (begin, exclusive_end) */
 #define range_foreach(begin, end, elem_t, id)                             \
     for (elem_t *id = (elem_t *)(begin); id < (elem_t *)(end); ++id)
 
-#define uint2cstr(size, _num, id)                                         \
-    char id[] = STR(UINT##size##_MAX);                                    \
+static const char HEX_CHARS[] = "0123456789abcdef";
+#define uint1cstr(size, _num, id)                                         \
     do {                                                                  \
         char   *cur = id;                                                 \
         u##size num = (u##size)(_num);                                    \
         for (; *cur; ++cur)                                               \
             *cur = '0';                                                   \
         for (--cur; num && cur >= id; --cur) {                            \
-            *cur = (num % 10) + 48;                                       \
-            num /= 10;                                                    \
+            *cur = HEX_CHARS[num & 0xf];                                  \
+            num >>= 4;                                                    \
         }                                                                 \
-        for (cur = id; (*cur == '0' && *(cur + 1)); ++cur)                \
-            *cur = '.';                                                   \
+        for (; (*id == '0' && *(id + 1)); ++id)                           \
+            ;                                                             \
     } while (0)
+
+#define uint2cstr(size, _num, id)                                         \
+    char  _uunix_priv__uint2cstr##id[] = STR(UINT##size##_MAX);           \
+    char *id                           = _uunix_priv__uint2cstr##id;      \
+    uint1cstr(size, _num, id)
 
 /** inrements pointer b by t till b = e,
 for each b, *b = c of type t */

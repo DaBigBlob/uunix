@@ -16,25 +16,25 @@ static noreturn void hat0(usize a0, usize a1, usize a2, usize a3)
     uart_puts(uart0, "begin hart:any,task:0\r\n");
 
     say_hart(uart0);
-    uart_puts(uart0, "my reg a0 is:");
+    uart_puts(uart0, "my reg a0 is: ");
     uint2cstr(64, a0, lig);
     uart_puts(uart0, lig);
     uart_puts(uart0, "\r\n");
 
     say_hart(uart0);
-    uart_puts(uart0, "my reg a1 is:");
+    uart_puts(uart0, "my reg a1 is: ");
     uint2cstr(64, a1, lig1);
     uart_puts(uart0, lig1);
     uart_puts(uart0, "\r\n");
 
     say_hart(uart0);
-    uart_puts(uart0, "my reg a2 is:");
+    uart_puts(uart0, "my reg a2 is: ");
     uint2cstr(64, a2, lig2);
     uart_puts(uart0, lig2);
     uart_puts(uart0, "\r\n");
 
     say_hart(uart0);
-    uart_puts(uart0, "my reg a3 is:");
+    uart_puts(uart0, "my reg a3 is: ");
     uint2cstr(64, a3, lig3);
     uart_puts(uart0, lig3);
     uart_puts(uart0, "\r\n");
@@ -57,18 +57,18 @@ noreturn void h0t0(void)
     uart_puts(uart0, "TASK TESTING HARTS: 2, 3\r\n");
 
     say_hart(uart0);
-    uart_puts(uart0, "hart 0 hcb:");
+    uart_puts(uart0, "hart 0 hcb: ");
     uint2cstr(64, M_get_HCB_addr(0), lig);
     uart_puts(uart0, lig);
     uart_puts(uart0, "\r\n");
 
     say_hart(uart0);
-    uart_puts(uart0, "hart 2 hcb:");
+    uart_puts(uart0, "hart 2 hcb: ");
     uint2cstr(64, M_get_HCB_addr(2), lig2);
     uart_puts(uart0, lig2);
     uart_puts(uart0, "\r\n");
     say_hart(uart0);
-    uart_puts(uart0, "hart 3 hcb:");
+    uart_puts(uart0, "hart 3 hcb: ");
     uint2cstr(64, M_get_HCB_addr(3), lig3);
     uart_puts(uart0, lig3);
     uart_puts(uart0, "\r\n");
