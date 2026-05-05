@@ -51,9 +51,7 @@ ENDF(get_##thing)
 
 UNIDEFGET(usize, get_mhartid, mhartid);
 
-// UNIDEF(usize, get_mhartid, (void));
-
-UNIDEF(void, set_mstatus, (usize));
+UNIDEFSET(mstatus, set_mstatus, usize);
 UNIDEFGET(usize, get_mstatus, mstatus);
 
 UNIDEFGET(usize, get_mie, mie);
