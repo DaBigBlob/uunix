@@ -16,12 +16,12 @@
 
 #define CASMD(ret, name, args) .globl name;
 
-/*--- begin: stack alloc ---*/
+/* begin: stack alloc */
 .section .bss
 kheap_top:
     .space STACK_SIZE
 kstack_base:
-/*--- end: stack alloc ---*/
+/* end: stack alloc */
 
 
 #define FUNC(name)      \
