@@ -1,4 +1,4 @@
-ENTRY(_uunix_entry) /* Useless for our case but make linker shut up. */
+ENTRY(_uunix_entry) /* Useless for our case but makes linker shut up. */
 
 SECTIONS {
     clintctrl   = 0x2000000;
