@@ -1,9 +1,8 @@
 ENTRY(uunix_entry)
 
 SECTIONS {
-
+    clint       = 0x2000000;
     clckctrl    = 0x10000000;
-
     uart0       = 0x10010000;
     uart1       = 0x10011000;
 
