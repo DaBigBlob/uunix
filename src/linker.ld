@@ -1,7 +1,7 @@
 ENTRY(_uunix_entry) /* Useless for our case but make linker shut up. */
 
 SECTIONS {
-    clint       = 0x2000000;
+    clintctrl   = 0x2000000;
     clckctrl    = 0x10000000;
     uart0       = 0x10010000;
     uart1       = 0x10011000;
