@@ -44,17 +44,13 @@ ENDF(name)
 #endif // ASSEMBLYTIME
 
 UNIDEFGET(usize, get_mhartid, mhartid);
+UNIDEFGET(usize, get_mstatus, mstatus);
+UNIDEFGET(usize, get_mie, mie);
+UNIDEFGET(usize, get_mcause, mcause);
 
 UNIDEFSET(mstatus, set_mstatus, usize);
-UNIDEFGET(usize, get_mstatus, mstatus);
-
-UNIDEFGET(usize, get_mie, mie);
 UNIDEFSET(mie, set_mie, usize);
-
-UNIDEF(void, set_mtvec, (usize));
 UNIDEFSET(mtvec, set_mtvec, usize);
-
-UNIDEFGET(usize, get_mcause, mcause);
 
 UNIDEF(u64, strict_swap, (volatile u64 * at, u64 with));
 
