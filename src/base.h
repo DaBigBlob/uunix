@@ -55,9 +55,10 @@ UNIDEFSET(mstatus, set_mstatus, usize);
 UNIDEFGET(usize, get_mstatus, mstatus);
 
 UNIDEFGET(usize, get_mie, mie);
-UNIDEF(void, set_mie, (usize));
+UNIDEFSET(mie, set_mie, usize);
 
 UNIDEF(void, set_mtvec, (usize));
+UNIDEFSET(mtvec, set_mtvec, usize);
 
 UNIDEFGET(usize, get_mcause, mcause);
 

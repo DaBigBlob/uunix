@@ -27,7 +27,6 @@ _uunix_entry:
     j   main
 ENDF(_uunix_entry)
 
-SETTER(mie)
 SETTER(mtvec)
 
 FUNC(strict_swap)
