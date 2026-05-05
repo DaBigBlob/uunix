@@ -55,6 +55,10 @@ ENDF(uunix_entry)
 GETTER(mhartid)
 GETTER(mstatus)
 SETTER(mstatus)
+GETTER(mie)
+SETTER(mie)
+SETTER(mtvec)
+GETTER(mcause)
 
 FUNC(strict_swap)
 /* trying to be a little defensive */
