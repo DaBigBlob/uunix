@@ -6,28 +6,6 @@
 #define MAX_HARTS       256
 #define HART_STACK_SIZE ((STACK_SIZE) / (MAX_HARTS))
 
-/**  Design
-For each hart:
-    - have a stack and a hart control block (HCB).
-    - HCB specifies the task to be done.
-    - HCB operactions are atomic.
-    - once HCB task is done.
-    - waits for task in HCB.
-    - by default set to execute main.
-In main:
-    Hart non-0:
-        - immediately complete task i.e. wait on HCB
-    Hart 0:
-        - setup stuff
-        - set other's HCB
-For each hart:
-    - atomic spin on HCB.jump_addr till its non empty
-    - when non-empty, load a5-a0 from stack and jump to *HCB.jump_addr
-    - after job:
-        - clear HCB.jump_addr
-    - repeat
-*/
-
 /* hart-specific control block */
 typedef struct {
     usize a0;
@@ -38,7 +16,7 @@ typedef struct {
     usize a5;
     usize lock;
     addr  jump_addr;
-    struct { /* things a hart might want to store */
+    struct { /* things a hart might want to temporarily store */
         usize mstatus;
     } store;
 } HCB;
