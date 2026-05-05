@@ -12,20 +12,25 @@ kstack_base:
 /*--- end: stack alloc ---*/
 
 /*--- begin: macros ---*/
-#define FUNC(name)  \
-.section .text;     \
-.globl name;        \
+#define FUNC(name)      \
+.section .text;         \
+.globl name;            \
+.type name, @function;  \
 name:
+
+#define ENDF(name) .size name, .-name
 
 #define GETTER(thing)   \
 FUNC(get_##thing);      \
     csrr    a0, thing;  \
-    ret
+    ret;                \
+ENDF(thing)
 
 #define SETTER(thing)       \
 FUNC(set_##thing);          \
     csrw    mstatus, a0;    \
-    ret
+    ret;                \
+ENDF(thing)
 /*--- end: macros ---*/
 
 
@@ -44,7 +49,7 @@ FUNC(uunix_entry)
     mv  sp, a0
 
     j   main
-
+ENDF(uunix_entry)
 
 
 GETTER(mhartid)
@@ -58,7 +63,9 @@ FUNC(strict_swap)
     fence   iorw, iorw
     mv      a0, t0
     ret
+ENDF(strict_swap)
 
 FUNC(hart_begin)
     mv  sp, a6
     jr  a7
+ENDF(hart_begin)
