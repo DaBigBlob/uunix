@@ -25,6 +25,8 @@ typedef struct {
     ((volatile addr)(kstack_base - (HART_STACK_SIZE * hartid) -           \
                      sizeof(HCB)))
 
+#define HCB_set_fld(hartid, fld) ((HCB *)get_HCB_addr(hartid))->fld
+
 addr impl_get_HCB_addr(void);
 
 noreturn void hart_done(void);
