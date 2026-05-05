@@ -7,9 +7,6 @@
 
 #ifndef ASSEMBLYTIME
 #include "pre.h"
-#endif // ASSEMBLYTIME
-
-#ifndef ASSEMBLYTIME
 
 #define UNIDEF(rett, name, args)     extern rett name args
 #define UNIDEFGET(rett, name, thing) UNIDEF(rett, name, (void))
