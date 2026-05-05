@@ -24,13 +24,13 @@ name:
 FUNC(get_##thing);      \
     csrr    a0, thing;  \
     ret;                \
-ENDF(thing)
+ENDF(get_##thing)
 
 #define SETTER(thing)       \
 FUNC(set_##thing);          \
     csrw    mstatus, a0;    \
     ret;                \
-ENDF(thing)
+ENDF(get_##thing)
 /*--- end: macros ---*/
 
 
