@@ -32,7 +32,7 @@ ENDF(get_##thing)
 #define SETTER(thing)       \
 FUNC(set_##thing);          \
     csrw    mstatus, a0;    \
-    ret;                \
+    ret;                    \
 ENDF(get_##thing)
 
 // clang-format on
