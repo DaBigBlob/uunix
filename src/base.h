@@ -40,12 +40,6 @@ FUNC(name);                         \
     ret;                            \
 ENDF(name)
 
-#define SETTER(thing)   \
-FUNC(set_##thing);      \
-    csrw    thing, a0;  \
-    ret;                \
-ENDF(get_##thing)
-
 // clang-format on
 #endif // ASSEMBLYTIME
 
