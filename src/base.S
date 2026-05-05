@@ -1,4 +1,5 @@
-#include "base.S.h"
+#define ASSEMBLYTIME
+#include "base.h"
 .extern main
 .extern impl_get_HCB_addr
 
@@ -10,28 +11,6 @@ kheap_top:
     .space STACK_SIZE
 kstack_base:
 /*--- end: stack alloc ---*/
-
-/*--- begin: macros ---*/
-#define FUNC(name)      \
-.section .text;         \
-.globl name;            \
-.type name, @function;  \
-name:
-
-#define ENDF(name) .size name, .-name
-
-#define GETTER(thing)   \
-FUNC(get_##thing);      \
-    csrr    a0, thing;  \
-    ret;                \
-ENDF(get_##thing)
-
-#define SETTER(thing)       \
-FUNC(set_##thing);          \
-    csrw    mstatus, a0;    \
-    ret;                \
-ENDF(get_##thing)
-/*--- end: macros ---*/
 
 
 FUNC(uunix_entry)
