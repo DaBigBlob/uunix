@@ -27,8 +27,6 @@ _uunix_entry:
     j   main
 ENDF(_uunix_entry)
 
-SETTER(mtvec)
-
 FUNC(strict_swap)
 /* trying to be a little defensive */
     fence   iorw, iorw
