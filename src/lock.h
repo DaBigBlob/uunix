@@ -1,7 +1,7 @@
 #ifndef UUNIX_LOCK
 #define UUNIX_LOCK
 
-#include "base.h"
+#include "base.h" // IWYU pragma: keep
 #include "hart.h"
 #include "interr.h"
 
