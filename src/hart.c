@@ -5,12 +5,12 @@
 
 addr impl_get_HCB_addr(void)
 {
-    return get_HCB_addr(get_hartid());
+    return get_HCB_addr(get_mhartid());
 }
 
 noreturn void hart_done(void)
 {
-    volatile HCB *hcb = (volatile HCB *)get_HCB_addr(get_hartid());
+    volatile HCB *hcb = (volatile HCB *)get_HCB_addr(get_mhartid());
 
     /* wait till new task is available */
     while (hcb->jump_addr == 0)

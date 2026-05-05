@@ -8,7 +8,7 @@
 #define say_hart(urt)                                                     \
     do {                                                                  \
         uart_puts(urt, "[hart:");                                         \
-        uint2cstr(64, get_hartid(), _uunix_priv___say_hart_v0);           \
+        uint2cstr(64, get_mhartid(), _uunix_priv___say_hart_v0);          \
         uart_puts(urt, _uunix_priv___say_hart_v0);                        \
         uart_puts(urt, "] ");                                             \
     } while (0)

@@ -8,8 +8,8 @@
 noreturn void main(void)
 {
     /* send non-0 harts to spin-wait */
-    if (get_hartid() != 0) {
-        HCB_set_fld(get_hartid(), jump_addr) = hatwait;
+    if (get_mhartid() != 0) {
+        HCB_set_fld(get_mhartid(), jump_addr) = hatwait;
         hart_done();
     }
 

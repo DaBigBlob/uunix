@@ -7,7 +7,7 @@
 extern volatile addr bss_begin[], bss_end[];
 extern const addr    kheap_top[], kstack_base[];
 
-extern usize         get_hartid(void);
+extern usize         get_mhartid(void);
 extern usize         get_mstatus(void);
 extern void          set_mstatus(usize);
 extern u64           strict_swap(volatile u64 *at, u64 with);

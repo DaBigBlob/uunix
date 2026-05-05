@@ -27,11 +27,19 @@ uunix_entry:
 
     j   main
 
-.section .text
-.globl get_hartid
-get_hartid:
-    csrr    a0, mhartid
+/*--- begin: macros ---*/
+#define FUNC(name)  \
+.section .text;     \
+.globl name;        \
+name:
+
+#define GETTER(thing)   \
+FUNC(get_##thing);            \
+    csrr    a0, thing;   \
     ret
+/*--- end: macros ---*/
+
+GETTER(mhartid)
 
 .section .text
 .globl get_mstatus

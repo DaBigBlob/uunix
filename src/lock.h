@@ -10,7 +10,7 @@
 
 #define spin2lock(lock)                                                   \
     do {                                                                  \
-        usize _uunis_priv__spin2unlock_hartid = get_hartid();             \
+        usize _uunis_priv__spin2unlock_hartid = get_mhartid();            \
         MIE_storeNunset(_uunis_priv__spin2unlock_hartid);                 \
         while (strict_swap((lock), LOCKED_NUM) != UNLOCKED_NUM)           \
             ;                                                             \
@@ -19,7 +19,7 @@
 #define spin2unlock(lock)                                                 \
     do {                                                                  \
         strict_swap((lock), UNLOCKED_NUM);                                \
-        usize _uunis_priv__spin2unlock_hartid = get_hartid();             \
+        usize _uunis_priv__spin2unlock_hartid = get_mhartid();            \
         restore_mstatus(_uunis_priv__spin2unlock_hartid);                 \
     } while (0)
 
