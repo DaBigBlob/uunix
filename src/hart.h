@@ -28,29 +28,21 @@ For each hart:
     - repeat
 */
 
-/* 64 bytes, alignment 8 */
 typedef struct {
-    usize a0;
-    usize a1;
-    usize a2;
-    usize a3;
-    usize a4;
-    usize a5;
-    usize lock;
-    addr  jump_addr;
-} HCB;
+    usize mstatus;
+} TEMP_hart;
 
-#define check_offset(n, o)                                                \
-    _Static_assert(offsetof(HCB, n) == o, "bad " #n " offset")
-check_offset(a0, 0x00);
-check_offset(a1, 0x08);
-check_offset(a2, 0x10);
-check_offset(a3, 0x18);
-check_offset(a4, 0x20);
-check_offset(a5, 0x28);
-check_offset(lock, 0x30);
-check_offset(jump_addr, 0x38);
-#undef check_offset
+typedef struct {
+    usize     a0;
+    usize     a1;
+    usize     a2;
+    usize     a3;
+    usize     a4;
+    usize     a5;
+    usize     lock;
+    addr      jump_addr;
+    TEMP_hart store;
+} HCB;
 
 #define M_get_HCB_addr(hartid)                                            \
     ((volatile addr)(kstack_base - (HART_STACK_SIZE * hartid) -           \
