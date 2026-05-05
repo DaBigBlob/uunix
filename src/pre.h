@@ -1,6 +1,8 @@
 #ifndef UUNIX_PRE
 #define UUNIX_PRE
 
+// One must bargain with the compiler.
+
 #if !defined(__STDC_VERSION__)
 #error "__STDC_VERSION__ not defined. Unacceptable."
 #endif

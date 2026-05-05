@@ -1,7 +1,7 @@
 #ifndef UUNIX_BASE
 #define UUNIX_BASE
 
-// What must exist at the bottom of the world?
+// One must bargain with the machine.
 
 #define STACK_SIZE 1048576 /* 1MiB */
 
