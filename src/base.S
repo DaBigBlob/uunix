@@ -8,7 +8,7 @@ kheap_top:
 kstack_base:
 /*--- end: stack alloc ---*/
 
-_:
+.globl _start /* make linker shut up */
 .section .text._uunix_entry
 _uunix_entry:
     /* pre c-call begin:  unsafe to call c functions */
