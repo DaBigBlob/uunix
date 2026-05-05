@@ -28,10 +28,12 @@ For each hart:
     - repeat
 */
 
+/* things a hart might want to store */
 typedef struct {
     usize mstatus;
 } TEMP_hart;
 
+/* hart-specific control block */
 typedef struct {
     usize     a0;
     usize     a1;
