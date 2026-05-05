@@ -1,3 +1,5 @@
+ENTRY(main) /* Useless for our case but makes linker shut up. */
+
 SECTIONS {
     clintctrl   = 0x2000000;
     clckctrl    = 0x10000000;
