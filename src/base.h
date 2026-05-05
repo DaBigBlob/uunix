@@ -10,11 +10,13 @@
 #endif // ASSEMBLYTIME
 
 #ifndef ASSEMBLYTIME
-#define UNIDEF(ret, name, args) extern ret name args
+
+#define UNIDEF(rett, name, args)     extern rett name args
+#define UNIDEFGET(rett, name, thing) UNIDEF(rett, name, (void))
+#define UNIDEFSET(thing, name, argt) UNIDEF(void, name, (argt))
+
 #else  // ASSEMBLYTIME
 // clang-format off
-
-#define UNIDEF(ret, name, args) .globl name;
 
 #define FUNC(name)      \
 .section .text;         \
@@ -23,32 +25,49 @@ name:
 
 #define ENDF(name) .size name, .-name
 
+#define UNIDEF(rett, name, args) .globl name;
+#define UNIDEFGET(rett, name, thing)\
+UNIDEF(rett, name, (void));         \
+FUNC(name);                         \
+    csrr    a0, thing;              \
+    ret;                            \
+ENDF(name)
+
+#define UNIDEFSET(thing, name, argt)\
+UNIDEF(void, name, (argt))          \
+FUNC(name);                         \
+    csrw    thing, a0;              \
+    ret;                            \
+ENDF(name)
+
 #define GETTER(thing)   \
 FUNC(get_##thing);      \
     csrr    a0, thing;  \
     ret;                \
 ENDF(get_##thing)
 
-#define SETTER(thing)       \
-FUNC(set_##thing);          \
-    csrw    mstatus, a0;    \
-    ret;                    \
+#define SETTER(thing)   \
+FUNC(set_##thing);      \
+    csrw    thing, a0;  \
+    ret;                \
 ENDF(get_##thing)
 
 // clang-format on
 #endif // ASSEMBLYTIME
 
-UNIDEF(usize, get_mhartid, (void));
+UNIDEFGET(usize, get_mhartid, mhartid);
 
-UNIDEF(usize, get_mstatus, (void));
+// UNIDEF(usize, get_mhartid, (void));
+
 UNIDEF(void, set_mstatus, (usize));
+UNIDEFGET(usize, get_mstatus, mstatus);
 
-UNIDEF(usize, get_mie, (void));
+UNIDEFGET(usize, get_mie, mie);
 UNIDEF(void, set_mie, (usize));
 
 UNIDEF(void, set_mtvec, (usize));
 
-UNIDEF(usize, get_mcause, (void));
+UNIDEFGET(usize, get_mcause, mcause);
 
 UNIDEF(u64, strict_swap, (volatile u64 * at, u64 with));
 

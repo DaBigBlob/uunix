@@ -8,8 +8,9 @@ kheap_top:
 kstack_base:
 /*--- end: stack alloc ---*/
 
-.globl _entry /* make explicitly available to linker */
-FUNC(_entry)
+.section .text._start
+.globl _start /* make explicitly available to linker */
+_start:
     /* pre c-call begin:  unsafe to call c functions */
     la  sp, kstack_base
     csrr    a0, mhartid
@@ -24,15 +25,12 @@ FUNC(_entry)
     mv  sp, a0
 
     j   main
-ENDF(_entry)
+ENDF(_start)
 
-GETTER(mhartid)
-GETTER(mstatus)
+
 SETTER(mstatus)
-GETTER(mie)
 SETTER(mie)
 SETTER(mtvec)
-GETTER(mcause)
 
 FUNC(strict_swap)
 /* trying to be a little defensive */

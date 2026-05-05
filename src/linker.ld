@@ -1,5 +1,3 @@
-ENTRY(_entry)
-
 SECTIONS {
     clint       = 0x2000000;
     clckctrl    = 0x10000000;
@@ -8,7 +6,7 @@ SECTIONS {
 
     . = 0x80000000;
     .text :{
-        out/base.o(.text);
+        *(.text._start);
         *(.text .text.*);
     }
 
