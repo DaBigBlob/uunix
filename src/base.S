@@ -27,8 +27,6 @@ _uunix_entry:
     j   main
 ENDF(_uunix_entry)
 
-
-SETTER(mstatus)
 SETTER(mie)
 SETTER(mtvec)
 
