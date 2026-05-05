@@ -1,4 +1,4 @@
-ENTRY(uunix_entry)
+ENTRY(_entry)
 
 SECTIONS {
     clint       = 0x2000000;

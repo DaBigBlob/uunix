@@ -8,8 +8,8 @@ kheap_top:
 kstack_base:
 /*--- end: stack alloc ---*/
 
-.globl uunix_entry
-FUNC(uunix_entry)
+.globl _entry /* make explicitly available to linker */
+FUNC(_entry)
     /* pre c-call begin:  unsafe to call c functions */
     la  sp, kstack_base
     csrr    a0, mhartid
@@ -24,7 +24,7 @@ FUNC(uunix_entry)
     mv  sp, a0
 
     j   main
-ENDF(uunix_entry)
+ENDF(_entry)
 
 
 GETTER(mhartid)
