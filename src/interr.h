@@ -5,12 +5,10 @@
 
 #define MSTATUS_MIE ((usize)1u << 3)
 
-#define store_mstatus()                                                   \
+#define MIE_storeNunset(hartid)                                           \
     do {                                                                  \
-        HCB_set_fld(get_hartid(), store).mstatus = get_mstatus();         \
+        store_mstatus(hartid);                                            \
+        set_mstatus(get_mstatus() & (~MSTATUS_MIE));                      \
     } while (0)
-
-#define restore_mstatus()                                                 \
-    set_mstatus(HCB_set_fld(get_hartid(), store).mstatus)
 
 #endif // UUNIX_INTERR
