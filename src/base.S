@@ -26,7 +26,6 @@ FUNC(_entry)
     j   main
 ENDF(_entry)
 
-
 GETTER(mhartid)
 GETTER(mstatus)
 SETTER(mstatus)
