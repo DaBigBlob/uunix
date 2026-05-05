@@ -1,18 +1,14 @@
 #define ASSEMBLYTIME
 #include "base.h"
-.extern main
-.extern impl_get_HCB_addr
 
 /*--- begin: stack alloc ---*/
 .section .bss
-.globl kheap_top
-.globl kstack_base
 kheap_top:
     .space STACK_SIZE
 kstack_base:
 /*--- end: stack alloc ---*/
 
-
+.globl uunix_entry
 FUNC(uunix_entry)
     /* pre c-call begin:  unsafe to call c functions */
     la  sp, kstack_base

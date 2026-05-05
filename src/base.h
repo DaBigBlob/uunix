@@ -7,24 +7,17 @@
 
 #ifndef ASSEMBLYTIME
 #include "pre.h"
+#endif // ASSEMBLYTIME
 
-extern volatile addr bss_begin[], bss_end[];
-extern const addr    kheap_top[], kstack_base[];
-
-extern usize         get_mhartid(void);
-extern usize         get_mstatus(void);
-extern void          set_mstatus(usize);
-extern u64           strict_swap(volatile u64 *at, u64 with);
-noreturn extern void hart_begin(usize a0, usize a1, usize a2, usize a3,
-                                usize a4, usize a5, usize sp,
-                                addr jump_addr);
-
+#ifndef ASSEMBLYTIME
+#define CASMD(ret, name, args) extern ret name args
 #else  // ASSEMBLYTIME
 // clang-format off
 
+#define CASMD(ret, name, args) .globl name;
+
 #define FUNC(name)      \
 .section .text;         \
-.globl name;            \
 .type name, @function;  \
 name:
 
@@ -44,4 +37,18 @@ ENDF(get_##thing)
 
 // clang-format on
 #endif // ASSEMBLYTIME
+
+CASMD(usize, get_mhartid, (void));
+CASMD(usize, get_mstatus, (void));
+CASMD(void, set_mstatus, (usize));
+CASMD(u64, strict_swap, (volatile u64 * at, u64 with));
+CASMD(noreturn void, hart_begin,
+      (usize a0, usize a1, usize a2, usize a3, usize a4, usize a5,
+       usize sp, addr jump_addr));
+
+CASMD(volatile addr, bss_begin, []);
+CASMD(volatile addr, bss_end, []);
+CASMD(const addr, kstack_base, []);
+CASMD(const addr, kheap_top, []);
+
 #endif // UUNIX_BASE
