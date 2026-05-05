@@ -5,8 +5,8 @@
 #include "hart.h"
 #include "interr.h"
 
-#define LOCKED_NUM   ((u64)0xaaaaaaaaaaaaaa)
-#define UNLOCKED_NUM (~LOCKED_NUM)
+#define UNLOCKED_NUM ((u64)0)
+#define LOCKED_NUM   (~UNLOCKED_NUM)
 
 #define spin2lock(lock)                                                   \
     do {                                                                  \
