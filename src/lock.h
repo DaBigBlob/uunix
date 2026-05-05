@@ -5,17 +5,20 @@
 #include "hart.h"
 #include "interr.h"
 
+#define LOCKED_NUM   ((u64)0xaaaaaa)
+#define UNLOCKED_NUM (~LOCKED_NUM)
+
 #define spin2lock(lock)                                                   \
     do {                                                                  \
         usize _uunis_priv__spin2unlock_hartid = get_hartid();             \
         MIE_storeNunset(_uunis_priv__spin2unlock_hartid);                 \
-        while (strict_swap((lock), 077777777) != 0)                       \
+        while (strict_swap((lock), LOCKED_NUM) != UNLOCKED_NUM)           \
             ;                                                             \
     } while (0)
 
 #define spin2unlock(lock)                                                 \
     do {                                                                  \
-        strict_swap((lock), 0);                                           \
+        strict_swap((lock), UNLOCKED_NUM);                                \
         usize _uunis_priv__spin2unlock_hartid = get_hartid();             \
         restore_mstatus(_uunis_priv__spin2unlock_hartid);                 \
     } while (0)
