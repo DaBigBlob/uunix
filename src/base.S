@@ -8,9 +8,9 @@ kheap_top:
 kstack_base:
 /*--- end: stack alloc ---*/
 
-.section .text._start
-.globl _start /* make explicitly available to linker */
-_start:
+.section .text._uunix_entry
+.globl _uunix_entry /* make explicitly available to linker */
+_uunix_entry:
     /* pre c-call begin:  unsafe to call c functions */
     la  sp, kstack_base
     csrr    a0, mhartid
@@ -25,7 +25,7 @@ _start:
     mv  sp, a0
 
     j   main
-ENDF(_start)
+ENDF(_uunix_entry)
 
 
 SETTER(mstatus)

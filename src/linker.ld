@@ -1,3 +1,5 @@
+ENTRY(_uunix_entry) /* Useless for our case but make linker shut up. */
+
 SECTIONS {
     clint       = 0x2000000;
     clckctrl    = 0x10000000;
@@ -6,7 +8,11 @@ SECTIONS {
 
     . = 0x80000000;
     .text :{
-        *(.text._start);
+        /*
+            Linker's ENTRY sets it in bin container but we dont keep that.
+            The true <<entry>> must be placed exactly at 0x80000000.
+        */
+        *(.text._uunix_entry);
         *(.text .text.*);
     }
 
