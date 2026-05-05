@@ -2,16 +2,34 @@
 .extern main
 .extern impl_get_HCB_addr
 
+/*--- begin: stack alloc ---*/
 .section .bss
 .globl kheap_top
 .globl kstack_base
 kheap_top:
     .space STACK_SIZE
 kstack_base:
+/*--- end: stack alloc ---*/
 
-.section .text
-.globl uunix_entry
-uunix_entry:
+/*--- begin: macros ---*/
+#define FUNC(name)  \
+.section .text;     \
+.globl name;        \
+name:
+
+#define GETTER(thing)   \
+FUNC(get_##thing);      \
+    csrr    a0, thing;  \
+    ret
+
+#define SETTER(thing)       \
+FUNC(set_##thing);          \
+    csrw    mstatus, a0;    \
+    ret
+/*--- end: macros ---*/
+
+
+FUNC(uunix_entry)
     /* pre c-call begin:  unsafe to call c functions */
     la  sp, kstack_base
     csrr    a0, mhartid
@@ -27,35 +45,13 @@ uunix_entry:
 
     j   main
 
-/*--- begin: macros ---*/
-#define FUNC(name)  \
-.section .text;     \
-.globl name;        \
-name:
 
-#define GETTER(thing)   \
-FUNC(get_##thing);            \
-    csrr    a0, thing;   \
-    ret
-/*--- end: macros ---*/
 
 GETTER(mhartid)
+GETTER(mstatus)
+SETTER(mstatus)
 
-.section .text
-.globl get_mstatus
-get_mstatus:
-    csrr    a0, mstatus
-    ret
-
-.section .text
-.globl set_mstatus
-set_mstatus:
-    csrw    mstatus, a0
-    ret
-
-.section .text
-.globl strict_swap
-strict_swap:
+FUNC(strict_swap)
 /* trying to be a little defensive */
     fence   iorw, iorw
     amoswap.d.aqrl  t0, a1, 0(a0)
@@ -63,8 +59,6 @@ strict_swap:
     mv      a0, t0
     ret
 
-.section .text
-.globl hart_begin
-hart_begin:
+FUNC(hart_begin)
     mv  sp, a6
     jr  a7
