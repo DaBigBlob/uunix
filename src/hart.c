@@ -1,6 +1,7 @@
 #include "base.h"
 #include "hart.h"
 #include "std.h"
+#include "lock.h"
 
 addr get_HCB_addr(void)
 {

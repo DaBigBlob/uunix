@@ -58,12 +58,6 @@ check_offset(jump_addr, 0x38);
 
 addr get_HCB_addr(void);
 
-#define spin2unlock(lock) strict_swap((lock), 0)
-#define spin2lock(lock)                                                   \
-    do {                                                                  \
-    } while (strict_swap((lock), 077777777) != 0)
-#define new_spinlock() ((u64)(0))
-
 noreturn void hart_done(void);
 
 void hart_task(usize hartid, usize a0, usize a1, usize a2, usize a3,
