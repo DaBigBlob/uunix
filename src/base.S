@@ -13,34 +13,46 @@ kstack_base:
 .globl uunix_entry
 uunix_entry:
     /* pre c-call begin:  unsafe to call c functions */
-    la   sp, kstack_base
-    csrr a0, mhartid
-    slli t1, a0, 12 /* 2^12 = 4096 bytes = 4KiB for each hart */
-    sub  sp, sp, t1
+    la  sp, kstack_base
+    csrr    a0, mhartid
+    slli    t1, a0, 12 /* 2^12 = 4096 bytes = 4KiB for each hart */
+    sub sp, sp, t1
         /* these hart-specific stack locations (and stack sizes)
         are temporary; permanent ones are decided in hart.c */
     /* pre c-call end */
 
     /* set final sp */
     call get_HCB_addr
-    mv sp, a0
+    mv  sp, a0
 
     j   main
 
 .section .text
 .globl get_hartid
 get_hartid:
-    csrr a0, mhartid
+    csrr    a0, mhartid
+    ret
+
+.section .text
+.globl mstatus_get
+mstatus_get:
+    csrr    a0, mstatus
+    ret
+
+.section .text
+.globl mstatus_set
+mstatus_set:
+    csrw    mstatus, a0
     ret
 
 .section .text
 .globl strict_swap
 strict_swap:
 /* trying to be a little defensive */
-    fence iorw, iorw
+    fence   iorw, iorw
     amoswap.d.aqrl  t0, a1, 0(a0)
-    fence iorw, iorw
-    mv              a0, t0
+    fence   iorw, iorw
+    mv      a0, t0
     ret
 
 .section .text
