@@ -1,6 +1,6 @@
 #include "base.S.h"
 .extern main
-.extern get_HCB_addr
+.extern impl_get_HCB_addr
 
 .section .bss
 .globl kheap_top
@@ -22,7 +22,7 @@ uunix_entry:
     /* pre c-call end */
 
     /* set final sp */
-    call get_HCB_addr
+    call impl_get_HCB_addr
     mv  sp, a0
 
     j   main

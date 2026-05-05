@@ -21,11 +21,11 @@ typedef struct {
     } store;
 } HCB;
 
-#define M_get_HCB_addr(hartid)                                            \
+#define get_HCB_addr(hartid)                                              \
     ((volatile addr)(kstack_base - (HART_STACK_SIZE * hartid) -           \
                      sizeof(HCB)))
 
-addr get_HCB_addr(void);
+addr impl_get_HCB_addr(void);
 
 noreturn void hart_done(void);
 
