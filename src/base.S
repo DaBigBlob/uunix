@@ -1,13 +1,6 @@
 #define ASSEMBLYTIME
 #include "base.h"
 
-/*--- begin: stack alloc ---*/
-.section .bss
-kheap_top:
-    .space STACK_SIZE
-kstack_base:
-/*--- end: stack alloc ---*/
-
 .globl uunix_entry
 FUNC(uunix_entry)
     /* pre c-call begin:  unsafe to call c functions */
