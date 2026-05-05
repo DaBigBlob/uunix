@@ -39,9 +39,19 @@ ENDF(get_##thing)
 #endif // ASSEMBLYTIME
 
 CASMD(usize, get_mhartid, (void));
+
 CASMD(usize, get_mstatus, (void));
 CASMD(void, set_mstatus, (usize));
+
+CASMD(usize, get_mie, (void));
+CASMD(void, set_mie, (usize));
+
+CASMD(void, set_mtvec, (usize));
+
+CASMD(usize, get_mcause, (void));
+
 CASMD(u64, strict_swap, (volatile u64 * at, u64 with));
+
 CASMD(noreturn void, hart_begin,
       (usize a0, usize a1, usize a2, usize a3, usize a4, usize a5,
        usize sp, addr jump_addr));
