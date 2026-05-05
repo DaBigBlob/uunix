@@ -34,14 +34,14 @@ get_hartid:
     ret
 
 .section .text
-.globl mstatus_get
-mstatus_get:
+.globl get_mstatus
+get_mstatus:
     csrr    a0, mstatus
     ret
 
 .section .text
-.globl mstatus_set
-mstatus_set:
+.globl set_mstatus
+set_mstatus:
     csrw    mstatus, a0
     ret
 
