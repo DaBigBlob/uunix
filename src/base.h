@@ -40,12 +40,6 @@ FUNC(name);                         \
     ret;                            \
 ENDF(name)
 
-#define GETTER(thing)   \
-FUNC(get_##thing);      \
-    csrr    a0, thing;  \
-    ret;                \
-ENDF(get_##thing)
-
 #define SETTER(thing)   \
 FUNC(set_##thing);      \
     csrw    thing, a0;  \
