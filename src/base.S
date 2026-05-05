@@ -8,8 +8,8 @@ kheap_top:
 kstack_base:
 /*--- end: stack alloc ---*/
 
+_:
 .section .text._uunix_entry
-.globl _uunix_entry /* make explicitly available to linker */
 _uunix_entry:
     /* pre c-call begin:  unsafe to call c functions */
     la  sp, kstack_base
