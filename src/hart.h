@@ -23,7 +23,7 @@ typedef struct {
 } HCB;
 
 #define get_HCB_addr(hartid)                                              \
-    ((volatile addr)(kstack_base - (HART_STACK_SIZE * hartid) -           \
+    ((volatile addr)(kstack_base - (HART_STACK_SIZE * (hartid + 1)) -     \
                      sizeof(HCB)))
 
 #define HCB_set_fld(hartid, fld) ((HCB *)get_HCB_addr(hartid))->fld

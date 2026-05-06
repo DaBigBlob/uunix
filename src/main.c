@@ -9,7 +9,7 @@
 noreturn void main(void)
 {
     /* setup interrupts on all harts */
-    set_mtvec((any)wait4int);
+    set_mtvec((any)hart_done);
     set_mie((get_mie() & (~MASK_MIE_MTIE) & (~MASK_MIE_MEIE)) |
             MASK_MIE_MSIE); // enable software int only
     set_mstatus(get_mstatus() | MASK_MSTATUS_MIE); // enable global int
