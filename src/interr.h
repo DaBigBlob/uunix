@@ -16,7 +16,11 @@ extern volatile u32 clint[];
         clint[hartid] = 0;                                                \
     } while (0)
 
-#define MASK_MSTATUS_MIE ((usize)1u << 3)
+#define MASK_MSTATUS_MIE ((usize)1 << 3)
+
+#define MASK_MIE_MSIE ((usize)1 << 3)  /* software interrupt */
+#define MASK_MIE_MTIE ((usize)1 << 7)  /* timer interrupt */
+#define MASK_MIE_MEIE ((usize)1 << 11) /* external interrupt */
 
 #define MIE_storeNunset(hartid)                                           \
     do {                                                                  \
