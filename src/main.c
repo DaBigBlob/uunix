@@ -9,7 +9,7 @@
 noreturn void main(void)
 {
     /* setup */
-    mem_set(bss_begin, bss_end, volatile addr, 0);
+    // mem_set(bss_begin, bss_end, volatile addr, 0);
     uart_init(uart0);
     uart_init(uart1);
 
@@ -29,8 +29,6 @@ noreturn void main(void)
         for (;;)
             ;
     }
-
-    uart_puts(uart0, "hi\r\n");
 
     /* set task for self */
     set_msip(mscratch2HCB()->hartid);
