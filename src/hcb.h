@@ -24,6 +24,4 @@ typedef struct {
     ((volatile addr)(kstack_base - (HART_STACK_SIZE * (hartid + 1)) -     \
                      sizeof(HCB)))
 
-addr impl_get_HCB_addr(void);
-
 #endif // UUNIX_HCB
