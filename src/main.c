@@ -26,6 +26,8 @@ noreturn void main(void)
     uart_init(uart0);
     uart_init(uart1);
 
+    uart_puts(uart0, "hi\r\n");
+
     /* set task for self */
     set_msip(get_mhartid());
 }
