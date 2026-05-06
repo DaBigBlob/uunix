@@ -44,11 +44,12 @@ UNIDEFGET(usize, get_mhartid, mhartid);
 UNIDEFGET(usize, get_mstatus, mstatus);
 UNIDEFGET(usize, get_mie, mie);
 UNIDEFGET(usize, get_mcause, mcause);
-UNIDEFGET(addr, get_mepc, mepc);
+UNIDEFGET(usize, get_mepc, mepc);
 
 UNIDEFSET(mstatus, set_mstatus, usize);
 UNIDEFSET(mie, set_mie, usize);
 UNIDEFSET(mtvec, set_mtvec, any);
+UNIDEFSET(mepc, set_mepc, usize);
 
 UNIDEF(u64, strict_swap, (volatile u64 * at, u64 with));
 
