@@ -19,8 +19,8 @@ noreturn void main(void)
 
     /* setup interrupts on all harts */
     set_mtvec((any)trap_entry);
-    set_mie((get_mie() & (~MASK_MIE_MTIE)) | MASK_MIE_MEIE |
-            MASK_MIE_MSIE); // enable software+hardware int only
+    set_mie((get_mie() & ~(MASK_MIE_MTIE | MASK_MIE_MEIE)) |
+            MASK_MIE_MSIE);
     set_mstatus(get_mstatus() | MASK_MSTATUS_MIE); // enable global int
 
     /* send non-0 harts to run once then dead spin */
