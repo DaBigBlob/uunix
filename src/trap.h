@@ -2,7 +2,6 @@
 #define UUNIX_INTERR
 
 #include "pre.h"
-#include "hart.h"
 
 extern volatile u32 clint[];
 
