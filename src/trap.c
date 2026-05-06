@@ -16,6 +16,10 @@ void trap_handle(void)
 
     spin2lock(&uart_lock);
 
+    uart_puts(uart0, "hartid=");
+    uart_putu64(&uart0, get_mhartid());
+    uart_puts(uart0, "\r\n");
+
     usize mcause = get_mcause();
     usize mepc   = get_mepc();
     usize mtval  = get_mtval();
@@ -32,9 +36,9 @@ void trap_handle(void)
     uart_putu64(&uart0, mtval);
     uart_puts(uart0, "\r\n");
 
-    uart_puts(uart0, "hartid=");
-    uart_putu64(&uart0, get_mhartid());
-    uart_puts(uart0, "\r\n");
+    // uart_puts(uart0, "hartid=");
+    // uart_putu64(&uart0, get_mhartid());
+    // uart_puts(uart0, "\r\n");
 
     uart_puts(uart0, "---------\r\n");
     spin2unlock(&uart_lock);
