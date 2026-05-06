@@ -8,31 +8,38 @@
 
 noreturn void main(void)
 {
-    /* setup */
-    // mem_set(bss_begin, bss_end, volatile addr, 0);
-    uart_init(uart0);
-    uart_init(uart1);
+    usize hart = get_mhartid();
 
-    /* set up HCB */
-    set_mscratch((any)compute_HCB_addr(get_mhartid()));
-    mscratch2HCB()->hartid = get_mhartid();
+    set_mstatus(get_mstatus() & ~MASK_MSTATUS_MIE);
 
-    /* setup interrupts on all harts */
-    set_mtvec((any)trap_entry);
-    set_mie((get_mie() & ~(MASK_MIE_MTIE | MASK_MIE_MEIE)) |
-            MASK_MIE_MSIE);
-    set_mstatus(get_mstatus() | MASK_MSTATUS_MIE); // enable global int
-
-    /* send non-0 harts to run once then dead spin */
-    if (get_mhartid() != 0) {
-        set_msip(mscratch2HCB()->hartid);
-        for (;;)
-            ;
+    if (hart == 0) {
+        mem_set(bss_begin, bss_end, volatile addr, 0);
+        uart_init(uart0);
+        uart_init(uart1);
     }
 
-    /* set task for self */
-    set_msip(mscratch2HCB()->hartid);
+    /* per-hart setup */
+    set_mscratch((any)compute_HCB_addr(hart));
+    mscratch2HCB()->hartid = hart;
+
+    set_mtvec((any)trap_entry);
+
+    unset_msip(hart);
+
+    set_mie((get_mie() & ~(MASK_MIE_MTIE | MASK_MIE_MEIE)) |
+            MASK_MIE_MSIE);
+
+    set_mstatus(get_mstatus() | MASK_MSTATUS_MIE);
+
+    if (hart != 0) {
+        for (;;)
+            wait4int();
+    }
+
+    uart_puts(uart0, "hi\r\n");
+
+    set_msip(1); /* interrupt hart 1 */
 
     for (;;)
-        ;
+        wait4int();
 }

@@ -12,7 +12,7 @@ static u64 uart_lock = UNLOCKED_NUM;
 
 void trap_handle(void)
 {
-    unset_msip(mscratch2HCB()->hartid);
+    unset_msip(get_mhartid());
 
     spin2lock(&uart_lock);
     usize mcause = get_mcause();
