@@ -47,10 +47,12 @@ FUNC(wait4int)
 ENDF(wait4int)
 
 FUNC(trap_entry)
+    /* store register */
     csrrw   t6, mscratch, t6        /* ms(HB) <-> t6 */
     sd      t5, HCB_OFFSET_t5(t6)   /* t5 -> HB^ */
     csrr    t5, mscratch            /* t5 <- ms(t6) */
     sd      t5, HCB_OFFSET_t6(t6)   /* t5(t6) -> HB^ */
+    csrw  mscratch, t6              /* t6(HB) -> ms*/
 
     /* the rest of the non-m ones */
 #define df0(a) sd a, HCB_OFFSET_##a(t6);
@@ -61,12 +63,24 @@ FUNC(trap_entry)
 #define df0(a) csrr t5, a; sd t5, HCB_OFFSET_##a(t6);
     REGISTER_LIST_m(df0, df0)
 #undef df0
-
     /* all regesters saved: we are free to call stuff */
 
-    /* restore mscratch */
-    call    ASMUSE_get_HCB_addr
-    csrw    mscratch, a0;
-
+    /* the actual meat */
     call   trap_handle
+
+    /* restore register: easier this time */
+    csrr t6, mscratch
+
+    /* the m ones (except int specific ones) */
+    #define df0(a) ld t5, HCB_OFFSET_##a(t6); csrw a, t5;
+        REGISTER_LIST_m_NOint(df0, df0)
+    #undef df0
+
+    /* the non-m ones */
+    #define df0(a) ld a, HCB_OFFSET_##a(t0);
+        REGISTER_LIST_NOm(df0, df0)
+    #undef df0
+    /* ^notice: t6 is restored last; and its safe (i think) */
+
+    mret
 ENDF(trap_entry)
