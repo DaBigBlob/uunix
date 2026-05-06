@@ -16,12 +16,12 @@ extern volatile u32 clint[];
         clint[hartid] = 0;                                                \
     } while (0)
 
-#define MSTATUS_MIE ((usize)1u << 3)
+#define MASK_MSTATUS_MIE ((usize)1u << 3)
 
 #define MIE_storeNunset(hartid)                                           \
     do {                                                                  \
         store_mstatus(hartid);                                            \
-        set_mstatus(get_mstatus() & (~MSTATUS_MIE));                      \
+        set_mstatus(get_mstatus() & (~MASK_MSTATUS_MIE));                 \
     } while (0)
 
 #endif // UUNIX_INTERR
