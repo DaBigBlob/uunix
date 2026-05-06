@@ -22,12 +22,15 @@ noreturn void main(void)
     set_mscratch_hstackbase(compute_hartid2hstackbase(hartid));
     compute_hstackbase2HCB(get_mscratch_hstackbase())->hartid = hartid;
 
+    /* inits hart 0 needs to do */
     if (hartid == 0) {
         mem_set(bss_begin, bss_end, u8, 0);
         uart_init(uart0);
         uart_init(uart1);
         init_done = 1;
     }
+
+    /*********************************************************************/
 
     while (!init_done)
         ; // dumb wait: nothing else safe yet
