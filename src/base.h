@@ -48,13 +48,13 @@ UNIDEFGET(addr, get_mepc, mepc);
 
 UNIDEFSET(mstatus, set_mstatus, usize);
 UNIDEFSET(mie, set_mie, usize);
-UNIDEFSET(mtvec, set_mtvec, usize);
+UNIDEFSET(mtvec, set_mtvec, any);
 
 UNIDEF(u64, strict_swap, (volatile u64 * at, u64 with));
 
 UNIDEF(noreturn void, hart_begin,
        (usize a0, usize a1, usize a2, usize a3, usize a4, usize a5,
-        usize sp, addr jump_addr));
+        usize sp, any jump_addr));
 
 UNIDEF(u64, wait2int, (void));
 

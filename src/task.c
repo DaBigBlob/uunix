@@ -86,9 +86,9 @@ noreturn void h0t0(void)
 
     spin2unlock(&uart_lock);
 
-    hart_task(2, 0, 1, 2, 3, 4, 5, (addr)hat0);
-    hart_task(3, 1, 2, 3, 4, 5, 0, (addr)hat0);
-    hart_task(2, 2, 3, 4, 5, 0, 1, (addr)hat0);
+    hart_task(2, 0, 1, 2, 3, 4, 5, (any)hat0);
+    hart_task(3, 1, 2, 3, 4, 5, 0, (any)hat0);
+    hart_task(2, 2, 3, 4, 5, 0, 1, (any)hat0);
 
     hart_done();
 }

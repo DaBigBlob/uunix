@@ -15,7 +15,7 @@ typedef struct {
     usize a4;
     usize a5;
     usize lock;
-    addr  jump_addr;
+    any   jump_addr;
     struct { /* things a hart might want to temporarily store */
         usize mstatus;
     } store;
@@ -40,7 +40,7 @@ addr impl_get_HCB_addr(void);
 noreturn void hart_done(void);
 
 void hart_task(usize hartid, usize a0, usize a1, usize a2, usize a3,
-               usize a4, usize a5, addr jump_addr);
+               usize a4, usize a5, any jump_addr);
 
 /** Logistics
     We manage no more than 256 harts (ids: 0 to 255).

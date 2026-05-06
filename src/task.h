@@ -2,7 +2,7 @@
 #define UUNIX_TASK
 #include "pre.h" // IWYU pragma: keep
 
-#define hatwait ((addr)0)
+#define hatwait ((any)0)
 noreturn void h0t0(void);
 
 #endif // UUNIX_TASK
