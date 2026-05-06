@@ -48,7 +48,7 @@
 #define HCB_OFFSET_mcause  0x108
 #define HCB_OFFSET_mtval   0x110
 
-#ifndef ASSEMBLYTIME
+#ifndef ASSEMBLYTIME // C begin ---------------------
 #include "pre.h"
 
 #define df0(a) a,
@@ -66,6 +66,6 @@ REGISTER_LIST(df0, df0)
 #undef df0
 #undef cof
 
-#endif // ASSEMBLYTIME
+#endif // C end -------------------------------------
 
 #endif // UUNIX_HCB

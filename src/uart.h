@@ -27,6 +27,7 @@ check_offset(ip, 0x14);
 check_offset(div, 0x18);
 #undef check_offset
 
+/* from linker */
 extern volatile uart_t uart0, uart1;
 
 #define MASK_UART_TX_ISFULL  0x80000000

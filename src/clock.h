@@ -27,6 +27,7 @@ check_offset(0x24, coreclksel);
 check_offset(0x28, devicesresetreg);
 #undef check_offset
 
+/* from linker */
 extern volatile clck_t clckctrl;
 
 /*

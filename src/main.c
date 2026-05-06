@@ -1,45 +1,40 @@
-#include "base.h"
 #include "pre.h"
-#include "std.h"
-#include "uart.h"
-#include "hcb.h"
-#include "hart.h"
+#include "base.h"
 #include "trap.h"
+#include "mem.h"
+#include "std.h"
+
+static u8 init_done = 0; // only hart 0 should mutate
 
 noreturn void main(void)
 {
-    usize hart = get_mhartid();
+    set_mstatus(get_mstatus() & ~MASK_MSTATUS_MIE); // disable int
 
-    set_mstatus(get_mstatus() & ~MASK_MSTATUS_MIE);
+    usize hartid = get_mhartid();
 
-    if (hart == 0) {
-        mem_set(bss_begin, bss_end, volatile addr, 0);
+    /* setup int */
+    set_mtvec((any)trap_entry); // set int vec
+    set_mie((get_mie() & ~(MASK_MIE_MTIE | MASK_MIE_MEIE)) |
+            MASK_MIE_MSIE); // enable soft int only
+    unset_msip(hartid);     // clear self soft int
+
+    /* setup HCB */
+    // set_mscratch_HCB();
+
+    if (hartid == 0) {
+        mem_set(bss_begin, bss_end, u8, 0);
         uart_init(uart0);
         uart_init(uart1);
+        init_done = 1;
     }
 
-    /* per-hart setup */
-    set_mscratch((any)compute_HCB_addr(hart));
-    mscratch2HCB()->hartid = hart;
+    while (!init_done)
+        ; // dumb wait: nothing else safe yet
 
-    set_mtvec((any)trap_entry);
-
-    unset_msip(hart);
-
-    set_mie((get_mie() & ~(MASK_MIE_MTIE | MASK_MIE_MEIE)) |
-            MASK_MIE_MSIE);
-
-    set_mstatus(get_mstatus() | MASK_MSTATUS_MIE);
-
-    if (hart != 0) {
-        for (;;)
-            wait4int();
+    if (hartid == 0) {
+        // command
     }
-
-    uart_puts(uart0, "hi\r\n");
-
-    set_msip(1); /* interrupt hart 1 */
 
     for (;;)
-        wait4int();
+        wait4int(); // wait for task
 }

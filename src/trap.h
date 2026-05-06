@@ -1,8 +1,8 @@
 #ifndef UUNIX_INTERR
 #define UUNIX_INTERR
-
 #include "pre.h"
 
+/* from linker */
 extern volatile u32 clint[];
 
 #define get_msip(hartid) (clint[hartid] & 1)

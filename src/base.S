@@ -1,28 +1,24 @@
 #define ASSEMBLYTIME
 #include "base.h"
-#include "hcb.h"
 
-/*--- begin: stack alloc ---*/
+/************************* pre c-call begin: unsafe to call c functions **/
 .section .bss
-kheap_top:
-    .space STACK_SIZE
-kstack_base:
-/*--- end: stack alloc ---*/
+    .space 524288 /* 2^19 bytes */
+_uunix_entry_tmp_stack:
 
 .section .text._uunix_entry
 _uunix_entry:
-    /* pre c-call begin:  unsafe to call c functions */
-    la      sp, kstack_base
+    la      sp, _uunix_entry_tmp_stack
     csrr    a0, mhartid
-    slli    t1, a0, 12 /* 2^12 = 4096 bytes = 4KiB for each hart */
+    slli    t1, a0, 11 /* 2^11 = 2048 bytes = 2KiB for each hart */
     sub     sp, sp, t1
-        /* these hart-specific stack locations (and stack sizes)
-        are temporary; permanent ones are decided in hart.c */
-    /* pre c-call end */
+/************************* pre c-call end ********************************/
 
-    /* set final sp */
-    call    ASMUSE_get_HCB_addr
+    /* set correct sp */
+    call    ASMUSE_get_hstackbase /* must use less than 2KiB */
     mv      sp, a0
+
+    csrr    a0, mhartid /* debug point + main arg */
 
     j   main
 ENDF(_uunix_entry)
@@ -35,11 +31,6 @@ FUNC(strict_swap)
     mv      a0, t0
     ret
 ENDF(strict_swap)
-
-FUNC(hart_begin)
-    mv  sp, a6
-    jr  a7
-ENDF(hart_begin)
 
 FUNC(wait4int)
     wfi
@@ -66,7 +57,7 @@ FUNC(trap_entry)
     /* all regesters saved: we are free to call stuff */
 
     /* set safe sp */
-    call    ASMUSE_get_HCB_addr
+    call    ASMUSE_get_hstackbase
     mv      sp, a0
 
     /* the actual meat */

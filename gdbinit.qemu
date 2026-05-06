@@ -6,26 +6,6 @@ set print asm-demangle on
 # Always show current instruction.
 display/i $pc
 
-# Print current function/symbol whenever execution stops.
-define hook-stop
-    echo \n--- current location ---\n
-    info symbol $pc
-    x/i $pc
-    echo ------------------------\n
-end
-
-# Alias: list known functions.
-define funcs
-    info functions
-end
-
-document funcs
-List all functions known to GDB.
-Use: funcs
-Use: info functions REGEX
-Example: info functions task
-end
-
 # Preserve pagination setting.
 pipe show pagination | IFS='s' read a b; test "$b" = "off."
 if $_shell_exitcode
@@ -51,6 +31,13 @@ thread 1.1
 
 info inferiors
 info threads
+
+thread 1.1
+tbreak base.S:22
+c
+i r sp
+i r a0
+
 
 if $_shell_exitcode
     set pagination on

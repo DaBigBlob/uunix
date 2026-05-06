@@ -19,10 +19,10 @@ F_LINKER = -nostdlib -fuse-ld=lld -Wl,$(LDFLAGS)
 out/%.o: src/%.c
 	$(CC) $(F_CCONFORM) $(F_WARNINGS) $(F_TARGET) $(F_CODEGEN) $(F_OPTIMIZE) $(F_EXTRA) -c -o $@ $<
 
-out/base.o: src/base.S
+out/base.S.o: src/base.S
 	$(CC) $(F_TARGET) $(F_CODEGEN) $(F_OPTIMIZE) $(F_EXTRA) -c -o $@ $^
 
-OBJS := $(patsubst src/%.c,out/%.o,$(wildcard src/*.c)) out/base.o
+OBJS := $(patsubst src/%.c,out/%.o,$(wildcard src/*.c)) out/base.S.o
 
 ########################## linking
 out/kern.elf: src/linker.ld $(OBJS)
