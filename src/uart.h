@@ -35,14 +35,14 @@ extern volatile uart_t uart0, uart1;
 
 #define uart_putc(urt, ch)                                                \
     do {                                                                  \
-        while (urt.txdata & MASK_UART_TX_ISFULL)                          \
+        while ((urt).txdata & MASK_UART_TX_ISFULL)                        \
             ;                                                             \
-        urt.txdata = ch;                                                  \
+        (urt).txdata = ch;                                                \
     } while (0)
 
 #define uart_getc(urt)                                                    \
-    (i32)((urt.rxdata & MASK_UART_RX_ISEMPTY) ?                           \
-              (urt.rxdata & MASK_UART_RX_DATA) :                          \
+    (i32)(((urt).rxdata & MASK_UART_RX_ISEMPTY) ?                         \
+              ((urt).rxdata & MASK_UART_RX_DATA) :                        \
               -1)
 
 #define uart_puts(urt, str)                                               \

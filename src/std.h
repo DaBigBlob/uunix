@@ -2,6 +2,7 @@
 #define UUNIX_STD
 
 #include "pre.h"
+#include "uart.h"
 
 /* we would like to minimize stack use
  * (we dont have too much of it)
@@ -18,26 +19,6 @@ Generic iterator over a range of memory
 specified by (begin, exclusive_end) */
 #define range_foreach(begin, end, elem_t, id)                             \
     for (elem_t *id = (elem_t *)(begin); id < (elem_t *)(end); ++id)
-
-#define uint1cstr(size, _num, id)                                         \
-    do {                                                                  \
-        char   *cur = id;                                                 \
-        u##size num = (u##size)(_num);                                    \
-        for (; *cur; ++cur)                                               \
-            *cur = '0';                                                   \
-        for (--cur; num && cur >= id; --cur) {                            \
-            *cur = "0123456789abcdef"[num & 0xf];                         \
-            num >>= 4;                                                    \
-        }                                                                 \
-        for (; (*(id + 2) == '0' && *(id + 3)); ++id)                     \
-            ;                                                             \
-        id[1] = 'x';                                                      \
-    } while (0)
-
-#define uint2cstr(size, _num, id)                                         \
-    char  _uunix_priv__uint2cstr##id[] = "00" STR(UINT##size##_MAX);      \
-    char *id                           = _uunix_priv__uint2cstr##id;      \
-    uint1cstr(size, _num, id)
 
 /** inrements pointer b by t till b = e,
 for each b, *b = c of type t */
@@ -58,5 +39,7 @@ for each b, *b = *d of type t */
             ++_d;                                                         \
         }                                                                 \
     } while (0)
+
+extern void uart_putu64(volatile uart_t *urt, u64 num);
 
 #endif // UUNIX_STD
