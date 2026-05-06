@@ -20,7 +20,7 @@ _uunix_entry:
     /* pre c-call end */
 
     /* set final sp */
-    call impl_get_HCB_addr
+    call ASMUSE_get_HCB_addr
     mv  sp, a0
 
     j   main

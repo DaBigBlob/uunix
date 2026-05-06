@@ -6,6 +6,6 @@
 #define MAX_HARTS       256
 #define HART_STACK_SIZE ((STACK_SIZE) / (MAX_HARTS))
 
-addr impl_get_HCB_addr(void);
+addr ASMUSE_get_HCB_addr(void);
 
 #endif // UUNIX_HART
