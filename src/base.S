@@ -39,3 +39,8 @@ FUNC(hart_begin)
     mv  sp, a6
     jr  a7
 ENDF(hart_begin)
+
+FUNC(wait2int)
+    wfi
+    ret
+ENDF(wait2int)

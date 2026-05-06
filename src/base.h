@@ -56,6 +56,8 @@ UNIDEF(noreturn void, hart_begin,
        (usize a0, usize a1, usize a2, usize a3, usize a4, usize a5,
         usize sp, addr jump_addr));
 
+UNIDEF(u64, wait2int, (void));
+
 UNIDEF(volatile addr, bss_begin, []);
 UNIDEF(volatile addr, bss_end, []);
 UNIDEF(const addr, kstack_base, []);
