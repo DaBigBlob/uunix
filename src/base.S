@@ -40,7 +40,7 @@ FUNC(hart_begin)
     jr  a7
 ENDF(hart_begin)
 
-FUNC(wait2int)
+FUNC(wait4int)
     wfi
     ret
-ENDF(wait2int)
+ENDF(wait4int)
