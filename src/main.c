@@ -19,8 +19,11 @@ noreturn void main(void)
     set_mstatus(get_mstatus() | MASK_MSTATUS_MIE); // enable global int
 
     /* send non-0 harts to spin-wait */
-    if (get_mhartid() != 0)
+    if (get_mhartid() != 0) {
         set_msip(mscratch2HCB()->hartid);
+        for (;;)
+            ;
+    }
 
     /* setup */
     mem_set(bss_begin, bss_end, volatile addr, 0);
@@ -31,4 +34,7 @@ noreturn void main(void)
 
     /* set task for self */
     set_msip(mscratch2HCB()->hartid);
+
+    for (;;)
+        ;
 }

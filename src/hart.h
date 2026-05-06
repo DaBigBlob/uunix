@@ -4,7 +4,7 @@
 #include "base.h"
 #include "hcb.h"
 
-#define MAX_HARTS       256
+#define MAX_HARTS       128
 #define HART_STACK_SIZE ((STACK_SIZE) / (MAX_HARTS))
 
 #define compute_HCB_addr(hartid)                                          \
