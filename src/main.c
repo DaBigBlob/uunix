@@ -4,11 +4,14 @@
 #include "uart.h"
 #include "hart.h"
 #include "task.h"
+#include "interr.h"
 
 noreturn void main(void)
 {
-    /* enable software interrupts on all harts */
-    // set_mtvec(hatwait);
+    /* setup interrupts on all harts */
+    set_mtvec(hatwait);                            // clear
+    set_mie(get_mie() | MASK_MIE_MSIE);            // enable software int
+    set_mstatus(get_mstatus() | MASK_MSTATUS_MIE); // enable global int
 
     /* send non-0 harts to spin-wait */
     if (get_mhartid() != 0) {
