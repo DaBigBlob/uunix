@@ -4,7 +4,7 @@
 #include "uart.h"
 #include "hart.h"
 #include "task.h"
-#include "interr.h"
+#include "trap.h"
 
 noreturn void main(void)
 {

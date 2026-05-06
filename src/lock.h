@@ -3,7 +3,7 @@
 
 #include "base.h" // IWYU pragma: keep
 #include "hart.h"
-#include "interr.h"
+#include "trap.h"
 
 #define UNLOCKED_NUM ((u64)0)
 #define LOCKED_NUM   (~UNLOCKED_NUM)
