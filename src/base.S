@@ -68,5 +68,5 @@ FUNC(trap_entry)
     call    ASMUSE_get_HCB_addr
     csrw    mscratch, a0;
 
-    j   trap_handle
+    call   trap_handle
 ENDF(trap_entry)
