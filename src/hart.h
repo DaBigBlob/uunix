@@ -24,18 +24,6 @@ typedef struct {
     ((volatile addr)(kstack_base - (HART_STACK_SIZE * (hartid + 1)) -     \
                      sizeof(HCB)))
 
-#define get_HCB_addr(hartid) compute_HCB_addr(hartid)
-
-#define HCB_set_fld(hartid, fld) ((HCB *)get_HCB_addr(hartid))->fld
-
-#define store_mstatus(hartid)                                             \
-    do {                                                                  \
-        HCB_set_fld(hartid, store).mstatus = get_mstatus();               \
-    } while (0)
-
-#define restore_mstatus(hartid)                                           \
-    set_mstatus(HCB_set_fld(hartid, store).mstatus)
-
 addr impl_get_HCB_addr(void);
 
 #endif // UUNIX_HART

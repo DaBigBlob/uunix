@@ -3,5 +3,5 @@
 
 addr impl_get_HCB_addr(void)
 {
-    return get_HCB_addr(get_mhartid());
+    return compute_HCB_addr(get_mhartid());
 }
