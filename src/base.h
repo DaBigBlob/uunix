@@ -44,6 +44,7 @@ UNIDEFGET(usize, get_mhartid, mhartid);
 UNIDEFGET(usize, get_mstatus, mstatus);
 UNIDEFGET(usize, get_mie, mie);
 UNIDEFGET(usize, get_mcause, mcause);
+UNIDEFGET(addr, get_mepc, mepc);
 
 UNIDEFSET(mstatus, set_mstatus, usize);
 UNIDEFSET(mie, set_mie, usize);
