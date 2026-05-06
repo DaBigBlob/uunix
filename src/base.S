@@ -65,6 +65,10 @@ FUNC(trap_entry)
 #undef df0
     /* all regesters saved: we are free to call stuff */
 
+    /* set safe sp */
+    call    ASMUSE_get_HCB_addr
+    mv      sp, a0
+
     /* the actual meat */
     call   trap_handle
 
