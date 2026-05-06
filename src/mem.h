@@ -13,7 +13,9 @@ typedef struct {
     HCB hcb;
 } hart_mem_t;
 
-#define compute_hstackbase(hartid) ((any)(&kern_mem[hartid].hcb))
+#define compute_hartid2HCB(hartid)        (&kern_mem[(hartid)].hcb)
+#define compute_hartid2hstackbase(hartid) ((any)compute_hartid2HCB(hartid))
+#define compute_hstackbase2HCB(hstackbase) ((HCB *)(hstackbase))
 
 extern hart_mem_t kern_mem[MAX_HARTS];
 

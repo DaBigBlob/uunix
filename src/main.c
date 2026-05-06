@@ -19,7 +19,8 @@ noreturn void main(void)
     unset_msip(hartid);     // clear self soft int
 
     /* setup HCB */
-    // set_mscratch_HCB();
+    set_mscratch_hstackbase(compute_hartid2hstackbase(hartid));
+    compute_hstackbase2HCB(get_mscratch_hstackbase())->hartid = hartid;
 
     if (hartid == 0) {
         mem_set(bss_begin, bss_end, u8, 0);
