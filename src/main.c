@@ -2,7 +2,7 @@
 #include "pre.h"
 #include "std.h"
 #include "uart.h"
-#include "hart.h"
+#include "hcb.h"
 #include "trap.h"
 
 noreturn void main(void)
