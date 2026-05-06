@@ -3,6 +3,8 @@
 
 #include "hart.h"
 
+extern volatile u8 clint[];
+
 #define MSTATUS_MIE ((usize)1u << 3)
 
 #define MIE_storeNunset(hartid)                                           \
