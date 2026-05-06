@@ -43,6 +43,7 @@
 #define HCB_OFFSET_mcause  0x108
 #define HCB_OFFSET_mtval   0x110
 
+#ifndef ASSEMBLYTIME
 #include "pre.h"
 
 #define df0(a) a,
@@ -65,5 +66,8 @@ REGISTER_LIST(df0, df0)
 #define compute_HCB_addr(hartid)                                          \
     ((volatile addr)(kstack_base - (HART_STACK_SIZE * (hartid + 1)) -     \
                      sizeof(HCB)))
+#else // ASSEMBLYTIME
+
+#endif // ASSEMBLYTIME
 
 #endif // UUNIX_HCB
