@@ -18,20 +18,6 @@ typedef struct {
         usize mepc, mstatus, mcause, mtval;
     } reg;
     usize hartid;
-
-    // old stuff
-    usize a0;
-    usize a1;
-    usize a2;
-    usize a3;
-    usize a4;
-    usize a5;
-    usize lock;
-    any   jump_addr;
-    struct { /* things a hart might want to temporarily store */
-        usize mstatus;
-        usize mpec;
-    } store;
 } HCB;
 
 #define compute_HCB_addr(hartid)                                          \
@@ -51,17 +37,5 @@ typedef struct {
     set_mstatus(HCB_set_fld(hartid, store).mstatus)
 
 addr impl_get_HCB_addr(void);
-
-noreturn void hart_done(void);
-
-void hart_task(usize hartid, usize a0, usize a1, usize a2, usize a3,
-               usize a4, usize a5, any jump_addr);
-
-/** Logistics
-    We manage no more than 256 harts (ids: 0 to 255).
-    256 * 4096 = 256 * 2^12 = 1,048,576 = 1MiB
-
-    Of that 4096 = 4KiB stack, 64bytes are reserved for HCB.
-*/
 
 #endif // UUNIX_HART

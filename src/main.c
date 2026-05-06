@@ -3,7 +3,6 @@
 #include "std.h"
 #include "uart.h"
 #include "hart.h"
-#include "task.h"
 #include "trap.h"
 
 noreturn void main(void)
@@ -13,7 +12,7 @@ noreturn void main(void)
     ((HCB *)get_mscratch())->hartid = get_mhartid();
 
     /* setup interrupts on all harts */
-    set_mtvec((any)hart_done);
+    set_mtvec((any)wait4int);
     set_mie((get_mie() & (~MASK_MIE_MTIE) & (~MASK_MIE_MEIE)) |
             MASK_MIE_MSIE); // enable software int only
     set_mstatus(get_mstatus() | MASK_MSTATUS_MIE); // enable global int
@@ -28,6 +27,5 @@ noreturn void main(void)
     uart_init(uart1);
 
     /* set task for self */
-    hart_task(0, 0, 0, 0, 0, 0, 0, (any)h0t0);
-    hart_done();
+    set_msip(get_mhartid());
 }
