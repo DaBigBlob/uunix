@@ -45,13 +45,13 @@ UNIDEFGET(usize, get_mstatus, mstatus);
 UNIDEFGET(usize, get_mie, mie);
 UNIDEFGET(usize, get_mcause, mcause);
 UNIDEFGET(usize, get_mepc, mepc);
-UNIDEFGET(addr, get_mscratch, mscratch);
+UNIDEFGET(any, get_mscratch, mscratch);
 
 UNIDEFSET(mstatus, set_mstatus, usize);
 UNIDEFSET(mie, set_mie, usize);
 UNIDEFSET(mtvec, set_mtvec, any);
 UNIDEFSET(mepc, set_mepc, usize);
-UNIDEFSET(mscratch, set_mscratch, addr);
+UNIDEFSET(mscratch, set_mscratch, any);
 
 UNIDEF(u64, strict_swap, (volatile u64 * at, u64 with));
 

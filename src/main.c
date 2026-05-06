@@ -8,8 +8,11 @@
 
 noreturn void main(void)
 {
+    /* set up HCB */
+    set_mscratch((any)compute_HCB_addr(get_mhartid()));
+    ((HCB *)get_mscratch())->hartid = get_mhartid();
+
     /* setup interrupts on all harts */
-    set_mscratch(get_HCB_addr(get_mhartid()));
     set_mtvec((any)hart_done);
     set_mie((get_mie() & (~MASK_MIE_MTIE) & (~MASK_MIE_MEIE)) |
             MASK_MIE_MSIE); // enable software int only
