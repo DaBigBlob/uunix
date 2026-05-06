@@ -1,7 +1,7 @@
 #define ASSEMBLYTIME
 #include "base.h"
 
-/************************* pre c-call begin: unsafe to call c functions **/
+/* pre c-call begin: unsafe to call c functions ***************************/
 .section .bss
     .space 524288 /* 2^19 bytes */
 _uunix_entry_tmp_stack:
@@ -12,7 +12,7 @@ _uunix_entry:
     csrr    a0, mhartid
     slli    t1, a0, 11 /* 2^11 = 2048 bytes = 2KiB for each hart */
     sub     sp, sp, t1
-/************************* pre c-call end ********************************/
+/* pre c-call end *********************************************************/
 
     /* set correct sp */
     call    ASMUSE_get_hstackbase /* must use less than 2KiB */
