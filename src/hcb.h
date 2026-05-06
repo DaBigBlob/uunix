@@ -1,11 +1,14 @@
 #ifndef UUNIX_HCB
 #define UUNIX_HCB
 
-#define REGISTER_LIST(x, y)                                               \
+/* t5 and t6 will be used for mscratch fun in trap entry */
+#define REGISTER_LIST_NOm_NOt5t6(x, y)                                    \
     x(ra) x(sp) x(gp) x(tp) x(t0) x(t1) x(t2) x(s0) x(s1) x(a0) x(a1)     \
         x(a2) x(a3) x(a4) x(a5) x(a6) x(a7) x(s2) x(s3) x(s4) x(s5) x(s6) \
-            x(s7) x(s8) x(s9) x(s10) x(s11) x(t3) x(t4) x(t5) x(t6)       \
-                x(mepc) x(mstatus) x(mcause) y(mtval)
+            x(s7) x(s8) x(s9) x(s10) x(s11) x(t3) x(t4)
+#define REGISTER_LIST_m(x, y) x(mepc) x(mstatus) x(mcause) y(mtval)
+#define REGISTER_LIST(x, y)                                               \
+    REGISTER_LIST_NOm_NOt5t6(x, y) x(t5) x(t6) REGISTER_LIST_m(x, y)
 
 #define HCB_OFFSET_ra      0x000
 #define HCB_OFFSET_sp      0x008
@@ -47,15 +50,13 @@
 #include "pre.h"
 
 #define df0(a) a,
-#define df1(a) a
 /* hart-specific control block */
 typedef struct {
-    usize REGISTER_LIST(df0, df1);
-    usize hartid;
+    usize REGISTER_LIST(df0, df0) hartid;
 } HCB;
 #undef df0
-#undef df1
 
+/* check: the offsets are valid */
 #define cof(n, o)                                                         \
     _Static_assert(offsetof(HCB, n) == o, "bad " #n " offset")
 #define df0(a) cof(a, HCB_OFFSET_##a);

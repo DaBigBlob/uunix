@@ -61,6 +61,8 @@ UNIDEF(noreturn void, hart_begin,
 
 UNIDEF(u64, wait4int, (void));
 
+UNIDEF(noreturn void, trap_entry, (void));
+
 UNIDEF(volatile addr, bss_begin, []);
 UNIDEF(volatile addr, bss_end, []);
 UNIDEF(const addr, kstack_base, []);

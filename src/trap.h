@@ -21,4 +21,6 @@ extern volatile u32 clint[];
 #define MASK_MIE_MTIE ((usize)1 << 7)  /* timer interrupt enable */
 #define MASK_MIE_MEIE ((usize)1 << 11) /* external interrupt enable */
 
+extern noreturn void trap_handle(void);
+
 #endif // UUNIX_INTERR
