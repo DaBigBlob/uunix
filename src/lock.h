@@ -20,7 +20,8 @@
     do {                                                                  \
         strict_swap((lock), UNLOCKED_NUM);                                \
         usize _uunis_priv__spin2unlock_hartid = get_mhartid();            \
-        restore_mstatus(_uunis_priv__spin2unlock_hartid);                 \
+        store_mstatus(_uunis_priv__spin2unlock_hartid);                   \
+        set_mstatus(get_mstatus() & (~MASK_MSTATUS_MIE));                 \
     } while (0)
 
 #define new_spinlock() ((u64)(0))
