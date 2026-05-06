@@ -18,6 +18,7 @@ typedef struct {
     any   jump_addr;
     struct { /* things a hart might want to temporarily store */
         usize mstatus;
+        usize mpec;
     } store;
 } HCB;
 
