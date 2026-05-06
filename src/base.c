@@ -3,5 +3,5 @@
 
 any ASMUSE_get_hstackbase(void)
 {
-    return compute_hstackbase(get_mhartid());
+    return compute_hartid2hstackbase(get_mhartid());
 }
