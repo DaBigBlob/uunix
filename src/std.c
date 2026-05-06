@@ -23,17 +23,18 @@
 
 void uart_putu64(volatile uart_t *urt, u64 num)
 {
-    char  _alc[] = "00" STR(UINT64_MAX);
-    char *s      = _alc;
-    for (; *s; ++s)
-        *s = '0'; // write all zeros
-    --s;          // move left from \0
-    // for (; num && s >= _alc; --s) {
-    //     *s = "0123456789abcdef"[num & 0xf];
-    //     num >>= 4;
-    // }
-    // for (; (*(s + 2) == '0' && *(s + 3)); ++s)
-    //     ;
-    // s[1] = 'x';
+    char  buf[2 + 16 + 1];
+    char *s = buf + sizeof buf;
+
+    *(--s) = '\0';
+
+    do {
+        *(--s) = "0123456789abcdef"[num & 0xf];
+        num >>= 4;
+    } while (num);
+
+    *(--s) = 'x';
+    *(--s) = '0';
+
     uart_puts(*urt, s);
 }
