@@ -33,5 +33,6 @@ void trap_handle(void)
     uint1cstr(size, mtval, lig1);
     uart_puts(uart0, lig1);
     uart_puts(uart0, "\r\n");
+    uart_puts(uart0, "---------\r\n");
     spin2unlock(&uart_lock);
 }
