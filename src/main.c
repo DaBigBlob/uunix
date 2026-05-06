@@ -9,8 +9,9 @@
 noreturn void main(void)
 {
     /* setup interrupts on all harts */
-    set_mtvec(hatwait);                            // clear
-    set_mie(get_mie() | MASK_MIE_MSIE);            // enable software int
+    set_mtvec(hatwait); // clear
+    set_mie((get_mie() & (~MASK_MIE_MTIE) & (~MASK_MIE_MEIE)) |
+            MASK_MIE_MSIE); // enable software int only
     set_mstatus(get_mstatus() | MASK_MSTATUS_MIE); // enable global int
 
     /* send non-0 harts to spin-wait */
