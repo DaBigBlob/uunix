@@ -63,11 +63,6 @@ REGISTER_LIST(df0, df0)
 #undef df0
 #undef cof
 
-#define compute_HCB_addr(hartid)                                          \
-    ((volatile addr)(kstack_base - (HART_STACK_SIZE * (hartid + 1)) -     \
-                     sizeof(HCB)))
-#else // ASSEMBLYTIME
-
 #endif // ASSEMBLYTIME
 
 #endif // UUNIX_HCB

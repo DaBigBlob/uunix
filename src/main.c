@@ -3,13 +3,14 @@
 #include "std.h"
 #include "uart.h"
 #include "hcb.h"
+#include "hart.h"
 #include "trap.h"
 
 noreturn void main(void)
 {
     /* set up HCB */
     set_mscratch((any)compute_HCB_addr(get_mhartid()));
-    ((HCB *)get_mscratch())->hartid = get_mhartid();
+    mscratch2HCB()->hartid = get_mhartid();
 
     /* setup interrupts on all harts */
     set_mtvec((any)wait4int);
