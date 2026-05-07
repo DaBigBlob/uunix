@@ -26,7 +26,8 @@ extern volatile u8 bss_begin[], bss_end[];
 //     u8 stacktop[HART_STACK_SIZE];
 //     //  <-- stackbase starts at hcb and grows ^
 //     // below it HCB
-//     HCB hcb;
-// } hart_mem_t;
+//     struct {
+//     } stuff;
+// } uhart_mem_t;
 
 #endif // UUNIX_MEM
