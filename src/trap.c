@@ -18,8 +18,8 @@ void trap_handle(void)
     uart_putu64(&uart0, (u64)hcb->mcause);
     uart_puts(uart0, "\r\n");
 
-    uart_puts(uart0, "code    = ");
-    uart_putu64(&uart0, (u64)(hcb->mcause & ~MASK_MCAUSE_INTR));
+    uart_puts(uart0, "  code  = ");
+    uart_putu64(&uart0, (u64)MCAUSE_CODE(hcb->mcause));
     uart_puts(uart0, "\r\n");
 
     uart_puts(uart0, "mepc    = ");
@@ -38,98 +38,90 @@ void trap_handle(void)
     uart_putu64(&uart0, (u64)get_mie());
     uart_puts(uart0, "\r\n");
 
-    if (hcb->mcause & MASK_MCAUSE_INTR) {
-        uart_puts(uart0, "INT: ");
+    if (MCAUSE_IS_INTR(hcb->mcause)) {
+        uart_puts(uart0, "INTR: ");
 
-        switch (hcb->mcause & ~MASK_MCAUSE_INTR) {
-        case 3:
-            uart_puts(uart0, "Software\r\n");
+        switch (MCAUSE_CODE(hcb->mcause)) {
+        case CODE_MCAUSE_INTR_SOFT:
+            uart_puts(uart0, "CODE_MCAUSE_INTR_SOFT\r\n");
             /* clear MSIP before ret or mret immediately traps again */
             unset_msip(hcb->hartid);
             break;
 
-        case 7:
-            uart_puts(uart0, "Timer\r\n");
+        case CODE_MCAUSE_INTR_TIMER:
+            uart_puts(uart0, "CODE_MCAUSE_INTR_TIMER\r\n");
             break;
 
-        case 11:
-            uart_puts(uart0, "PLIC/External\r\n");
+        case CODE_MCAUSE_INTR_EXTERNAL:
+            uart_puts(uart0, "CODE_MCAUSE_INTR_EXTERNAL\r\n");
             break;
 
         default:
-            uart_puts(uart0, "Unknown/Reserved\r\n");
+            uart_puts(uart0, "UNKNOWN/RESERVED\r\n");
             break;
         }
     } else {
         uart_puts(uart0, "EXP: ");
 
-        switch ((hcb->mcause & ~MASK_MCAUSE_INTR)) {
-        case 0:
-            uart_puts(uart0, "Instruction address misaligned\r\n");
+        switch (MCAUSE_CODE(hcb->mcause)) {
+        case CODE_MCAUSE_EXP_INST_ADDR_MISALIGNED:
+            uart_puts(uart0, "CODE_MCAUSE_EXP_INST_ADDR_MISALIGNED\r\n");
             break;
 
-        case 1:
-            uart_puts(uart0, "Instruction access fault\r\n");
+        case CODE_MCAUSE_EXP_INST_ACCESS_FAULT:
+            uart_puts(uart0, "CODE_MCAUSE_EXP_INST_ACCESS_FAULT\r\n");
             break;
 
-        case 2:
-            uart_puts(uart0, "Illegal instruction\r\n");
+        case CODE_MCAUSE_EXP_ILLEGAL_INST:
+            uart_puts(uart0, "CODE_MCAUSE_EXP_ILLEGAL_INST\r\n");
             break;
 
-        case 3:
-            uart_puts(uart0, "Breakpoint\r\n");
+        case CODE_MCAUSE_EXP_BREAKPOINT:
+            uart_puts(uart0, "CODE_MCAUSE_EXP_BREAKPOINT\r\n");
             break;
 
-        case 4:
-            uart_puts(uart0, "Load address misaligned\r\n");
+        case CODE_MCAUSE_EXP_LOAD_ADDR_MISALIGNED:
+            uart_puts(uart0, "CODE_MCAUSE_EXP_LOAD_ADDR_MISALIGNED\r\n");
             break;
 
-        case 5:
-            uart_puts(uart0, "Load access fault\r\n");
+        case CODE_MCAUSE_EXP_LOAD_ACCESS_FAULT:
+            uart_puts(uart0, "CODE_MCAUSE_EXP_LOAD_ACCESS_FAULT\r\n");
             break;
 
-        case 6:
-            uart_puts(uart0, "Store/AMO address misaligned\r\n");
+        case CODE_MCAUSE_EXP_STORE_ADDR_MISALIGNED:
+            uart_puts(uart0, "CODE_MCAUSE_EXP_STORE_ADDR_MISALIGNED\r\n");
             break;
 
-        case 7:
-            uart_puts(uart0, "Store/AMO access fault\r\n");
+        case CODE_MCAUSE_EXP_STORE_ACCESS_FAULT:
+            uart_puts(uart0, "CODE_MCAUSE_EXP_STORE_ACCESS_FAULT\r\n");
             break;
 
-        case 8:
-            uart_puts(uart0, "Ecall from U-mode\r\n");
+        case CODE_MCAUSE_EXP_ECALL_U:
+            uart_puts(uart0, "CODE_MCAUSE_EXP_ECALL_U\r\n");
             break;
 
-        case 9:
-            uart_puts(uart0, "Ecall from S-mode\r\n");
+        case CODE_MCAUSE_EXP_ECALL_S:
+            uart_puts(uart0, "CODE_MCAUSE_EXP_ECALL_S\r\n");
             break;
 
-        case 10:
-            uart_puts(uart0, "Reserved exception 10\r\n");
+        case CODE_MCAUSE_EXP_ECALL_M:
+            uart_puts(uart0, "CODE_MCAUSE_EXP_ECALL_M\r\n");
             break;
 
-        case 11:
-            uart_puts(uart0, "Ecall from M-mode\r\n");
+        case CODE_MCAUSE_EXP_INST_PAGE_FAULT:
+            uart_puts(uart0, "CODE_MCAUSE_EXP_INST_PAGE_FAULT\r\n");
             break;
 
-        case 12:
-            uart_puts(uart0, "Instruction page fault\r\n");
+        case CODE_MCAUSE_EXP_LOAD_PAGE_FAULT:
+            uart_puts(uart0, "CODE_MCAUSE_EXP_LOAD_PAGE_FAULT\r\n");
             break;
 
-        case 13:
-            uart_puts(uart0, "Load page fault\r\n");
-            break;
-
-        case 14:
-            uart_puts(uart0, "Reserved exception 14\r\n");
-            break;
-
-        case 15:
-            uart_puts(uart0, "Store/AMO page fault\r\n");
+        case CODE_MCAUSE_EXP_STORE_PAGE_FAULT:
+            uart_puts(uart0, "CODE_MCAUSE_EXP_STORE_PAGE_FAULT\r\n");
             break;
 
         default:
-            uart_puts(uart0, "Unknown/Reserved exception\r\n");
+            uart_puts(uart0, "UNKNOWN/RESERVED\r\n");
             break;
         }
     }
