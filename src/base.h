@@ -46,7 +46,6 @@ UNIDEFGET(usize, get_mstatus, mstatus);
 UNIDEFGET(usize, get_mie, mie);
 UNIDEFGET(usize, get_mcause, mcause);
 UNIDEFGET(usize, get_mepc, mepc);
-UNIDEFGET(any, get_mscratch_hstackbase, mscratch);
 UNIDEFGET(usize, get_mtval, mtval);
 
 UNIDEFSET(mstatus, set_mstatus, usize);

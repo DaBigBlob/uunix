@@ -21,7 +21,7 @@ void trap_handle(void)
     // no need to reenable int (we restore mstatus from HCB)
     set_mstatus(get_mstatus() & ~MASK_MSTATUS_MIE);
 
-    HCB *hcb = compute_hstackbase2HCB(get_mscratch_hstackbase());
+    HCB *hcb = compute_hartid2HCB(get_mhartid());
 
     spin2lock(&uart_lock);
     uart_puts(uart0, "\r\n======TRAP========\r\n");
