@@ -16,7 +16,8 @@
 #include "hcb.h" /* safe: hcb.h has ASSEMBLYTIME */
 
 #define FUNC(name)      \
-.section .text;         \
+.section .text.##name;  \
+.globl name;            \
 .type name, @function;  \
 .balign 4;              \
 name:
