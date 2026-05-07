@@ -46,12 +46,12 @@ void trap_handle(void)
     HCB  *hcb    = compute_hartid2HCB(get_mhartid());
     usize mcause = (usize)hcb->mcause;
 
-    /* syscalls should be lean-and-mean */
+    /* syscalls should be lean-and-mean **********************************/
     if (!MCAUSE_IS_INTR(mcause) &&
         MCAUSE_CODE(mcause) == CODE_MCAUSE_EXP_ECALL_U) {
-        ///////// placeholder code begin
+        ///////// placeholder code begin///////////////////////////////////
         spin2lock(&uart0_lock);
-        uart_puts(uart0, "======TRAP:CODE_MCAUSE_EXP_ECALL_U\r\n");
+        uart_puts(uart0, "\r\n======TRAP:CODE_MCAUSE_EXP_ECALL_U\r\n");
 
         /* increment pc beyond ecall */
         hcb->mepc = (any)((usize)hcb->mepc + 4); // ecall is 32bit
@@ -63,19 +63,19 @@ void trap_handle(void)
         REGISTER_LIST_a(df0, ;);
 #undef df0
         spin2unlock(&uart0_lock);
-        ///////// placeholder code end
+        ///////// placeholder code end/////////////////////////////////////
         goto trap_handle_ret;
     }
 
     /* from here on we provide verbose-ish trap info */
     spin2lock(&uart0_lock);
 
-    /* hart tasks */
+    /* hart tasks ********************************************************/
     if (MCAUSE_IS_INTR(mcause) &&
         MCAUSE_CODE(mcause) == CODE_MCAUSE_INTR_SOFT) {
         /* say stuff before sending to task */
         uart_puts(uart0,
-                  "======TRAP:CODE_MCAUSE_INTR_SOFT(HART_TASK)\r\n");
+                  "\r\n======TRAP:CODE_MCAUSE_INTR_SOFT(HART_TASK)\r\n");
 
         /* clear MSIP before ret or mret immediately traps again */
         unset_msip(hcb->hartid);
@@ -104,6 +104,30 @@ void trap_handle(void)
         goto trap_handle_info;
     }
 
+    /* deal with unhandled traps *****************************************/
+    if (MCAUSE_IS_INTR(mcause)) {
+        switch (MCAUSE_CODE((usize)hcb->mcause)) {
+#define df0(a)                                                            \
+    case CODE_MCAUSE_##a:                                                 \
+        uart_puts(uart0, "\r\n======TRAP:" STR(a) "\r\n");                \
+        hcb->mepc = (any)task_done;                                       \
+        hcb->sp   = compute_hartid2HCB(hcb->hartid);                      \
+        break;
+
+            UNHANDLED_TRAP_LIST_INTR(df0, )
+        default:
+            break;
+        }
+    } else {
+        switch (MCAUSE_CODE((usize)hcb->mcause)) {
+            UNHANDLED_TRAP_LIST_EXP(df0, )
+#undef df0
+        default:
+            break;
+        }
+    }
+
+    /* info and stuff ****************************************************/
 trap_handle_info:
     uart_puts(uart0, "---\r\n");
 #define jjshow(thing)                                                     \
@@ -128,29 +152,6 @@ trap_handle_info:
 #undef jjshow
     uart_puts(uart0, "==================\r\n");
     spin2unlock(&uart0_lock);
-
-    /* deal with unhandled traps */
-    if (MCAUSE_IS_INTR(mcause)) {
-        switch (MCAUSE_CODE((usize)hcb->mcause)) {
-#define df0(a)                                                            \
-    case CODE_MCAUSE_##a:                                                 \
-        uart_puts(uart0, "======TRAP:" STR(a) "\r\n");                    \
-        hcb->mepc = (any)task_done;                                       \
-        hcb->sp   = compute_hartid2HCB(hcb->hartid);                      \
-        break;
-
-            UNHANDLED_TRAP_LIST_INTR(df0, )
-        default:
-            break;
-        }
-    } else {
-        switch (MCAUSE_CODE((usize)hcb->mcause)) {
-            UNHANDLED_TRAP_LIST_EXP(df0, )
-#undef df0
-        default:
-            break;
-        }
-    }
 
 trap_handle_ret:
     return;
