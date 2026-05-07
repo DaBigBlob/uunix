@@ -55,13 +55,13 @@ extern volatile uart_t uart0, uart1;
 
 #define BAUDRATE 115200
 
-#define uart_init(urt)                                                    \
-    do {                                                                  \
-        /* uart runs on tilelink clock which is always half of coreclk */ \
-        urt.div    = (TLCLK_HZ() / BAUDRATE); /* configure baudrate */    \
-        urt.ie     = 0;                       /* disable interrupts */    \
-        urt.txctrl = 1;                       /* enable TX */             \
-        urt.rxctrl = 1;                       /* enable Rx */             \
+#define uart_init(urt)                                                     \
+    do {                                                                   \
+        /* uart runs on tilelink clock which is always half of coreclk */  \
+        urt.div    = (TLCLK_HZ() / BAUDRATE) - 1; /* configure baudrate */ \
+        urt.ie     = 0; /* disable interrupts */                           \
+        urt.txctrl = 1; /* enable TX */                                    \
+        urt.rxctrl = 1; /* enable Rx */                                    \
     } while (0)
 
 #endif // UUNIX_UART
