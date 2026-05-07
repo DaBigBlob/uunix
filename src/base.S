@@ -1,7 +1,7 @@
 #define ASSEMBLYTIME
 #include "base.h"
 
-/* pre func begin: unsafe to call functions ******************************/
+/* pre func begin: unsafe to call functions (no safe stack) **************/
 .section .data
 .balign 8
 _tmp_jump_addr:
