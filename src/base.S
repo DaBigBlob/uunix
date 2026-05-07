@@ -96,13 +96,13 @@ FUNC(trap_entry)
     /* all regesters saved: we are free to call stuff */
 
     /* set safe sp */
-    csrr   sp, mscratch /* has hstackbase */
+    csrr    sp, mscratch /* has hstackbase */
 
     /* the actual meat */
-    call   trap_handle
+    call    trap_handle
 
     /* restore register: easier this time */
-    csrr t6, mscratch
+    csrr    t6, mscratch
 
     /* the m ones (except int specific ones) */
 #define df0(a) ld t5, HCB_OFFSET_##a(t6); csrw a, t5;
