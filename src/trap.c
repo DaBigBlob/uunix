@@ -102,10 +102,20 @@ void trap_handle(void)
     } else {
         uart_puts(uart0, "EXP: ");
 
+        /* for all unhandled exceptions we send to intspin so hart never
+        enters unrecoverable state*/
+
         switch (MCAUSE_CODE((usize)hcb->mcause)) {
         case CODE_MCAUSE_EXP_ECALL_U: /***********************************/
-            // TODO
+
             uart_puts(uart0, "CODE_MCAUSE_EXP_ECALL_U\r\n");
+            // TODO
+            uart_puts(uart0, "\r\nsyscall args:");
+#define df0(a)                                                            \
+    uart_puts(uart0, "\r\n    " #a ":");                                  \
+    uart_putu64(&uart0, (u64)hcb->a)
+            REGISTER_LIST_a(df0, ;);
+#undef df0
             break; /******************************************************/
 
         case CODE_MCAUSE_EXP_INST_ADDR_MISALIGNED:
