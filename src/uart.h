@@ -43,8 +43,8 @@ extern volatile uart_t uart0, uart1;
 
 #define uart_getc(urt)                                                    \
     (i32)(((urt).rxdata & MASK_UART_RX_ISEMPTY) ?                         \
-              ((urt).rxdata & MASK_UART_RX_DATA) :                        \
-              -1)
+              -1 :                                                        \
+              ((urt).rxdata & MASK_UART_RX_DATA))
 
 #define uart_puts(urt, str)                                               \
     do {                                                                  \
