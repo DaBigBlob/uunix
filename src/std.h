@@ -35,7 +35,7 @@ for each b, *b = *d of type t */
     do {                                                                  \
         t *_d = (t *)(d);                                                 \
         range_foreach(b, e, t, _b) {                                      \
-            *_d = *_b;                                                    \
+            *_b = *_d;                                                    \
             ++_d;                                                         \
         }                                                                 \
     } while (0)
