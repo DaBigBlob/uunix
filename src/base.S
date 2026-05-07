@@ -13,7 +13,6 @@ _tmp_jump_addr:
 _tmp_stack:
 
 FUNC(_uunix_entry)
-    la gp, __global_pointer$ /* more standard than -msmall-data-limit=0 */
     csrci   mstatus, 8 /* no int till mtvec/mscratch/HCB init */
 
     /* send non0 harts to wait */

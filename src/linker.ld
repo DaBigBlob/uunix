@@ -1,4 +1,4 @@
-ENTRY(main) /* Useless for our case but makes linker shut up. */
+ENTRY(_uunix_entry) /* Useless for our case but makes linker shut up. */
 
 SECTIONS {
     clint       = 0x2000000;
@@ -7,7 +7,7 @@ SECTIONS {
     uart1       = 0x10011000;
 
     . = 0x80000000;
-    .text :{
+    .text : ALIGN(4) {
         /*
             Linker's ENTRY sets it in bin container but we dont keep that.
             The true <<entry>> must be placed exactly at 0x80000000.
@@ -24,10 +24,11 @@ SECTIONS {
         *(.data .data.*);
     }
 
-    .bss : ALIGN(8) {
+    .bss : ALIGN(16) { /* riscv abi need: stack lives here */
         /* we will need to 0 this */
         bss_begin = .;
         *(.bss .bss.* .sbss .sbss.*);
+        . = ALIGN(16);
         bss_end = .;
     }
 }

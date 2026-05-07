@@ -7,7 +7,7 @@ OBJCPY = llvm-objcopy
 
 F_CCONFORM = -std=c17 -pedantic -fno-gnu89-inline
 F_WARNINGS = -Wall -Wextra -Weverything -Wno-unsafe-buffer-usage -Wno-pre-c11-compat -Wno-declaration-after-statement -Wc11-extensions
-F_TARGET = --target=riscv64-freestanding-none -mcmodel=medany -mabi=lp64 -march=rv64imc_zaamo -mstrict-align -mtune=rocket
+F_TARGET = --target=riscv64-freestanding-none -mcmodel=medany -mabi=lp64 -march=rv64imc_zaamo -mstrict-align -mtune=rocket -msmall-data-limit=0
 F_CODEGEN = -fno-stack-protector -ffreestanding -fno-pic -fno-pie
 F_OPTIMIZE = -O3
 F_EXTRA = # -gdwarf-5
