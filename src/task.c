@@ -1,7 +1,7 @@
 #include "task.h"
 #include "base.h"
 #include "hcb.h"
-#include "mem.h"
+// #include "mem.h"
 #include "uart.h"
 #include "std.h"
 
@@ -26,9 +26,9 @@ noreturn void task_say_args(REGISTER_LIST_a(df0, k))
         wait4int();
 }
 
-static noreturn void task_exec_U_init(any code_addr, any sp)
-{
-    HCB *hcb = compute_hartid2HCB(get_mhartid());
-    for (;;)
-        wait4int();
-}
+// static noreturn void task_exec_U_init(any code_addr, any sp)
+// {
+//     HCB *hcb = compute_hartid2HCB(get_mhartid());
+//     for (;;)
+//         wait4int();
+// }

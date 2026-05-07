@@ -1,6 +1,7 @@
 #include "lock.h"
 #include "pre.h"
 #include "base.h"
+#include "task.h"
 #include "trap.h"
 #include "mem.h"
 #include "uart.h"
@@ -35,13 +36,19 @@ noreturn void main(void)
     if (hartid == 0) {
         // commands
         spin2lock(&compute_hartid2HCB(3)->cmd.lock);
+        compute_hartid2HCB(3)->cmd.func    = (any)task_say_args;
+        compute_hartid2HCB(3)->cmd.args.a0 = (any)0xa;
         set_msip(3);
 
-        spin2lock(&compute_hartid2HCB(1)->cmd.lock);
-        set_msip(1);
+        // spin2lock(&compute_hartid2HCB(1)->cmd.lock);
+        // compute_hartid2HCB(1)->cmd.func    = (any)task_say_args;
+        // compute_hartid2HCB(1)->cmd.args.a0 = (any)0xc;
+        // set_msip(1);
 
-        spin2lock(&compute_hartid2HCB(3)->cmd.lock);
-        set_msip(3);
+        // spin2lock(&compute_hartid2HCB(3)->cmd.lock);
+        // compute_hartid2HCB(3)->cmd.func    = (any)task_say_args;
+        // compute_hartid2HCB(3)->cmd.args.a0 = (any)0xd;
+        // set_msip(3);
     }
 
     for (;;)
