@@ -4,6 +4,7 @@
 #include "mem.h"
 #include "pre.h"
 #include "std.h"
+#include "uart.h"
 
 /** Plan
     in M-mode:
@@ -23,8 +24,8 @@ void trap_handle(void)
     HCB *hcb = compute_hstackbase2HCB(get_mscratch_hstackbase());
 
     spin2lock(&uart_lock);
-    uart_puts(uart0, "\r\n==================\r\n");
-    uart_puts(uart0, "hcbhart = ");
+    uart_puts(uart0, "\r\n======TRAP========\r\n");
+    uart_puts(uart0, "hartid  = ");
     uart_putu64(&uart0, (u64)hcb->hartid);
     uart_puts(uart0, "\r\n");
 
@@ -57,11 +58,22 @@ void trap_handle(void)
         uart_puts(uart0, "INTR: ");
 
         switch (MCAUSE_CODE((usize)hcb->mcause)) {
-        case CODE_MCAUSE_INTR_SOFT:
+        case CODE_MCAUSE_INTR_SOFT: /*************************************/
             uart_puts(uart0, "CODE_MCAUSE_INTR_SOFT\r\n");
+
             /* clear MSIP before ret or mret immediately traps again */
             unset_msip(hcb->hartid);
-            break;
+
+            uart_puts(uart0, "exec-inc code at:\r\n    ");
+            uart_putu64(&uart0, (u64)hcb->cmd.func);
+            uart_puts(uart0, "\r\nwith args:");
+#define df0(a)                                                            \
+    uart_puts(uart0, "\r\n    " #a ":");                                  \
+    uart_putu64(&uart0, (u64)hcb->cmd.args.a);
+            REGISTER_LIST_a(df0, df0)
+#undef df0
+                uart_puts(uart0, "\r\n");
+            break; /******************************************************/
 
         case CODE_MCAUSE_INTR_TIMER:
             uart_puts(uart0, "CODE_MCAUSE_INTR_TIMER\r\n");
@@ -79,10 +91,10 @@ void trap_handle(void)
         uart_puts(uart0, "EXP: ");
 
         switch (MCAUSE_CODE((usize)hcb->mcause)) {
-        case CODE_MCAUSE_EXP_ECALL_U:
+        case CODE_MCAUSE_EXP_ECALL_U: /***********************************/
             // TODO
             uart_puts(uart0, "CODE_MCAUSE_EXP_ECALL_U\r\n");
-            break;
+            break; /******************************************************/
 
         case CODE_MCAUSE_EXP_INST_ADDR_MISALIGNED:
             uart_puts(uart0, "CODE_MCAUSE_EXP_INST_ADDR_MISALIGNED\r\n");
