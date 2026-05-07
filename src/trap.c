@@ -43,8 +43,9 @@ void trap_handle(void)
     // no need to reenable int (we restore mstatus from HCB)
     set_mstatus(get_mstatus() & ~MASK_MSTATUS_MIE);
 
-    HCB  *hcb    = compute_hartid2HCB(get_mhartid());
-    usize mcause = (usize)hcb->mcause;
+    HCB        *hcb    = compute_hartid2HCB(get_mhartid());
+    const usize mcause = (usize)hcb->mcause, mepc = (usize)hcb->mepc,
+                mtval = (usize)hcb->mtval, mstatus = (usize)hcb->mstatus;
 
     /*======trap=cases=begin=============================================*/
     /* syscalls should be lean-and-mean **********************************/
@@ -52,7 +53,7 @@ void trap_handle(void)
         MCAUSE_CODE(mcause) == CODE_MCAUSE_EXP_ECALL_U) {
         ///////// placeholder code begin///////////////////////////////////
         spin2lock(&uart0_lock);
-        uart_puts(uart0, "\r\n======TRAP:CODE_MCAUSE_EXP_ECALL_U\r\n");
+        uart_puts(uart0, "\r\n======TRAP:EXP_ECALL_U\r\n");
 
         /* increment pc beyond ecall */
         hcb->mepc = (any)((usize)hcb->mepc + 4); // ecall is 32bit
@@ -75,8 +76,7 @@ void trap_handle(void)
     if (MCAUSE_IS_INTR(mcause) &&
         MCAUSE_CODE(mcause) == CODE_MCAUSE_INTR_SOFT) {
         /* say stuff before sending to task */
-        uart_puts(uart0,
-                  "\r\n======TRAP:CODE_MCAUSE_INTR_SOFT(HART_TASK)\r\n");
+        uart_puts(uart0, "\r\n======TRAP:INTR_SOFT(HART_TASK)\r\n");
 
         /* clear MSIP before ret or mret immediately traps again */
         unset_msip(hcb->hartid);
@@ -134,10 +134,10 @@ trap_handle_info:
     uart_puts(uart0, "---\r\n");
 #define jjshow(thing)                                                     \
     uart_puts(uart0, #thing "  = ");                                      \
-    uart_putu64(&uart0, (u64)hcb->thing);                                 \
+    uart_putu64(&uart0, thing);                                           \
     uart_puts(uart0, "\r\n")
 
-    jjshow(hartid);
+    jjshow(hcb->hartid);
     jjshow(mcause);
 
     uart_puts(uart0, "  code  = ");
