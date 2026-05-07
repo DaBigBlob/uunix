@@ -96,7 +96,8 @@ FUNC(trap_entry)
     /* all regesters saved: we are free to call stuff */
 
     /* set safe sp */
-    csrr    sp, mscratch /* has hstackbase */
+    csrr    t5, mscratch /* has hstackbase */
+    mv      sp, t5
 
     /* the actual meat */
     call    trap_handle
