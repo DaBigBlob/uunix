@@ -1,6 +1,5 @@
 #define ASSEMBLYTIME
 #include "base.h"
-.option norelax /* dont try to optimize */
 
 /* pre func begin: unsafe to call functions (no safe stack) **************/
 .section .data
