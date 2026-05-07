@@ -16,6 +16,10 @@
 
 void trap_handle(void)
 {
+    // disable int: trap depth 1
+    // no need to reenable int (we restore mstatus from HCB)
+    set_mstatus(get_mstatus() & ~MASK_MSTATUS_MIE);
+
     HCB *hcb = compute_hstackbase2HCB(get_mscratch_hstackbase());
 
     spin2lock(&uart_lock);
