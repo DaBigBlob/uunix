@@ -119,8 +119,9 @@ void trap_handle(void)
 #define df0(a)                                                            \
     case CODE_MCAUSE_##a:                                                 \
         uart_puts(uart0, "\r\n======TRAP:" STR(a) "\r\n");                \
-        hcb->mepc = (any)task_done;                                       \
-        hcb->sp   = compute_hartid2HCB(hcb->hartid);                      \
+        hcb->mepc    = (any)task_done;                                    \
+        hcb->sp      = compute_hartid2HCB(hcb->hartid);                   \
+        hcb->cmd.mpp = CODE_MSTATUS_MPP_M;                                \
         break;
 
             UNHANDLED_TRAP_LIST_INTR(df0, )
@@ -140,14 +141,17 @@ void trap_handle(void)
 trap_handle_info:
     uart_puts(uart0, "---\r\n");
 #define jjshow(thing)                                                     \
-    uart_puts(uart0, #thing "  = ");                                      \
+    uart_puts(uart0, #thing "\t= ");                                      \
     uart_putu64(&uart0, thing);                                           \
     uart_puts(uart0, "\r\n")
 
-    jjshow(hcb->hartid);
+    uart_puts(uart0, "hartid\t= ");
+    uart_putu64(&uart0, (u64)hcb->hartid);
+    uart_puts(uart0, "\r\n");
+
     jjshow(mcause);
 
-    uart_puts(uart0, "  code  = ");
+    uart_puts(uart0, "  code\t= ");
     uart_putu64(&uart0, (u64)MCAUSE_CODE((usize)hcb->mcause));
     uart_puts(uart0, "\r\n");
 
@@ -155,7 +159,7 @@ trap_handle_info:
     jjshow(mtval);
     jjshow(mstatus);
 
-    uart_puts(uart0, "mie     = ");
+    uart_puts(uart0, "mie\t= ");
     uart_putu64(&uart0, (u64)get_mie());
     uart_puts(uart0, "\r\n");
 #undef jjshow
