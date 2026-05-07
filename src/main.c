@@ -4,10 +4,9 @@
 #include "mem.h"
 #include "std.h"
 
-volatile static u8 init_done = 0; // only hart 0 should mutate
-
 noreturn void main(void)
 {
+    volatile static u8 init_done = 0; // only hart 0 should mutate
     /* inits hart 0 needs to do */
     if (get_mhartid() == 0) {
         mem_set(bss_begin, bss_end, volatile u8, 0);
