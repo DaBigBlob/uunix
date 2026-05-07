@@ -1,5 +1,6 @@
 #define ASSEMBLYTIME
 #include "base.h"
+.option norelax /* dont try to optimize */
 
 /* pre func begin: unsafe to call functions (no safe stack) **************/
 .section .data
@@ -15,10 +16,6 @@ _tmp_stack:
 .section .text._uunix_entry
 .type _uunix_entry, @function
 _uunix_entry:
-    .option push
-    .option norelax
-        la      gp, __global_pointer$
-    .option pop
     csrci   mstatus, 8 /* no int till mtvec/mscratch/HCB init */
 
     /* send non0 harts to wait */

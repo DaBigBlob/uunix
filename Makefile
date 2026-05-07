@@ -12,7 +12,7 @@ F_CODEGEN = -fno-stack-protector -ffreestanding -fno-pic -fno-pie
 F_OPTIMIZE = -O3
 F_EXTRA = # -gdwarf-5
 
-LDFLAGS = --Map=out/kern.map
+LDFLAGS = --Map=out/kern.map,--no-relax
 F_LINKER = -nostdlib -fuse-ld=lld -Wl,$(LDFLAGS)
 
 ########################## codegen
