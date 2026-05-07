@@ -119,9 +119,11 @@ void trap_handle(void)
 #define df0(a)                                                            \
     case CODE_MCAUSE_##a:                                                 \
         uart_puts(uart0, "\r\n======TRAP:" STR(a) "\r\n");                \
-        hcb->mepc    = (any)task_done;                                    \
-        hcb->sp      = compute_hartid2HCB(hcb->hartid);                   \
-        hcb->cmd.mpp = CODE_MSTATUS_MPP_M;                                \
+        hcb->mepc    = (any)task_done; /* wait for new instructions */    \
+        hcb->sp      = compute_hartid2HCB(hcb->hartid); /* reuse*/        \
+        hcb->mstatus = (any)(((usize)hcb->mstatus & ~MASK_MSTATUS_MPP) |  \
+                             CODE_MSTATUS_MPP_M |                         \
+                             MASK_MSTATUS_MPIE); /* make sure M mode */   \
         break;
 
             UNHANDLED_TRAP_LIST_INTR(df0, )
