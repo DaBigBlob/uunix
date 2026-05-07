@@ -33,6 +33,9 @@ noreturn void main(void)
         set_msip(1);
         set_msip(3);
         set_msip(4);
+        while (get_msip(3))
+            ;
+        set_msip(3);
     }
 
     for (;;)
