@@ -74,6 +74,11 @@ void trap_handle(void)
         uart_puts(uart0, "EXP: ");
 
         switch (MCAUSE_CODE(hcb->mcause)) {
+        case CODE_MCAUSE_EXP_ECALL_U:
+            // TODO
+            uart_puts(uart0, "CODE_MCAUSE_EXP_ECALL_U\r\n");
+            break;
+
         case CODE_MCAUSE_EXP_INST_ADDR_MISALIGNED:
             uart_puts(uart0, "CODE_MCAUSE_EXP_INST_ADDR_MISALIGNED\r\n");
             break;
@@ -104,11 +109,6 @@ void trap_handle(void)
 
         case CODE_MCAUSE_EXP_STORE_ACCESS_FAULT:
             uart_puts(uart0, "CODE_MCAUSE_EXP_STORE_ACCESS_FAULT\r\n");
-            break;
-
-        case CODE_MCAUSE_EXP_ECALL_U:
-            // TODO
-            uart_puts(uart0, "CODE_MCAUSE_EXP_ECALL_U\r\n");
             break;
 
         case CODE_MCAUSE_EXP_ECALL_S:
