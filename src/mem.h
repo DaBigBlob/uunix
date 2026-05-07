@@ -7,7 +7,7 @@
 #define HART_STACK_SIZE ((STACK_SIZE) / (MAX_HARTS))
 
 typedef struct {
-    u8 stacktop[HART_STACK_SIZE];
+    u32 stacktop[HART_STACK_SIZE / (sizeof(u32) / sizeof(u8))];
     //  <-- stackbase starts at hcb and grows ^
     // below it HCB
     HCB hcb;
