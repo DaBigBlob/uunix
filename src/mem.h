@@ -17,7 +17,7 @@ typedef struct {
 #define compute_hartid2hstackbase(hartid) ((any)compute_hartid2HCB(hartid))
 #define compute_hstackbase2HCB(hstackbase) ((HCB *)(hstackbase))
 
-extern hart_mem_t kern_mem[MAX_HARTS];
+alignas(16) extern hart_mem_t kern_mem[MAX_HARTS];
 
 /* check alignment */
 _Static_assert((HART_STACK_SIZE % 16) == 0,
