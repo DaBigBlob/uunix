@@ -1,3 +1,4 @@
+#include "lock.h"
 #include "pre.h"
 #include "base.h"
 #include "trap.h"
@@ -33,11 +34,13 @@ noreturn void main(void)
 
     if (hartid == 0) {
         // commands
-        set_msip(1);
+        spin2lock(&compute_hartid2HCB(3)->cmd.lock);
         set_msip(3);
-        set_msip(4);
-        while (get_msip(3))
-            ;
+
+        spin2lock(&compute_hartid2HCB(1)->cmd.lock);
+        set_msip(1);
+
+        spin2lock(&compute_hartid2HCB(3)->cmd.lock);
         set_msip(3);
     }
 

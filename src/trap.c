@@ -85,6 +85,8 @@ void trap_handle(void)
             hcb->sp   = hcb->cmd.sp;
             hcb->ra   = hcb->cmd.ra;
             hcb->mepc = hcb->cmd.func;
+
+            spin2unlock(&hcb->cmd.lock); /* free to cmd again */
             break; /******************************************************/
 
         case CODE_MCAUSE_INTR_TIMER:
