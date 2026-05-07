@@ -106,6 +106,7 @@ void trap_handle(void)
     }
 
     /* deal with unhandled traps *****************************************/
+    /* TODO: save trap state somewhere (HCB?) so hart0 can take a look */
     if (MCAUSE_IS_INTR(mcause)) {
         switch (MCAUSE_CODE((usize)hcb->mcause)) {
 #define df0(a)                                                            \
