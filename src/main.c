@@ -29,7 +29,7 @@ noreturn void main(void)
                     *_b = 0;
                 }
             }
-            init_pending = 1;
+            init_pending = 0;
         } else {
             while (init_pending)
                 ; // dumb wait: stack/memory not safe
