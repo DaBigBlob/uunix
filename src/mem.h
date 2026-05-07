@@ -20,7 +20,6 @@ typedef struct {
 extern hart_mem_t kern_mem[MAX_HARTS];
 
 /* from linker */
-extern u8 bss_begin[];
-extern u8 bss_end[];
+extern volatile u8 bss_begin[], bss_end[];
 
 #endif // UUNIX_MEM
