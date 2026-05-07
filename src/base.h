@@ -18,6 +18,7 @@
 #define FUNC(name)      \
 .section .text;         \
 .type name, @function;  \
+.balign 4;              \
 name:
 
 #define ENDF(name) .size name, .-name

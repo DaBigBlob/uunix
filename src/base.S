@@ -39,11 +39,11 @@ ENDF(wait4int)
 
 FUNC(trap_entry)
     /* store register */
-    csrrw   t6, mscratch, t6        /* ms(HB) <-> t6 */
-    sd      t5, HCB_OFFSET_t5(t6)   /* t5 -> HB^ */
-    csrr    t5, mscratch            /* t5 <- ms(t6) */
-    sd      t5, HCB_OFFSET_t6(t6)   /* t5(t6) -> HB^ */
-    csrw  mscratch, t6              /* t6(HB) -> ms*/
+    csrrw   t6, mscratch, t6        /* ms(HB) <-> t6    */
+    sd      t5, HCB_OFFSET_t5(t6)   /* t5 -> HB^        */
+    csrr    t5, mscratch            /* t5 <- ms(t6)     */
+    sd      t5, HCB_OFFSET_t6(t6)   /* t5(t6) -> HB^    */
+    csrw    mscratch, t6            /* t6(HB) -> ms     */
 
     /* the rest of the non-m ones */
 #define df0(a) sd a, HCB_OFFSET_##a(t6);
@@ -57,8 +57,7 @@ FUNC(trap_entry)
     /* all regesters saved: we are free to call stuff */
 
     /* set safe sp */
-    call    ASMUSE_get_hstackbase
-    mv      sp, a0
+    csrr    t5, mscratch /* has hstackbase */
 
     /* the actual meat */
     call   trap_handle
