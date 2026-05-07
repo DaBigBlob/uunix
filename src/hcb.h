@@ -100,7 +100,7 @@ typedef struct {
         any        sp;
         any        ra;
         any        func;
-        spinlock_t lock;
+        dumblock_t lock;
     } cmd;
 } HCB;
 

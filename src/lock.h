@@ -11,7 +11,7 @@ typedef struct {
     usize mstatus;
 } spinlock_t;
 
-#define init_lock(slock)                                                  \
+#define init_spinlock(slock)                                              \
     do {                                                                  \
         (slock).lock    = UNLOCKED_NUM;                                   \
         (slock).mstatus = 0;                                              \
@@ -19,5 +19,23 @@ typedef struct {
 
 void spin2lock(spinlock_t *lock);
 void spin2unlock(spinlock_t *lock);
+
+typedef u64 dumblock_t;
+
+#define init_dumblock(slock)                                              \
+    do {                                                                  \
+        slock = UNLOCKED_NUM;                                             \
+    } while (0)
+
+#define dumb2lock(slock)                                                  \
+    do {                                                                  \
+        while (strict_swap(&slock, LOCKED_NUM) != UNLOCKED_NUM)           \
+            ;                                                             \
+    } while (0)
+
+#define dumb2unlock(slock)                                                \
+    do {                                                                  \
+        strict_swap(&slock, UNLOCKED_NUM);                                \
+    } while (0)
 
 #endif // UUNIX_LOCK

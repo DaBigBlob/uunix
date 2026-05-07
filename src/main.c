@@ -13,8 +13,8 @@ noreturn void main(void)
     usize hartid = get_mhartid();
 
     if (hartid == 0) {
-        init_lock(uart0_lock);
-        init_lock(uart1_lock);
+        init_spinlock(uart0_lock);
+        init_spinlock(uart1_lock);
         uart_init(uart0);
         uart_init(uart1);
     }
@@ -28,7 +28,7 @@ noreturn void main(void)
     /* setup HCB */
     set_mscratch(compute_hartid2hstackbase(hartid)); // used in trap_entry
     compute_hartid2HCB(hartid)->hartid = hartid;
-    init_lock(compute_hartid2HCB(hartid)->cmd.lock);
+    init_dumblock(compute_hartid2HCB(hartid)->cmd.lock);
 
     set_mstatus(get_mstatus() | MASK_MSTATUS_MIE); // enable int
     /*********************************************************************/
@@ -45,10 +45,10 @@ noreturn void main(void)
         // spin2lock(&compute_hartid2HCB(1)->cmd.lock);
         // set_msip(1); // should fault
 
-        spin2lock(&compute_hartid2HCB(3)->cmd.lock);
+        dumb2lock(compute_hartid2HCB(3)->cmd.lock);
         set_msip(3); // should fault
 
-        spin2lock(&compute_hartid2HCB(3)->cmd.lock);
+        dumb2lock(compute_hartid2HCB(3)->cmd.lock);
         compute_hartid2HCB(3)->cmd.func    = (any)task_say_args;
         compute_hartid2HCB(3)->cmd.args.a0 = (any)0xc;
         compute_hartid2HCB(3)->cmd.args.a1 = (any)3;

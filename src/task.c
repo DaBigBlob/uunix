@@ -12,7 +12,7 @@
 noreturn void task_done(void)
 {
     /* end of task's responsibility to say "im done" */
-    spin2unlock(&(compute_hartid2HCB(get_mhartid()))->cmd.lock);
+    dumb2unlock((compute_hartid2HCB(get_mhartid()))->cmd.lock);
     for (;;)
         wait4int();
 }
@@ -44,5 +44,6 @@ noreturn void task_say_args(REGISTER_LIST_a(df0, k))
 //         - in C (here):
 //          - setup self mstatus.MPP, MPIE
 //          - place in HCB.cmd: func=U_code, sp=sp, ra=0(return using exit sycall)
+//          - set_msip(self hartid)
 //      */
 // }
