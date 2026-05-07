@@ -54,12 +54,19 @@
 
 #include "pre.h"
 
-#define df0(a) a,
 /* hart-specific control block */
 typedef struct {
+#define df0(a) a,
     usize REGISTER_LIST(df0, df0) hartid;
-} HCB;
 #undef df0
+
+    struct {
+#define df0(a) any a;
+        REGISTER_LIST_a(df0, df0) any sp;
+        any func;
+#undef df0
+    } cmd;
+} HCB;
 
 /* check: the offsets are valid */
 #define cof(n, o)                                                         \
