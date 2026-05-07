@@ -100,6 +100,7 @@ typedef struct {
         any        sp;
         any        ra;
         any        func;
+        usize      mpp; /* privilege mode */
         dumblock_t lock;
     } cmd;
 } HCB;

@@ -83,6 +83,8 @@ void trap_handle(void)
 
         uart_puts(uart0, "exec-ing code at:\r\n    ");
         uart_putu64(&uart0, (u64)hcb->cmd.func);
+        uart_puts(uart0, "\r\nwith privilege mode:\r\n    ");
+        uart_putu64(&uart0, (u64)hcb->cmd.mpp);
         uart_puts(uart0, "\r\nwith args:");
 #define df0(a)                                                            \
     uart_puts(uart0, "\r\n    " #a ":");                                  \
@@ -99,6 +101,11 @@ void trap_handle(void)
         hcb->sp   = hcb->cmd.sp;
         hcb->ra   = hcb->cmd.ra;
         hcb->mepc = hcb->cmd.func;
+
+        /* set privilege */
+        // clear mpp
+        hcb->mstatus = (any)((usize)(hcb->mstatus) & ~MASK_MSTATUS_MPP);
+        hcb->mstatus = (any)((usize)(hcb->mstatus) | hcb->cmd.mpp);
 
         /* task at hcb->cmd.func should spin2unlock(&hcb->cmd.lock)
             this after itself*/
