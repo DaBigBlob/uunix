@@ -37,13 +37,3 @@ noreturn void task_say_args(REGISTER_LIST_a(df0, k))
 
     task_done();
 }
-
-// noreturn void task_exec_U(any code_addr, any sp)
-// {
-//     /** plan:
-//         - in C (here):
-//          - setup self mstatus.MPP, MPIE
-//          - place in HCB.cmd: func=U_code, sp=sp, ra=0(return using exit sycall)
-//          - set_msip(self hartid)
-//      */
-// }

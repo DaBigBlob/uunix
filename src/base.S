@@ -117,3 +117,9 @@ FUNC(trap_entry)
 
     mret
 ENDF(trap_entry)
+
+FUNC(spin_ecall)
+    ecall
+1:
+    j 1b
+ENDF(spin_ecall)
