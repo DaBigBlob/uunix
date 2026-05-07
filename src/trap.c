@@ -70,8 +70,7 @@ void trap_handle(void)
 #define df0(a)                                                            \
     uart_puts(uart0, "\r\n    " #a ":");                                  \
     uart_putu64(&uart0, (u64)hcb->cmd.args.a)
-#define df1(a) df0(a);
-            REGISTER_LIST_a(df1, df0);
+            REGISTER_LIST_a(df0, ;);
 #undef df0
             uart_puts(uart0, "\r\n");
 

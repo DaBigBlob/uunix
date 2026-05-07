@@ -1,18 +1,45 @@
 #ifndef UUNIX_HCB
 #define UUNIX_HCB
 
-#define REGISTER_LIST_a(x, y)                                             \
-    x(a0) x(a1) x(a2) x(a3) x(a4) x(a5) x(a6) y(a7)
+#define REGISTER_LIST_a(x, s)                                             \
+    x(a0) s x(a1)                                                         \
+    s       x(a2)                                                         \
+    s       x(a3)                                                         \
+    s       x(a4)                                                         \
+    s       x(a5)                                                         \
+    s       x(a6)                                                         \
+    s       x(a7)
 /* t5 and t6 will be used for mscratch fun in trap entry */
-#define REGISTER_LIST_NOm_NOt5t6(x, y)                                    \
-    x(ra) x(sp) x(gp) x(tp) x(t0) x(t1) x(t2) x(s0) x(s1)                 \
-        REGISTER_LIST_a(x, x) x(s2) x(s3) x(s4) x(s5) x(s6) x(s7) x(s8)   \
-            x(s9) x(s10) x(s11) x(t3) y(t4)
-#define REGISTER_LIST_NOm(x, y) REGISTER_LIST_NOm_NOt5t6(x, x) x(t5) y(t6)
-#define REGISTER_LIST_m_NOint(x, y) x(mepc) y(mstatus)
-#define REGISTER_LIST_m(x, y)                                             \
-    REGISTER_LIST_m_NOint(x, x) x(mcause) y(mtval)
-#define REGISTER_LIST(x, y) REGISTER_LIST_NOm(x, x) REGISTER_LIST_m(x, y)
+#define REGISTER_LIST_NOm_NOt5t6(x, s)                                    \
+    x(ra) s x(sp)                                                         \
+    s       x(gp)                                                         \
+    s       x(tp)                                                         \
+    s       x(t0)                                                         \
+    s       x(t1)                                                         \
+    s       x(t2)                                                         \
+    s       x(s0)                                                         \
+    s       x(s1)                                                         \
+    s       REGISTER_LIST_a(x, s)                                         \
+    s       x(s2)                                                         \
+    s       x(s3)                                                         \
+    s       x(s4)                                                         \
+    s       x(s5)                                                         \
+    s       x(s6)                                                         \
+    s       x(s7)                                                         \
+    s       x(s8)                                                         \
+    s       x(s9)                                                         \
+    s       x(s10)                                                        \
+    s       x(s11)                                                        \
+    s       x(t3)                                                         \
+    s       x(t4)
+#define REGISTER_LIST_NOm(x, s)                                           \
+    REGISTER_LIST_NOm_NOt5t6(x, s) s x(t5)                                \
+    s                                x(t6)
+#define REGISTER_LIST_m_NOint(x, s) x(mepc) s x(mstatus)
+#define REGISTER_LIST_m(x, s)                                             \
+    REGISTER_LIST_m_NOint(x, s) s x(mcause)                               \
+    s                             x(mtval)
+#define REGISTER_LIST(x, s) REGISTER_LIST_NOm(x, s) s REGISTER_LIST_m(x, s)
 
 #define HCB_OFFSET_ra      0x000
 #define HCB_OFFSET_sp      0x008
@@ -57,16 +84,16 @@
 /* hart-specific control block */
 typedef struct {
     /* for trap frame */
-#define df0(a) any a;
-    REGISTER_LIST(df0, df0)
+#define df0(a) any a
+    REGISTER_LIST(df0, ;);
 #undef df0
     usize hartid;
 
     /* for M-mode hart-tasks */
     struct {
         struct {
-#define df0(a) any a;
-            REGISTER_LIST_a(df0, df0)
+#define df0(a) any a
+            REGISTER_LIST_a(df0, ;);
 #undef df0
         } args;
         any sp;
@@ -78,8 +105,8 @@ typedef struct {
 /* check: the offsets are valid */
 #define cof(n, o)                                                         \
     _Static_assert(offsetof(HCB, n) == o, "bad " #n " offset")
-#define df0(a) cof(a, HCB_OFFSET_##a);
-REGISTER_LIST(df0, df0)
+#define df0(a) cof(a, HCB_OFFSET_##a)
+REGISTER_LIST(df0, ;);
 /* no need to check lock because no asm access */
 #undef df0
 #undef cof

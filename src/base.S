@@ -79,13 +79,13 @@ FUNC(trap_entry)
     csrw    mscratch, t6            /* t6(HB) -> ms     */
 
     /* the rest of the non-m ones */
-#define df0(a) sd a, HCB_OFFSET_##a(t6);
-    REGISTER_LIST_NOm_NOt5t6(df0, df0)
+#define df0(a) sd a, HCB_OFFSET_##a(t6)
+    REGISTER_LIST_NOm_NOt5t6(df0, ;);
 #undef df0
 
     /* the m ones */
-#define df0(a) csrr t5, a; sd t5, HCB_OFFSET_##a(t6);
-    REGISTER_LIST_m(df0, df0)
+#define df0(a) csrr t5, a; sd t5, HCB_OFFSET_##a(t6)
+    REGISTER_LIST_m(df0, ;);
 #undef df0
     /* all regesters saved: we are free to call stuff */
 
@@ -100,13 +100,13 @@ FUNC(trap_entry)
     csrr    t6, mscratch
 
     /* the m ones (except int specific ones) */
-#define df0(a) ld t5, HCB_OFFSET_##a(t6); csrw a, t5;
-    REGISTER_LIST_m_NOint(df0, df0)
+#define df0(a) ld t5, HCB_OFFSET_##a(t6); csrw a, t5
+    REGISTER_LIST_m_NOint(df0, ;);
 #undef df0
 
     /* the non-m ones */
-#define df0(a) ld a, HCB_OFFSET_##a(t6);
-    REGISTER_LIST_NOm(df0, df0)
+#define df0(a) ld a, HCB_OFFSET_##a(t6)
+    REGISTER_LIST_NOm(df0, ;);
 #undef df0
     /* ^notice: t6 is restored last; and its safe (i think) */
 
