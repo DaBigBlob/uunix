@@ -11,15 +11,22 @@ typedef struct {
     //  <-- stackbase starts at hcb and grows ^
     // below it HCB
     HCB hcb;
-} hart_mem_t;
+} khart_mem_t;
 
 #define compute_hartid2HCB(hartid)        (&kern_mem[(hartid)].hcb)
 #define compute_hartid2hstackbase(hartid) ((any)compute_hartid2HCB(hartid))
 #define compute_hstackbase2HCB(hstackbase) ((HCB *)(hstackbase))
 
-alignas(16) extern hart_mem_t kern_mem[MAX_HARTS];
+alignas(16) extern khart_mem_t kern_mem[MAX_HARTS];
 
 /* from linker */
 extern volatile u8 bss_begin[], bss_end[];
+
+// typedef struct {
+//     u8 stacktop[HART_STACK_SIZE];
+//     //  <-- stackbase starts at hcb and grows ^
+//     // below it HCB
+//     HCB hcb;
+// } hart_mem_t;
 
 #endif // UUNIX_MEM
