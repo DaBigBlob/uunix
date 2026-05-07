@@ -38,9 +38,11 @@ noreturn void task_say_args(REGISTER_LIST_a(df0, k))
     task_done();
 }
 
-// static noreturn void task_exec_U_init(any code_addr, any sp)
+// noreturn void task_exec_U(any code_addr, any sp)
 // {
-//     HCB *hcb = compute_hartid2HCB(get_mhartid());
-//     for (;;)
-//         wait4int();
+//     /** plan:
+//         - in C (here):
+//          - setup self mstatus.MPP, MPIE
+//          - place in HCB.cmd: func=U_code, sp=sp, ra=0(return using exit sycall)
+//      */
 // }
