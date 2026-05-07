@@ -15,7 +15,13 @@ extern volatile u32 clint[];
         clint[hartid] = 0;                                                \
     } while (0)
 
-#define MASK_MSTATUS_MIE ((usize)1 << 3) /* global interrupt enable */
+#define MASK_MSTATUS_MIE  ((usize)1 << 3)  /* global interrupt enable */
+#define MASK_MSTATUS_MPIE ((usize)1 << 7)  /* previous int enable (mret) */
+#define MASK_MSTATUS_MPP  ((usize)3 << 11) /* previous privilege (mret) */
+
+#define CODE_MSTATUS_MPP_U ((usize)0 << 11)
+#define CODE_MSTATUS_MPP_S ((usize)1 << 11)
+#define CODE_MSTATUS_MPP_M ((usize)3 << 11)
 
 #define MASK_MCAUSE_INTR    ((usize)1 << ((sizeof(usize) * CHAR_BIT) - 1))
 #define MCAUSE_CODE(mcause) ((mcause) & ~MASK_MCAUSE_INTR)
