@@ -1,6 +1,7 @@
 #ifndef UUNIX_INTERR
 #define UUNIX_INTERR
 #include "pre.h"
+#include "base.h" // IWYU pragma: keep
 
 /* from linker */
 extern volatile u32 clint[];
@@ -8,10 +9,12 @@ extern volatile u32 clint[];
 #define get_msip(hartid) (clint[hartid] & 1)
 #define set_msip(hartid)                                                  \
     do {                                                                  \
+        fence_mem();                                                      \
         clint[hartid] = 1;                                                \
     } while (0)
 #define unset_msip(hartid)                                                \
     do {                                                                  \
+        fence_mem();                                                      \
         clint[hartid] = 0;                                                \
     } while (0)
 

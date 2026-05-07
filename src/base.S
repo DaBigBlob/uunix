@@ -70,6 +70,11 @@ FUNC(wait4int)
     ret
 ENDF(wait4int)
 
+FUNC(fence_mem)
+    fence rw, rw
+    ret
+ENDF(fence_mem)
+
 FUNC(trap_entry)
     /* store register */
     csrrw   t6, mscratch, t6        /* ms(HB) <-> t6    */

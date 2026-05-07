@@ -30,6 +30,11 @@ noreturn void main(void)
     compute_hartid2HCB(hartid)->hartid = hartid;
     init_dumblock(compute_hartid2HCB(hartid)->cmd.lock);
 
+    /* setup U mode mem access */
+    // TODO: dont be retarded
+    set_pmpaddr0(~(usize)0);
+    set_pmpcfg0((usize)0x1f); /* R | W | X | NAPOT */
+
     set_mstatus(get_mstatus() | MASK_MSTATUS_MIE); // enable int
     /*********************************************************************/
 

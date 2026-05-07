@@ -60,5 +60,6 @@ UNIDEF(u64, strict_swap, (volatile u64 * at, u64 with));
 UNIDEF(u64, wait4int, (void));
 UNIDEF(void, trap_entry, (void));
 UNIDEF(any, ASMUSE_get_hstackbase, (void));
+UNIDEF(void, fence_mem, (void));
 
 #endif // UUNIX_BASE
