@@ -1,3 +1,3 @@
 #include "mem.h"
 
-hart_mem_t kern_mem[MAX_HARTS];
+alignas(16) hart_mem_t kern_mem[MAX_HARTS];
