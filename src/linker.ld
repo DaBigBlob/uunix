@@ -24,7 +24,7 @@ SECTIONS {
         *(.data .data.*);
     }
 
-    .bss : ALIGN(16) { /* stack lives here: need to align 16 */
+    .bss : ALIGN(8) {
         /* we will need to 0 this */
         bss_begin = .;
         *(.bss .bss.* .sbss .sbss.*);
