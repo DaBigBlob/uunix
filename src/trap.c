@@ -2,6 +2,7 @@
 #include "base.h"
 #include "lock.h"
 #include "mem.h"
+#include "pre.h"
 #include "std.h"
 
 /** Plan
@@ -28,7 +29,7 @@ void trap_handle(void)
     uart_puts(uart0, "\r\n");
 
     uart_puts(uart0, "  code  = ");
-    uart_putu64(&uart0, (u64)MCAUSE_CODE(hcb->mcause));
+    uart_putu64(&uart0, (u64)MCAUSE_CODE((usize)hcb->mcause));
     uart_puts(uart0, "\r\n");
 
     uart_puts(uart0, "mepc    = ");
@@ -48,10 +49,10 @@ void trap_handle(void)
     uart_puts(uart0, "\r\n");
 
     uart_puts(uart0, "------------------\r\n");
-    if (MCAUSE_IS_INTR(hcb->mcause)) {
+    if (MCAUSE_IS_INTR((usize)hcb->mcause)) {
         uart_puts(uart0, "INTR: ");
 
-        switch (MCAUSE_CODE(hcb->mcause)) {
+        switch (MCAUSE_CODE((usize)hcb->mcause)) {
         case CODE_MCAUSE_INTR_SOFT:
             uart_puts(uart0, "CODE_MCAUSE_INTR_SOFT\r\n");
             /* clear MSIP before ret or mret immediately traps again */
@@ -73,7 +74,7 @@ void trap_handle(void)
     } else {
         uart_puts(uart0, "EXP: ");
 
-        switch (MCAUSE_CODE(hcb->mcause)) {
+        switch (MCAUSE_CODE((usize)hcb->mcause)) {
         case CODE_MCAUSE_EXP_ECALL_U:
             // TODO
             uart_puts(uart0, "CODE_MCAUSE_EXP_ECALL_U\r\n");

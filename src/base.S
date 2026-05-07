@@ -71,8 +71,6 @@ FUNC(wait4int)
 ENDF(wait4int)
 
 FUNC(trap_entry)
-    csrci   mstatus, 8 /* disable int: max trap depth = 1 */
-
     /* store register */
     csrrw   t6, mscratch, t6        /* ms(HB) <-> t6    */
     sd      t5, HCB_OFFSET_t5(t6)   /* t5 -> HB^        */

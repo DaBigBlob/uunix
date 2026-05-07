@@ -57,9 +57,10 @@
 /* hart-specific control block */
 typedef struct {
     /* for trap frame */
-#define df0(a) a,
-    usize REGISTER_LIST(df0, df0) hartid;
+#define df0(a) any a;
+    REGISTER_LIST(df0, df0)
 #undef df0
+    usize hartid;
 
     /* for M-mode hart-tasks */
     struct {
