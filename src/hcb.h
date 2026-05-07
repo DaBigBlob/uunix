@@ -49,6 +49,7 @@
 #define HCB_OFFSET_mtval   0x110
 
 #ifndef ASSEMBLYTIME // C begin ---------------------
+
 #include "pre.h"
 
 #define df0(a) a,
@@ -63,6 +64,7 @@ typedef struct {
     _Static_assert(offsetof(HCB, n) == o, "bad " #n " offset")
 #define df0(a) cof(a, HCB_OFFSET_##a);
 REGISTER_LIST(df0, df0)
+/* no need to check lock because no asm access */
 #undef df0
 #undef cof
 

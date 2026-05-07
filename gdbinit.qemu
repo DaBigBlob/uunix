@@ -32,9 +32,12 @@ thread 1.1
 info inferiors
 info threads
 
-#thread 1.1
-#tbreak base.S:66
-#c
+thread 1.1
+tbreak main.c:38
+c
+thread 2.1
+tbreak main.c:38
+c
 #i r sp
 #i r a0
 

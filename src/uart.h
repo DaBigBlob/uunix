@@ -1,5 +1,6 @@
 #ifndef UUNIX_UART
 #define UUNIX_UART
+#include "lock.h"
 #include "pre.h"
 #include "clock.h"
 
@@ -63,5 +64,8 @@ extern volatile uart_t uart0, uart1;
         urt.txctrl = 1; /* enable TX */                                    \
         urt.rxctrl = 1; /* enable Rx */                                    \
     } while (0)
+
+/* global uart lock */
+extern spinlock_t uart_lock;
 
 #endif // UUNIX_UART

@@ -17,10 +17,12 @@ extern volatile u32 clint[];
 
 #define MASK_MSTATUS_MIE ((usize)1 << 3) /* global interrupt enable */
 
+#define MASK_MCAUSE_INTR ((usize)1 << ((sizeof(usize) * CHAR_BIT) - 1))
+
 #define MASK_MIE_MSIE ((usize)1 << 3)  /* software interrupt enable */
 #define MASK_MIE_MTIE ((usize)1 << 7)  /* timer interrupt enable */
 #define MASK_MIE_MEIE ((usize)1 << 11) /* external interrupt enable */
 
-extern void trap_handle(void);
+void trap_handle(void);
 
 #endif // UUNIX_INTERR

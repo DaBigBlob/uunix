@@ -53,8 +53,6 @@ _tmp_stack_init_done:
     call    ASMUSE_get_hstackbase /* must use less than 2KiB */
     mv      sp, a0
 
-    csrr    a0, mhartid /* debug point + main arg */
-
     j   main
 ENDF(_uunix_entry)
 
@@ -73,6 +71,8 @@ FUNC(wait4int)
 ENDF(wait4int)
 
 FUNC(trap_entry)
+    csrci   mstatus, 8 /* disable int: max trap depth = 1 */
+
     /* store register */
     csrrw   t6, mscratch, t6        /* ms(HB) <-> t6    */
     sd      t5, HCB_OFFSET_t5(t6)   /* t5 -> HB^        */
@@ -91,7 +91,7 @@ FUNC(trap_entry)
 #undef df0
     /* all regesters saved: we are free to call stuff */
 
-    /* set safe sp */
+    /* set needed sp */
     csrr    t5, mscratch /* has hstackbase */
     mv      sp, t5
 
