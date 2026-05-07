@@ -11,6 +11,8 @@ noreturn void main(void)
     usize hartid = get_mhartid();
 
     if (hartid == 0) {
+        init_lock(uart0_lock);
+        init_lock(uart1_lock);
         uart_init(uart0);
         uart_init(uart1);
     }
@@ -24,6 +26,7 @@ noreturn void main(void)
     /* setup HCB */
     set_mscratch(compute_hartid2hstackbase(hartid)); // used in trap_entry
     compute_hartid2HCB(hartid)->hartid = hartid;
+    init_lock(compute_hartid2HCB(hartid)->cmd.lock);
 
     set_mstatus(get_mstatus() | MASK_MSTATUS_MIE); // enable int
     /*********************************************************************/

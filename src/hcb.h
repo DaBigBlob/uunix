@@ -80,6 +80,7 @@
 #ifndef ASSEMBLYTIME // C begin ---------------------
 
 #include "pre.h"
+#include "lock.h"
 
 /* hart-specific control block */
 typedef struct {
@@ -96,9 +97,10 @@ typedef struct {
             REGISTER_LIST_a(df0, ;);
 #undef df0
         } args;
-        any sp;
-        any ra;
-        any func;
+        any        sp;
+        any        ra;
+        any        func;
+        spinlock_t lock;
     } cmd;
 } HCB;
 

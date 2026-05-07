@@ -66,6 +66,6 @@ extern volatile uart_t uart0, uart1;
     } while (0)
 
 /* global uart lock */
-extern spinlock_t uart_lock;
+extern spinlock_t uart0_lock, uart1_lock;
 
 #endif // UUNIX_UART

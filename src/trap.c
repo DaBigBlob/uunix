@@ -9,8 +9,11 @@
 /** Plan
     in M-mode:
         harts may instruct other harts to "go do this" by:
+            - acquire HCB.cmd.lock
             - fill up target hart's HCB.cmd
             - calling set_msip(target_hartid)
+        after the (handling of the) task, target hart must:
+            - release HCB.cmd.lock
     in U-mode:
         normal syscall using upper part of HCB as trap frame
 */
@@ -23,7 +26,7 @@ void trap_handle(void)
 
     HCB *hcb = compute_hartid2HCB(get_mhartid());
 
-    spin2lock(&uart_lock);
+    spin2lock(&uart0_lock);
     uart_puts(uart0, "\r\n======TRAP========\r\n");
     uart_puts(uart0, "hartid  = ");
     uart_putu64(&uart0, (u64)hcb->hartid);
@@ -195,5 +198,5 @@ void trap_handle(void)
     }
 
     uart_puts(uart0, "==================\r\n");
-    spin2unlock(&uart_lock);
+    spin2unlock(&uart0_lock);
 }
