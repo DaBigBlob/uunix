@@ -46,6 +46,7 @@ void trap_handle(void)
     HCB  *hcb    = compute_hartid2HCB(get_mhartid());
     usize mcause = (usize)hcb->mcause;
 
+    /*======trap=cases=begin=============================================*/
     /* syscalls should be lean-and-mean **********************************/
     if (!MCAUSE_IS_INTR(mcause) &&
         MCAUSE_CODE(mcause) == CODE_MCAUSE_EXP_ECALL_U) {
@@ -126,8 +127,8 @@ void trap_handle(void)
             break;
         }
     }
+    /*======trap=cases=end===============================================*/
 
-    /* info and stuff ****************************************************/
 trap_handle_info:
     uart_puts(uart0, "---\r\n");
 #define jjshow(thing)                                                     \
