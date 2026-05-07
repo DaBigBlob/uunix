@@ -9,4 +9,6 @@ noreturn void task_say_args(REGISTER_LIST_a(df0, k));
 #undef k
 #undef df0
 
+noreturn void task_done(void);
+
 #endif // UUNIX_TASK

@@ -1,13 +1,21 @@
 #include "task.h"
 #include "base.h"
 #include "hcb.h"
-// #include "mem.h"
+#include "mem.h"
 #include "lock.h"
 #include "uart.h"
 #include "std.h"
 
 /* hart tasts are executed after mret so safe to int again
 (reacll trap depth = 1) */
+
+noreturn void task_done(void)
+{
+    /* end of task's responsibility to say "im done" */
+    spin2unlock(&(compute_hartid2HCB(get_mhartid()))->cmd.lock);
+    for (;;)
+        wait4int();
+}
 
 /* for basic debug */
 #define df0(a) u64 a
@@ -25,8 +33,7 @@ noreturn void task_say_args(REGISTER_LIST_a(df0, k))
 #undef df0
     spin2unlock(&uart0_lock);
 
-    for (;;)
-        wait4int();
+    task_done();
 }
 
 // static noreturn void task_exec_U_init(any code_addr, any sp)

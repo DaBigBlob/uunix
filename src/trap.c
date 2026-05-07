@@ -86,7 +86,8 @@ void trap_handle(void)
             hcb->ra   = hcb->cmd.ra;
             hcb->mepc = hcb->cmd.func;
 
-            spin2unlock(&hcb->cmd.lock); /* free to cmd again */
+            /* task at hcb->cmd.func should spin2unlock(&hcb->cmd.lock)
+            this after itself*/
             break; /******************************************************/
 
         case CODE_MCAUSE_INTR_TIMER:
