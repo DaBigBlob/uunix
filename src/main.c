@@ -35,22 +35,25 @@ noreturn void main(void)
 
     if (hartid == 0) {
         // commands
-        spin2lock(&compute_hartid2HCB(3)->cmd.lock);
-        compute_hartid2HCB(3)->cmd.func    = (any)task_say_args;
-        compute_hartid2HCB(3)->cmd.args.a0 = (any)0xa;
-        compute_hartid2HCB(3)->cmd.args.a1 = (any)3;
-        compute_hartid2HCB(3)->cmd.sp      = compute_hartid2HCB(3);
-        set_msip(3);
+        // spin2lock(&compute_hartid2HCB(3)->cmd.lock);
+        // compute_hartid2HCB(3)->cmd.func    = (any)task_say_args;
+        // compute_hartid2HCB(3)->cmd.args.a0 = (any)0xa;
+        // compute_hartid2HCB(3)->cmd.args.a1 = (any)3;
+        // compute_hartid2HCB(3)->cmd.sp      = compute_hartid2HCB(3);
+        // set_msip(3);
 
-        spin2lock(&compute_hartid2HCB(1)->cmd.lock);
-        set_msip(1); // should fault
+        // spin2lock(&compute_hartid2HCB(1)->cmd.lock);
+        // set_msip(1); // should fault
+
+        spin2lock(&compute_hartid2HCB(3)->cmd.lock);
+        set_msip(3); // should fault
 
         spin2lock(&compute_hartid2HCB(3)->cmd.lock);
         compute_hartid2HCB(3)->cmd.func    = (any)task_say_args;
         compute_hartid2HCB(3)->cmd.args.a0 = (any)0xc;
         compute_hartid2HCB(3)->cmd.args.a1 = (any)3;
         compute_hartid2HCB(3)->cmd.sp      = compute_hartid2HCB(3);
-        set_msip(3);
+        set_msip(3); // should recover
     }
 
     for (;;)
