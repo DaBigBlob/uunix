@@ -59,20 +59,28 @@ void trap_handle(void)
 
         switch (MCAUSE_CODE((usize)hcb->mcause)) {
         case CODE_MCAUSE_INTR_SOFT: /*************************************/
-            uart_puts(uart0, "CODE_MCAUSE_INTR_SOFT\r\n");
+            uart_puts(uart0, "CODE_MCAUSE_INTR_SOFT (HART_TASK)\r\n");
 
             /* clear MSIP before ret or mret immediately traps again */
             unset_msip(hcb->hartid);
 
-            uart_puts(uart0, "exec-inc code at:\r\n    ");
+            uart_puts(uart0, "exec-ing code at:\r\n    ");
             uart_putu64(&uart0, (u64)hcb->cmd.func);
             uart_puts(uart0, "\r\nwith args:");
 #define df0(a)                                                            \
     uart_puts(uart0, "\r\n    " #a ":");                                  \
-    uart_putu64(&uart0, (u64)hcb->cmd.args.a);
-            REGISTER_LIST_a(df0, df0)
+    uart_putu64(&uart0, (u64)hcb->cmd.args.a)
+#define df1(a) df0(a);
+            REGISTER_LIST_a(df1, df0);
 #undef df0
-                uart_puts(uart0, "\r\n");
+            uart_puts(uart0, "\r\n");
+
+            //             /* set args */
+            // #define df0(a) hcb->a = hcb->cmd.args.a
+            //             REGISTER_LIST_a(df1, df0);
+            // #undef df0
+
+            //             hcb->mepc = hcb->cmd.func;
             break; /******************************************************/
 
         case CODE_MCAUSE_INTR_TIMER:

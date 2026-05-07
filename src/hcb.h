@@ -70,6 +70,7 @@ typedef struct {
 #undef df0
         } args;
         any sp;
+        any ra;
         any func;
     } cmd;
 } HCB;
