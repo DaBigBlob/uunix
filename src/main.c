@@ -25,7 +25,7 @@ noreturn void main(void)
     set_mscratch_hstackbase(compute_hartid2hstackbase(hartid));
     compute_hstackbase2HCB(get_mscratch_hstackbase())->hartid = hartid;
 
-    // int still disabled
+    set_mstatus(get_mstatus() | MASK_MSTATUS_MIE); // enable int
     /*********************************************************************/
 
     if (hartid == 0) {
