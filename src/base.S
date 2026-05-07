@@ -1,18 +1,59 @@
 #define ASSEMBLYTIME
 #include "base.h"
 
-/* pre c-call begin: unsafe to call c functions ***************************/
+/* pre func begin: unsafe to call functions ******************************/
+.section .data
+.balign 8
+_tmp_jump_addr:
+    .dword _tmp_wait4bss0
+
 .section .bss
-    .space 524288 /* 2^19 bytes */
-_uunix_entry_tmp_stack:
+.balign 16 /* riscv abi need */
+    .space 524288 /* (2^19 = 524288) / (2^11 = 2048) = 256 max harts */
+_tmp_stack:
 
 .section .text._uunix_entry
+.type _uunix_entry, @function
 _uunix_entry:
-    la      sp, _uunix_entry_tmp_stack
+    .option push
+    .option norelax
+        la      gp, __global_pointer$
+    .option pop
+    csrci   mstatus, 8 /* no int till mtvec/mscratch/HCB init */
+
+    /* send non0 harts to wait */
+    csrr    a0, mhartid
+    bnez    a0, _tmp_wait4bss0
+
+    /* clear bss */
+    la      t0, bss_begin
+    la      t1, bss_end
+_tmp_clear_bss:
+    bgeu    t0, t1, _tmp_clear_bss_done
+    sb      zero, 0(t0)
+    addi    t0, t0, 1
+    j       _tmp_clear_bss
+_tmp_clear_bss_done:
+    fence   rw, w /* make bss0 visible before setting jump_addr */
+    la      t0, _tmp_jump_addr
+    la      t1, _tmp_stack_init_done
+    sd      t1, 0(t0)
+    j       _tmp_stack_init_done
+
+
+_tmp_wait4bss0:
+    la      t0, _tmp_jump_addr
+    ld      t1, 0(t0)
+    fence   r, rw   /* be safe: prevent moving mem rw to before here */
+    jr      t1
+
+
+_tmp_stack_init_done:
+    la      sp, _tmp_stack
     csrr    a0, mhartid
     slli    t1, a0, 11 /* 2^11 = 2048 bytes = 2KiB for each hart */
     sub     sp, sp, t1
-/* pre c-call end *********************************************************/
+/* pre func end **********************************************************/
 
     /* set correct sp */
     call    ASMUSE_get_hstackbase /* must use less than 2KiB */

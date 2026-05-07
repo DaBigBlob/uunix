@@ -32,11 +32,11 @@ thread 1.1
 info inferiors
 info threads
 
-thread 1.1
-tbreak base.S:22
-c
-i r sp
-i r a0
+#thread 1.1
+#tbreak base.S:66
+#c
+#i r sp
+#i r a0
 
 
 if $_shell_exitcode
