@@ -107,15 +107,19 @@ void trap_handle(void)
 
         switch (MCAUSE_CODE((usize)hcb->mcause)) {
         case CODE_MCAUSE_EXP_ECALL_U: /***********************************/
-
             uart_puts(uart0, "CODE_MCAUSE_EXP_ECALL_U\r\n");
-            // TODO
+
+            /* increment pc beyond ecall */
+            hcb->mepc = (any)((usize)hcb->mepc + 4); // ecall is 32bit
+
             uart_puts(uart0, "\r\nsyscall args:");
 #define df0(a)                                                            \
     uart_puts(uart0, "\r\n    " #a ":");                                  \
     uart_putu64(&uart0, (u64)hcb->a)
             REGISTER_LIST_a(df0, ;);
 #undef df0
+
+            // TODO
             break; /******************************************************/
 
         case CODE_MCAUSE_EXP_INST_ADDR_MISALIGNED:
