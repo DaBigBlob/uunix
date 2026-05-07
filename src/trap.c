@@ -4,6 +4,16 @@
 #include "mem.h"
 #include "std.h"
 
+/** Plan
+    in M-mode:
+        hart0 may use HCB to instruct harts to execute "tasks" by:
+            - setting:
+                - target code address: t0
+                - sp to be set for target: t1
+                - args to be passed to target: a0-a7
+            -
+*/
+
 void trap_handle(void)
 {
     HCB *hcb = compute_hstackbase2HCB(get_mscratch_hstackbase());
@@ -38,6 +48,7 @@ void trap_handle(void)
     uart_putu64(&uart0, (u64)get_mie());
     uart_puts(uart0, "\r\n");
 
+    uart_puts(uart0, "------------------\r\n");
     if (MCAUSE_IS_INTR(hcb->mcause)) {
         uart_puts(uart0, "INTR: ");
 

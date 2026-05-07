@@ -1,16 +1,18 @@
 #ifndef UUNIX_HCB
 #define UUNIX_HCB
 
+#define REGISTER_LIST_a(x, y)                                             \
+    x(a0) x(a1) x(a2) x(a3) x(a4) x(a5) x(a6) y(a7)
 /* t5 and t6 will be used for mscratch fun in trap entry */
 #define REGISTER_LIST_NOm_NOt5t6(x, y)                                    \
-    x(ra) x(sp) x(gp) x(tp) x(t0) x(t1) x(t2) x(s0) x(s1) x(a0) x(a1)     \
-        x(a2) x(a3) x(a4) x(a5) x(a6) x(a7) x(s2) x(s3) x(s4) x(s5) x(s6) \
-            x(s7) x(s8) x(s9) x(s10) x(s11) x(t3) x(t4)
-#define REGISTER_LIST_NOm(x, y) REGISTER_LIST_NOm_NOt5t6(x, y) x(t5) x(t6)
-#define REGISTER_LIST_m_NOint(x, y) x(mepc) x(mstatus)
+    x(ra) x(sp) x(gp) x(tp) x(t0) x(t1) x(t2) x(s0) x(s1)                 \
+        REGISTER_LIST_a(x, x) x(s2) x(s3) x(s4) x(s5) x(s6) x(s7) x(s8)   \
+            x(s9) x(s10) x(s11) x(t3) y(t4)
+#define REGISTER_LIST_NOm(x, y) REGISTER_LIST_NOm_NOt5t6(x, x) x(t5) y(t6)
+#define REGISTER_LIST_m_NOint(x, y) x(mepc) y(mstatus)
 #define REGISTER_LIST_m(x, y)                                             \
-    REGISTER_LIST_m_NOint(x, y) x(mcause) y(mtval)
-#define REGISTER_LIST(x, y) REGISTER_LIST_NOm(x, y) REGISTER_LIST_m(x, y)
+    REGISTER_LIST_m_NOint(x, x) x(mcause) y(mtval)
+#define REGISTER_LIST(x, y) REGISTER_LIST_NOm(x, x) REGISTER_LIST_m(x, y)
 
 #define HCB_OFFSET_ra      0x000
 #define HCB_OFFSET_sp      0x008
