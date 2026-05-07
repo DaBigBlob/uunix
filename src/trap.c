@@ -74,24 +74,29 @@ void trap_handle(void)
 #undef df0
             uart_puts(uart0, "\r\n");
 
-            //             /* set args */
-            // #define df0(a) hcb->a = hcb->cmd.args.a
-            //             REGISTER_LIST_a(df1, df0);
-            // #undef df0
+            /* set args */
+#define df0(a) hcb->a = hcb->cmd.args.a
+            REGISTER_LIST_a(df0, ;);
+#undef df0
 
-            //             hcb->mepc = hcb->cmd.func;
+            hcb->sp   = hcb->cmd.sp;
+            hcb->ra   = hcb->cmd.ra;
+            hcb->mepc = hcb->cmd.func;
             break; /******************************************************/
 
         case CODE_MCAUSE_INTR_TIMER:
             uart_puts(uart0, "CODE_MCAUSE_INTR_TIMER\r\n");
+            hcb->mepc = (any)wait4int;
             break;
 
         case CODE_MCAUSE_INTR_EXTERNAL:
             uart_puts(uart0, "CODE_MCAUSE_INTR_EXTERNAL\r\n");
+            hcb->mepc = (any)wait4int;
             break;
 
         default:
             uart_puts(uart0, "UNKNOWN/RESERVED\r\n");
+            hcb->mepc = (any)wait4int;
             break;
         }
     } else {
@@ -105,58 +110,72 @@ void trap_handle(void)
 
         case CODE_MCAUSE_EXP_INST_ADDR_MISALIGNED:
             uart_puts(uart0, "CODE_MCAUSE_EXP_INST_ADDR_MISALIGNED\r\n");
+            hcb->mepc = (any)wait4int;
             break;
 
         case CODE_MCAUSE_EXP_INST_ACCESS_FAULT:
             uart_puts(uart0, "CODE_MCAUSE_EXP_INST_ACCESS_FAULT\r\n");
+            hcb->mepc = (any)wait4int;
             break;
 
         case CODE_MCAUSE_EXP_ILLEGAL_INST:
             uart_puts(uart0, "CODE_MCAUSE_EXP_ILLEGAL_INST\r\n");
+            hcb->mepc = (any)wait4int;
             break;
 
         case CODE_MCAUSE_EXP_BREAKPOINT:
             uart_puts(uart0, "CODE_MCAUSE_EXP_BREAKPOINT\r\n");
+            hcb->mepc = (any)wait4int;
             break;
 
         case CODE_MCAUSE_EXP_LOAD_ADDR_MISALIGNED:
             uart_puts(uart0, "CODE_MCAUSE_EXP_LOAD_ADDR_MISALIGNED\r\n");
+            hcb->mepc = (any)wait4int;
             break;
 
         case CODE_MCAUSE_EXP_LOAD_ACCESS_FAULT:
             uart_puts(uart0, "CODE_MCAUSE_EXP_LOAD_ACCESS_FAULT\r\n");
+            hcb->mepc = (any)wait4int;
             break;
 
         case CODE_MCAUSE_EXP_STORE_ADDR_MISALIGNED:
             uart_puts(uart0, "CODE_MCAUSE_EXP_STORE_ADDR_MISALIGNED\r\n");
+            hcb->mepc = (any)wait4int;
             break;
 
         case CODE_MCAUSE_EXP_STORE_ACCESS_FAULT:
             uart_puts(uart0, "CODE_MCAUSE_EXP_STORE_ACCESS_FAULT\r\n");
+            hcb->mepc = (any)wait4int;
             break;
 
         case CODE_MCAUSE_EXP_ECALL_S:
             uart_puts(uart0, "CODE_MCAUSE_EXP_ECALL_S\r\n");
+            hcb->mepc = (any)wait4int;
             break;
 
         case CODE_MCAUSE_EXP_ECALL_M:
             uart_puts(uart0, "CODE_MCAUSE_EXP_ECALL_M\r\n");
+            hcb->mepc = (any)wait4int;
             break;
 
         case CODE_MCAUSE_EXP_INST_PAGE_FAULT:
             uart_puts(uart0, "CODE_MCAUSE_EXP_INST_PAGE_FAULT\r\n");
+            hcb->mepc = (any)wait4int;
             break;
 
         case CODE_MCAUSE_EXP_LOAD_PAGE_FAULT:
             uart_puts(uart0, "CODE_MCAUSE_EXP_LOAD_PAGE_FAULT\r\n");
+            hcb->mepc = (any)wait4int;
             break;
 
         case CODE_MCAUSE_EXP_STORE_PAGE_FAULT:
             uart_puts(uart0, "CODE_MCAUSE_EXP_STORE_PAGE_FAULT\r\n");
+            hcb->mepc = (any)wait4int;
             break;
 
         default:
             uart_puts(uart0, "UNKNOWN/RESERVED\r\n");
+            hcb->mepc = (any)wait4int;
             break;
         }
     }
