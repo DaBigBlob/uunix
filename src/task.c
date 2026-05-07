@@ -25,12 +25,14 @@ noreturn void task_say_args(REGISTER_LIST_a(df0, k))
 #undef df0
 {
     spin2lock(&uart0_lock);
-    uart_puts(uart0, "\r\nsyscall args:");
+    uart_puts(uart0, "\r\n======TASK========\r\n");
+    uart_puts(uart0, "task args:");
 #define df0(a)                                                            \
     uart_puts(uart0, "\r\n    " #a ":");                                  \
     uart_putu64(&uart0, a)
     REGISTER_LIST_a(df0, ;);
 #undef df0
+    uart_puts(uart0, "\r\n==================\r\n");
     spin2unlock(&uart0_lock);
 
     task_done();
