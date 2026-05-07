@@ -22,7 +22,7 @@ noreturn void main(void)
     unset_msip(hartid);     // clear self soft int
 
     /* setup HCB */
-    set_mscratch_hstackbase(compute_hartid2hstackbase(hartid));
+    set_mscratch(compute_hartid2hstackbase(hartid)); // used in trap_entry
     compute_hartid2HCB(hartid)->hartid = hartid;
 
     set_mstatus(get_mstatus() | MASK_MSTATUS_MIE); // enable int

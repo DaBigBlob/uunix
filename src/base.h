@@ -52,7 +52,7 @@ UNIDEFSET(mstatus, set_mstatus, usize);
 UNIDEFSET(mie, set_mie, usize);
 UNIDEFSET(mtvec, set_mtvec, any);
 UNIDEFSET(mepc, set_mepc, usize);
-UNIDEFSET(mscratch, set_mscratch_hstackbase, any);
+UNIDEFSET(mscratch, set_mscratch, any);
 UNIDEFSET(pmpaddr0, set_pmpaddr0, usize);
 UNIDEFSET(pmpcfg0, set_pmpcfg0, usize);
 
