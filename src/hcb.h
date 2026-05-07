@@ -63,10 +63,13 @@ typedef struct {
 
     /* for M-mode hart-tasks */
     struct {
+        struct {
 #define df0(a) any a;
-        REGISTER_LIST_a(df0, df0) any sp;
-        any func;
+            REGISTER_LIST_a(df0, df0)
 #undef df0
+        } args;
+        any sp;
+        any func;
     } cmd;
 } HCB;
 
