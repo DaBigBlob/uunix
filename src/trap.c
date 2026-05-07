@@ -103,9 +103,12 @@ void trap_handle(void)
         hcb->mepc = hcb->cmd.func;
 
         /* set privilege */
-        // clear mpp
-        hcb->mstatus = (any)((usize)(hcb->mstatus) & ~MASK_MSTATUS_MPP);
-        hcb->mstatus = (any)((usize)(hcb->mstatus) | hcb->cmd.mpp);
+
+        usize ms = (usize)hcb->mstatus;
+        ms &= ~MASK_MSTATUS_MPP; // clear mpp
+        ms |= hcb->cmd.mpp;      // do as told
+        ms |= MASK_MSTATUS_MPIE; // enable int
+        hcb->mstatus = (any)ms;
 
         /* task at hcb->cmd.func should spin2unlock(&hcb->cmd.lock)
             this after itself*/
