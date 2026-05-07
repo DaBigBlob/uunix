@@ -43,6 +43,7 @@ void trap_handle(void)
     // no need to reenable int (we restore mstatus from HCB)
     set_mstatus(get_mstatus() & ~MASK_MSTATUS_MIE);
 
+    fence_mem();
     HCB        *hcb    = compute_hartid2HCB(get_mhartid());
     const usize mcause = (usize)hcb->mcause, mepc = (usize)hcb->mepc,
                 mtval = (usize)hcb->mtval, mstatus = (usize)hcb->mstatus;
