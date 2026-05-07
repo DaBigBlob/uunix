@@ -2,6 +2,7 @@
 #include "base.h"
 #include "hcb.h"
 // #include "mem.h"
+#include "lock.h"
 #include "uart.h"
 #include "std.h"
 
@@ -15,12 +16,14 @@ noreturn void task_say_args(REGISTER_LIST_a(df0, k))
 #undef k
 #undef df0
 {
+    spin2lock(&uart0_lock);
     uart_puts(uart0, "\r\nsyscall args:");
 #define df0(a)                                                            \
     uart_puts(uart0, "\r\n    " #a ":");                                  \
     uart_putu64(&uart0, a)
     REGISTER_LIST_a(df0, ;);
 #undef df0
+    spin2unlock(&uart0_lock);
 
     for (;;)
         wait4int();

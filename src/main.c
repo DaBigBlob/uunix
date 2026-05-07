@@ -38,6 +38,7 @@ noreturn void main(void)
         spin2lock(&compute_hartid2HCB(3)->cmd.lock);
         compute_hartid2HCB(3)->cmd.func    = (any)task_say_args;
         compute_hartid2HCB(3)->cmd.args.a0 = (any)0xa;
+        compute_hartid2HCB(3)->cmd.sp      = compute_hartid2HCB(3);
         set_msip(3);
 
         // spin2lock(&compute_hartid2HCB(1)->cmd.lock);
