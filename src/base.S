@@ -118,8 +118,8 @@ FUNC(trap_entry)
     mret
 ENDF(trap_entry)
 
-FUNC(spin_ecall)
+FUNC(umode_test)
+    li  a1, 2
+    li  a2, 1
     ecall
-1:
-    j 1b
-ENDF(spin_ecall)
+ENDF(umode_test)

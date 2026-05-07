@@ -40,7 +40,7 @@ noreturn void main(void)
 
     if (hartid == 0) {
         dumb2lock(compute_hartid2HCB(1)->cmd.lock);
-        compute_hartid2HCB(1)->cmd.func = (any)spin_ecall;
+        compute_hartid2HCB(1)->cmd.func = (any)umode_test;
         compute_hartid2HCB(1)->cmd.sp   = compute_hartid2HCB(1); //for test
         compute_hartid2HCB(1)->cmd.mpp  = CODE_MSTATUS_MPP_U;
         set_msip(1);

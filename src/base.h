@@ -62,6 +62,6 @@ UNIDEF(void, trap_entry, (void));
 UNIDEF(any, ASMUSE_get_hstackbase, (void));
 UNIDEF(void, fence_mem, (void));
 
-UNIDEF(void, spin_ecall, (void));
+UNIDEF(void, umode_test, (void));
 
 #endif // UUNIX_BASE

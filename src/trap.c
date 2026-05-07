@@ -59,12 +59,13 @@ void trap_handle(void)
         /* increment pc beyond ecall */
         hcb->mepc = (any)((usize)hcb->mepc + 4); // ecall is 32bit
 
-        uart_puts(uart0, "\r\nsyscall args:");
+        uart_puts(uart0, "syscall args:");
 #define df0(a)                                                            \
     uart_puts(uart0, "\r\n    " #a ":");                                  \
     uart_putu64(&uart0, (u64)hcb->a)
         REGISTER_LIST_a(df0, ;);
 #undef df0
+        uart_puts(uart0, "\r\n==================\r\n");
         spin2unlock(&uart0_lock);
         ///////// placeholder code end/////////////////////////////////////
         goto trap_handle_ret;
