@@ -19,6 +19,7 @@ typedef struct {
 
 extern hart_mem_t kern_mem[MAX_HARTS];
 
+/* check alignment */
 _Static_assert((HART_STACK_SIZE % 16) == 0,
                "hart stack size must be align 16");
 _Static_assert((sizeof(hart_mem_t) % 16) == 0,
