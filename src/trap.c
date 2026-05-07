@@ -6,12 +6,11 @@
 
 /** Plan
     in M-mode:
-        hart0 may use HCB to instruct harts to execute "tasks" by:
-            - setting:
-                - target code address: t0
-                - sp to be set for target: t1
-                - args to be passed to target: a0-a7
-            -
+        harts may instruct other harts to "go do this" by:
+            - fill up target hart's HCB.cmd
+            - calling set_msip(target_hartid)
+    in U-mode:
+        normal syscall using upper part of HCB as trap frame
 */
 
 void trap_handle(void)
@@ -108,6 +107,7 @@ void trap_handle(void)
             break;
 
         case CODE_MCAUSE_EXP_ECALL_U:
+            // TODO
             uart_puts(uart0, "CODE_MCAUSE_EXP_ECALL_U\r\n");
             break;
 
