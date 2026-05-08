@@ -6,11 +6,14 @@
 #include "mem.h"
 #include "uart.h"
 
+// static volatile u8 hart_ready[MAX_HARTS];
+
 noreturn void main(void)
 {
     set_mstatus(get_mstatus() & ~MASK_MSTATUS_MIE); // disable int
 
     usize hartid = get_mhartid();
+    // hart_ready[hartid] = 0; /* not ready */
 
     if (hartid == 0) {
         init_spinlock(uart0_lock);
@@ -39,6 +42,9 @@ noreturn void main(void)
     /*********************************************************************/
 
     if (hartid == 0) {
+        //make sure the harts we need are ready
+
+        //commands
         dumb2lock(compute_hartid2HCB(1)->cmd.lock);
         compute_hartid2HCB(1)->cmd.func = (any)umode_test;
         compute_hartid2HCB(1)->cmd.sp   = compute_hartid2HCB(1); //for test

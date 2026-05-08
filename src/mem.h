@@ -15,9 +15,9 @@ typedef struct {
 
 #define compute_hartid2HCB(hartid)        (&kern_mem[(hartid)].hcb)
 #define compute_hartid2hstackbase(hartid) ((any)compute_hartid2HCB(hartid))
-#define compute_hstackbase2HCB(hstackbase) ((HCB *)(hstackbase))
+#define compute_hstackbase2HCB(hstackbase) ((volatile HCB *)(hstackbase))
 
-alignas(16) extern khart_mem_t kern_mem[MAX_HARTS];
+alignas(16) extern volatile khart_mem_t kern_mem[MAX_HARTS];
 
 /* from linker */
 extern volatile u8 bss_begin[], bss_end[];

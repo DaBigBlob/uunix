@@ -44,9 +44,9 @@ void trap_handle(void)
     set_mstatus(get_mstatus() & ~MASK_MSTATUS_MIE);
 
     fence_mem();
-    HCB        *hcb    = compute_hartid2HCB(get_mhartid());
-    const usize mcause = (usize)hcb->mcause, mepc = (usize)hcb->mepc,
-                mtval = (usize)hcb->mtval, mstatus = (usize)hcb->mstatus;
+    volatile HCB *hcb    = compute_hartid2HCB(get_mhartid());
+    const usize   mcause = (usize)hcb->mcause, mepc = (usize)hcb->mepc,
+                  mtval = (usize)hcb->mtval, mstatus = (usize)hcb->mstatus;
 
     /*======trap=cases=begin=============================================*/
     /* syscalls should be lean-and-mean **********************************/
