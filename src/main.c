@@ -37,10 +37,13 @@ noreturn void main(void)
     set_pmpcfg0((usize)0x1f); /* R | W | X | NAPOT */
 
     set_mstatus(get_mstatus() | MASK_MSTATUS_MIE); // enable int
+    compute_hartid2HCB(hartid)->init_ok = 1;
     /*********************************************************************/
 
     if (hartid == 0) {
         //make sure the harts we need are ready
+        while (!compute_hartid2HCB(1)->init_ok)
+            ;
 
         //commands
         dumb2lock(compute_hartid2HCB(1)->cmd.lock);
