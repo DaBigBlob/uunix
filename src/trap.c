@@ -29,8 +29,6 @@
     s x(EXP_LOAD_ACCESS_FAULT)                                            \
     s x(EXP_STORE_ADDR_MISALIGNED)                                        \
     s x(EXP_STORE_ACCESS_FAULT)                                           \
-    s x(EXP_ECALL_S)                                                      \
-    s x(EXP_ECALL_M)                                                      \
     s x(EXP_INST_PAGE_FAULT)                                              \
     s x(EXP_LOAD_PAGE_FAULT)                                              \
     s x(EXP_STORE_PAGE_FAULT)
@@ -50,25 +48,34 @@ void trap_handle(void)
 
     /*======trap=cases=begin=============================================*/
     /* syscalls should be lean-and-mean **********************************/
-    if (!MCAUSE_IS_INTR(mcause) &&
-        MCAUSE_CODE(mcause) == CODE_MCAUSE_EXP_ECALL_U) {
-        ///////// placeholder code begin///////////////////////////////////
-        spin2lock(&uart0_lock);
-        uart_puts(uart0, "\r\n======TRAP:EXP_ECALL_U\r\n");
+    if (!MCAUSE_IS_INTR(mcause)) {
+        switch (MCAUSE_CODE(mcause)) {
+        case (CODE_MCAUSE_EXP_ECALL_M):
+        case (CODE_MCAUSE_EXP_ECALL_S):
+        case (CODE_MCAUSE_EXP_ECALL_U):
+            ///////// placeholder code begin///////////////////////////////
+            spin2lock(&uart0_lock);
+            uart_puts(uart0, "\r\n======TRAP:EXP_ECALL_B/S/U\r\n");
 
-        /* increment pc beyond ecall */
-        hcb->mepc = (any)((usize)hcb->mepc + 4); // ecall is 32bit
+            /* increment pc beyond ecall */
+            hcb->mepc = (any)((usize)hcb->mepc + 4); // ecall is 32bit
 
-        uart_puts(uart0, "syscall args:");
+            uart_puts(uart0, "syscall args:");
+
 #define df0(a)                                                            \
     uart_puts(uart0, "\r\n    " #a ":");                                  \
     uart_putu64(&uart0, (u64)hcb->a)
-        REGISTER_LIST_a(df0, ;);
+
+            REGISTER_LIST_a(df0, ;);
 #undef df0
-        uart_puts(uart0, "\r\n==================\r\n");
-        spin2unlock(&uart0_lock);
-        ///////// placeholder code end/////////////////////////////////////
-        goto trap_handle_ret;
+            uart_puts(uart0, "\r\n==================\r\n");
+            spin2unlock(&uart0_lock);
+            ///////// placeholder code end/////////////////////////////////
+
+            goto trap_handle_ret;
+        default:
+            break;
+        }
     }
 
     /* from here on we provide verbose-ish trap info */

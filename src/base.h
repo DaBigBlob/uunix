@@ -53,8 +53,9 @@ UNIDEFSET(mie, set_mie, usize);
 UNIDEFSET(mtvec, set_mtvec, any);
 UNIDEFSET(mepc, set_mepc, usize);
 UNIDEFSET(mscratch, set_mscratch, any);
-UNIDEFSET(pmpaddr0, set_pmpaddr0, usize);
 UNIDEFSET(pmpcfg0, set_pmpcfg0, usize);
+UNIDEFSET(pmpaddr0, set_pmpaddr0, any);
+UNIDEFSET(pmpaddr1, set_pmpaddr1, any);
 
 UNIDEF(u64, strict_swap, (volatile u64 * at, u64 with));
 UNIDEF(u64, wait4int, (void));
