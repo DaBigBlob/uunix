@@ -37,7 +37,8 @@ noreturn void main(void)
     set_pmpcfg0((usize)0x1f); /* R | W | X | NAPOT */
 
     set_mstatus(get_mstatus() | MASK_MSTATUS_MIE); // enable int
-    compute_hartid2HCB(hartid)->init_ok = 1;
+    compute_hartid2HCB(hartid)->init_ok =
+        1; // only to be written by self hart
     /*********************************************************************/
 
     if (hartid == 0) {
