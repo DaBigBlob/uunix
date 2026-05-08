@@ -38,7 +38,7 @@ noreturn void main(void)
 
     set_mstatus(get_mstatus() | MASK_MSTATUS_MIE); // enable int
 
-    /* only to be written by HCB owner hart; guarantees consistency */
+    /* only to be written by HCB owner hart once; guarantees consistency */
     compute_hartid2HCB(hartid)->init_ok = 1;
     fence_mem();
     /*********************************************************************/
