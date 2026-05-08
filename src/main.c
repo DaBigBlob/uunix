@@ -6,8 +6,6 @@
 #include "mem.h"
 #include "uart.h"
 
-// static volatile u8 hart_ready[MAX_HARTS];
-
 noreturn void main(void)
 {
     set_mstatus(get_mstatus() & ~MASK_MSTATUS_MIE); // disable int

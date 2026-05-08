@@ -103,6 +103,7 @@ typedef struct {
         usize      mpp; /* privilege mode */
         dumblock_t lock;
     } cmd;
+    u64 init_ok;
 } HCB;
 
 /* check: the offsets are valid */

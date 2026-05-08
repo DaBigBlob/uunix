@@ -2,12 +2,12 @@
 #define UUNIX_MEM
 #include "hcb.h"
 
-#define STACK_SIZE      1048576 /* 1MiB */
-#define MAX_HARTS       128
-#define HART_STACK_SIZE ((STACK_SIZE) / (MAX_HARTS))
+#define KMEM_SIZE      1048576 /* 1MiB */
+#define MAX_HARTS      128
+#define HART_KMEM_SIZE (((KMEM_SIZE) / (MAX_HARTS)) - sizeof(HCB))
 
 typedef struct {
-    u8 stacktop[HART_STACK_SIZE];
+    u8 stacktop[HART_KMEM_SIZE];
     //  <-- stackbase starts at hcb and grows ^
     // below it HCB
     HCB hcb;
@@ -23,7 +23,7 @@ alignas(16) extern volatile khart_mem_t kern_mem[MAX_HARTS];
 extern volatile u8 bss_begin[], bss_end[];
 
 // typedef struct {
-//     u8 stacktop[HART_STACK_SIZE];
+//     u8 stacktop[HART_KMEM_SIZE];
 //     //  <-- stackbase starts at hcb and grows ^
 //     // below it HCB
 //     struct {
