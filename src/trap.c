@@ -4,6 +4,7 @@
 #include "mem.h"
 #include "pre.h"
 #include "std.h"
+#include "syscall.h"
 #include "uart.h"
 #include "task.h"
 
@@ -53,25 +54,7 @@ void trap_handle(void)
         case (CODE_MCAUSE_EXP_ECALL_M):
         case (CODE_MCAUSE_EXP_ECALL_S):
         case (CODE_MCAUSE_EXP_ECALL_U):
-            ///////// placeholder code begin///////////////////////////////
-            spin2lock(&uart0_lock);
-            uart_puts(uart0, "\r\n======TRAP:EXP_ECALL_B/S/U\r\n");
-
-            /* increment pc beyond ecall */
-            hcb->mepc = (any)((usize)hcb->mepc + 4); // ecall is 32bit
-
-            uart_puts(uart0, "syscall args:");
-
-#define df0(a)                                                            \
-    uart_puts(uart0, "\r\n    " #a ":");                                  \
-    uart_putu64(&uart0, (u64)hcb->a)
-
-            REGISTER_LIST_a(df0, ;);
-#undef df0
-            uart_puts(uart0, "\r\n==================\r\n");
-            spin2unlock(&uart0_lock);
-            ///////// placeholder code end/////////////////////////////////
-
+            handle_syscall(hcb);
             goto trap_handle_ret;
         default:
             break;

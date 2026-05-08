@@ -119,7 +119,13 @@ FUNC(trap_entry)
 ENDF(trap_entry)
 
 FUNC(umode_test)
-    li  a1, 2
-    li  a2, 1
+    li  a7, 2
+    li  a0, 72
+    ecall
+    li  a7, 2
+    li  a0, 73
+    ecall
+    li  a7, 2
+    li  a0, 33
     ecall
 ENDF(umode_test)
