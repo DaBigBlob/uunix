@@ -3,14 +3,14 @@
 #include "hcb.h"
 
 #define KMEM_SIZE      1048576 /* 1MiB */
-#define MAX_HARTS      128
+#define MAX_HARTS      8
 #define HART_KMEM_SIZE (((KMEM_SIZE) / (MAX_HARTS)) - sizeof(HCB))
 
 typedef struct {
-    u8 stacktop[HART_KMEM_SIZE];
+    alignas(16) u8 stacktop[HART_KMEM_SIZE];
     //  <-- stackbase starts at hcb and grows ^
     // below it HCB
-    HCB hcb;
+    alignas(16) HCB hcb;
 } khart_mem_t;
 
 #define compute_hartid2HCB(hartid)        (&kern_mem[(hartid)].hcb)
