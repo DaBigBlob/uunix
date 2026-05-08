@@ -19,6 +19,13 @@ void handle_syscall(volatile HCB *hcb)
         spin2unlock(&uart0_lock);
         break;
 
+    case (SYS_READ):
+        hcb->a0 = (any)(usize)uart_getc(&uart0);
+        break;
+
+    case (SYS_EXIT):
+        goto gt_task_done;
+
     default:
         spin2lock(&uart0_lock);
         uart_puts(uart0,
@@ -35,6 +42,7 @@ void handle_syscall(volatile HCB *hcb)
         uart_puts(uart0, "\r\n==================\r\n");
         spin2unlock(&uart0_lock);
 
+gt_task_done:
         /* send to task done */
         hcb->mepc    = (any)task_done; /* wait for new instructions */
         hcb->sp      = compute_hartid2HCB(hcb->hartid); /* reuse*/

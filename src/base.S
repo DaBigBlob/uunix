@@ -128,6 +128,12 @@ FUNC(umode_test)
     li  a7, 2
     li  a0, 33
     ecall
-    li  a7, 99
+
+    li  a7, 1
+    ecall
+    li  a7, 2
+    ecall
+
+    li  a7, 3
     ecall
 ENDF(umode_test)

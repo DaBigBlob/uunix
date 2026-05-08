@@ -5,6 +5,7 @@
 #define SYS_MEM   0
 #define SYS_READ  1
 #define SYS_WRITE 2
+#define SYS_EXIT  3
 
 void handle_syscall(volatile HCB *hcb);
 
