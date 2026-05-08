@@ -37,8 +37,10 @@ noreturn void main(void)
     set_pmpcfg0((usize)0x1f); /* R | W | X | NAPOT */
 
     set_mstatus(get_mstatus() | MASK_MSTATUS_MIE); // enable int
-    compute_hartid2HCB(hartid)->init_ok =
-        1; // only to be written by self hart
+
+    /* only to be written by HCB owner hart; guarantees consistency */
+    compute_hartid2HCB(hartid)->init_ok = 1;
+    fence_mem();
     /*********************************************************************/
 
     if (hartid == 0) {
@@ -62,6 +64,5 @@ noreturn void main(void)
         set_msip(1);
     }
 
-    for (;;)
-        wait4int(); // wait for task
+    task_done();
 }
