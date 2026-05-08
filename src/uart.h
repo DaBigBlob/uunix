@@ -42,8 +42,6 @@ extern volatile uart_t uart0, uart1;
         (urt).txdata = (char)(ch);                                        \
     } while (0)
 
-char uart_getc(volatile uart_t *urt);
-
 #define uart_puts(urt, str)                                               \
     do {                                                                  \
         null_sentinel_foreach(str, char, _c) {                            \
@@ -61,6 +59,9 @@ char uart_getc(volatile uart_t *urt);
         urt.txctrl = 1; /* enable TX */                                    \
         urt.rxctrl = 1; /* enable Rx */                                    \
     } while (0)
+
+char uart_getc(volatile uart_t *urt);
+void uart_read(volatile uart_t *urt, void *buff, usize len);
 
 /* global uart lock */
 extern spinlock_t uart0_lock, uart1_lock;
