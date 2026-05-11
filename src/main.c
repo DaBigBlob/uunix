@@ -55,6 +55,14 @@ noreturn void main(void)
         compute_hartid2HCB(1)->cmd.sp      = compute_hartid2HCB(1);
         compute_hartid2HCB(1)->cmd.mpp     = CODE_MSTATUS_MPP_M;
         set_msip(1);
+
+        dumb2lock(compute_hartid2HCB(1)->cmd.lock);
+        compute_hartid2HCB(1)->cmd.func    = (any)0;
+        compute_hartid2HCB(1)->cmd.args.a0 = (any)0xd;
+        compute_hartid2HCB(1)->cmd.args.a1 = (any)1;
+        compute_hartid2HCB(1)->cmd.sp      = compute_hartid2HCB(1);
+        compute_hartid2HCB(1)->cmd.mpp     = CODE_MSTATUS_MPP_M;
+        set_msip(1);
     }
 
     task_done();

@@ -11,6 +11,8 @@
 #define UNIDEFGET(rett, name, thing) UNIDEF(rett, name, (void))
 #define UNIDEFSET(thing, name, argt) UNIDEF(void, name, (argt))
 
+#define HXDEF(rett, name, args, ...) extern rett name args
+
 #else  // C end / ASSEMBLYTIME begin ----------------
 // clang-format off
 #include "hcb.h" /* safe: hcb.h has ASSEMBLYTIME */
@@ -37,6 +39,17 @@ UNIDEF(void, name, (argt))          \
 FUNC(name);                         \
     csrw    thing, a0;              \
     ret;                            \
+ENDF(name)
+
+#define HXDEF(rett, name, args, ...)   \
+.section .text.##name;                  \
+.globl name;                            \
+.type name, @function;                  \
+.balign 4;                              \
+name:                                   \
+FUNC(name);                             \
+    __VA_ARGS__;                        \
+    ret;                                \
 ENDF(name)
 
 // clang-format on
