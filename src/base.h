@@ -41,15 +41,9 @@ FUNC(name);                         \
     ret;                            \
 ENDF(name)
 
-#define HXDEF(rett, name, args, ...)   \
-.section .text.##name;                  \
-.globl name;                            \
-.type name, @function;                  \
-.balign 4;                              \
-name:                                   \
+#define HXDEF(rett, name, args, ...)    \
 FUNC(name);                             \
     __VA_ARGS__;                        \
-    ret;                                \
 ENDF(name)
 
 // clang-format on
@@ -71,11 +65,14 @@ UNIDEFSET(pmpaddr0, set_pmpaddr0, any);
 UNIDEFSET(pmpaddr1, set_pmpaddr1, any);
 
 UNIDEF(u64, strict_swap, (volatile u64 * at, u64 with));
-UNIDEF(u64, wait4int, (void));
 UNIDEF(void, trap_entry, (void));
 UNIDEF(any, ASMUSE_get_hstackbase, (void));
-UNIDEF(void, fence_mem, (void));
+// UNIDEF(void, fence_mem, (void));
 
 UNIDEF(void, umode_test, (void));
+
+// UNIDEF(u64, wait4int, (void));
+HXDEF(void, wait4int, (void), wfi; ret);
+HXDEF(void, fence_mem, (void), fence iorw, iorw; ret);
 
 #endif // UUNIX_BASE
