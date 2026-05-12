@@ -22,17 +22,16 @@
 
 #define UNHANDLED_TRAP_LIST_INTR(x, s) x(INTR_TIMER) s x(INTR_EXTERNAL)
 #define UNHANDLED_TRAP_LIST_EXP(x, s)                                     \
-    s x(EXP_INST_ADDR_MISALIGNED)                                         \
-    s x(EXP_INST_ACCESS_FAULT)                                            \
-    s x(EXP_ILLEGAL_INST)                                                 \
-    s x(EXP_BREAKPOINT)                                                   \
-    s x(EXP_LOAD_ADDR_MISALIGNED)                                         \
-    s x(EXP_LOAD_ACCESS_FAULT)                                            \
-    s x(EXP_STORE_ADDR_MISALIGNED)                                        \
-    s x(EXP_STORE_ACCESS_FAULT)                                           \
-    s x(EXP_INST_PAGE_FAULT)                                              \
-    s x(EXP_LOAD_PAGE_FAULT)                                              \
-    s x(EXP_STORE_PAGE_FAULT)
+    x(EXP_INST_ADDR_MISALIGNED) s x(EXP_INST_ACCESS_FAULT)                \
+    s                             x(EXP_ILLEGAL_INST)                     \
+    s                             x(EXP_BREAKPOINT)                       \
+    s                             x(EXP_LOAD_ADDR_MISALIGNED)             \
+    s                             x(EXP_LOAD_ACCESS_FAULT)                \
+    s                             x(EXP_STORE_ADDR_MISALIGNED)            \
+    s                             x(EXP_STORE_ACCESS_FAULT)               \
+    s                             x(EXP_INST_PAGE_FAULT)                  \
+    s                             x(EXP_LOAD_PAGE_FAULT)                  \
+    s                             x(EXP_STORE_PAGE_FAULT)
 #define UNHANDLED_TRAP_LIST(x, s)                                         \
     UNHANDLED_TRAP_LIST_INTR(x, s) s UNHANDLED_TRAP_LIST_EXP(x, s)
 
